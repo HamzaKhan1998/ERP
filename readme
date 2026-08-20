@@ -6,13 +6,634 @@ This project is an ERP platform intended for ISO/API-style audit and compliance 
 
 ## Development Stack
 
-- Frontend: Next.js (planned)
-- Backend: NestJS (planned)
+- Frontend: Next.js
+- Backend: NestJS
 - ORM: Prisma ORM 7.9.1
 - Database: PostgreSQL 18.6
 - Production Database: Google Cloud SQL for PostgreSQL (planned)
 - Cloud Platform: Google Cloud Platform (planned)
 - Analytics: BigQuery (planned for future analytics/reporting needs)
+
+---
+
+## Project Architecture
+
+The ERP application is structured as a modular full-stack system with a frontend, backend API, and database layer.
+
+### High-Level Flow
+
+```text
+Next.js Frontend
+      |
+      v
+NestJS Backend API
+      |
+      v
+Prisma ORM
+      |
+      v
+PostgreSQL Database (localhost:5432 / erp)
+```
+
+### Responsibilities
+
+- Frontend: user interface and dashboard experience built with Next.js
+- Backend: business logic, API endpoints, authentication flows, and service orchestration built with NestJS
+- ORM: Prisma handles schema management, query generation, and database access abstraction
+- Database: PostgreSQL stores ERP data locally during development and will later move to Cloud SQL in production
+
+### Local Development Architecture
+
+For local development, the project is currently using:
+
+- Next.js app in the `frontend` folder
+- NestJS app in the `backend` folder
+- Prisma configuration connected to PostgreSQL on `localhost:5432`
+- Database name: `erp`
+
+This architecture is intended to support a future multi-tenant ERP platform for audit, compliance, CAPA, and operational management workflows.
+
+---
+
+## Current Status
+
+### Completed
+
+- Created ERP project directory
+- Initialized Node.js project
+- Installed Prisma ORM 7.9.1
+- Installed Prisma Client
+- Installed PostgreSQL adapter
+- Installed PostgreSQL Node.js driver
+- Approved Prisma installation scripts
+- Initialized Prisma
+- Installed PostgreSQL 18.6
+- Started PostgreSQL service
+- Added PostgreSQL command-line tools to PATH
+- Verified PostgreSQL connectivity
+- Created the `erp` database
+- Configured `.env`
+- Configured `prisma.config.ts`
+- Successfully tested Prisma → PostgreSQL connectivity
+- Scaffolded the NestJS backend in the `backend` directory
+- Connected the NestJS backend to Prisma using a PostgreSQL driver adapter
+- Verified the NestJS backend build succeeds with the Prisma client
+- Scaffolded the Next.js frontend in the `frontend` directory
+- Created the initial ERP dashboard homepage for the frontend
+- Designed the Tenant Admin role and permission model
+- Created the Tenant Admin dashboard page for member management
+- Built backend API routes for member operations (CRUD)
+- Verified backend builds and compiles with new admin module
+
+### Not Yet Completed
+
+- Connect frontend admin page to backend API
+- Design the initial multi-tenant ERP data model
+- Create Prisma models for Tenant, User, Member, Role, Permission
+- Create initial database migration
+- Implement authentication and JWT token handling
+- Implement role-based access control (RBAC)
+- Implement tenant/company isolation at the data layer
+- Build document control and workflow pages
+- Implement audit management
+- Implement findings and CAPA management
+- Implement document/evidence management
+- Implement application audit logs
+- Deploy to GCP
+- Migrate PostgreSQL from local development to Cloud SQL
+
+---
+
+## Local Installation Steps
+
+Follow the steps below to set up the local development environment for the ERP project.
+
+### 1. Initialize the project directory
+
+Create the workspace folder for the ERP application and initialize the Node.js project:
+
+```bash
+npm init -y
+```
+
+### 2. Set up the NestJS backend
+
+Scaffold the backend using the NestJS CLI:
+
+```bash
+npx @nestjs/cli new backend --skip-git --package-manager npm --strict
+```
+
+This creates the backend application structure for the API layer that will eventually connect to Prisma and PostgreSQL.
+
+### 3. Installed Prisma ORM
+
+Installed Prisma as a development dependency:
+
+```bash
+npm install prisma --save-dev
+```
+
+This adds Prisma to the project so schema management and migration tooling are available during development.
+
+### 4. Installed Prisma Client and PostgreSQL Dependencies
+
+Installed the Prisma Client, PostgreSQL adapter, and PostgreSQL Node.js driver:
+
+```bash
+npm install @prisma/client @prisma/adapter-pg pg
+```
+
+These packages provide the database client layer and PostgreSQL connectivity needed for application data access.
+
+### 5. Approved Prisma Installation Scripts
+
+npm initially blocked Prisma package installation scripts as a security precaution.
+
+Approved the required Prisma packages:
+
+```bash
+npm install-scripts approve prisma @prisma/engines
+```
+
+This allows the Prisma engine binaries and related installation scripts to run correctly in the local environment.
+
+---
+
+## 6. Tenant Admin Feature Setup
+
+The Tenant Admin module provides role-based access control and member management for each company tenant.
+
+### Frontend: Tenant Admin Dashboard
+
+The Tenant Admin dashboard page is located at:
+
+```
+frontend/src/app/admin/page.tsx
+```
+
+Capabilities:
+
+- Add new members to the company by email address
+- Assign roles to members (Tenant Admin, Document Owner, Reviewer, Approver)
+- View all members in the company
+- Update member roles inline
+- View member status (active, pending, inactive)
+- View role descriptions and responsibilities
+- Remove members from the company
+
+Access the page at:
+
+```
+http://localhost:3000/admin
+```
+
+### Backend: Member Management API
+
+The backend provides REST API endpoints for member management at:
+
+```
+backend/src/admin/
+```
+
+API Routes:
+
+```
+GET    /admin/members             - Fetch all members for tenant
+GET    /admin/members/:id         - Fetch a single member
+POST   /admin/members             - Add a new member
+PUT    /admin/members/:id         - Update member role/department
+DELETE /admin/members/:id         - Remove a member
+```
+
+Example requests:
+
+```bash
+# Add a new member
+curl -X POST http://localhost:3000/admin/members \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@company.com",
+    "role": "Document Owner",
+    "department": "Quality"
+  }'
+
+# Update a member's role
+curl -X PUT http://localhost:3000/admin/members/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "role": "Approver"
+  }'
+
+# Fetch all members
+curl http://localhost:3000/admin/members
+```
+
+### Roles and Permissions
+
+The system currently supports four core roles:
+
+1. **Tenant Admin**: Full access to member management and tenant configuration
+2. **Document Owner**: Creates and edits document content
+3. **Reviewer**: Validates documents and provides feedback
+4. **Approver**: Final sign-off authority for documents
+
+### Implementation Notes
+
+- The API routes currently use mock in-memory data
+- Tenant isolation is implemented via tenantId parameter (TODO: extract from JWT)
+- Email invitations are logged but not yet sent (TODO: implement email service)
+- The backend will be connected to Prisma models once the schema is finalized
+
+### Frontend Integration
+
+The frontend admin page is now connected to the backend API routes.
+
+**How it works:**
+
+1. The admin page (`frontend/src/app/admin/page.tsx`) is a client component that uses React hooks
+2. On page load, it fetches all members from `GET /admin/members`
+3. Form submission sends a `POST /admin/members` request to add a new member
+4. Role dropdown changes trigger `PUT /admin/members/:id` to update the role
+5. Delete button calls `DELETE /admin/members/:id` to remove a member
+
+**API client:**
+
+The API client is located at:
+
+```
+frontend/src/app/admin/api-client.ts
+```
+
+It provides these functions:
+
+- `fetchMembers()` - GET all members
+- `fetchMember(id)` - GET single member
+- `createMember(data)` - POST new member
+- `updateMember(id, data)` - PUT member changes
+- `deleteMember(id)` - DELETE member
+
+**Environment configuration:**
+
+The API URL is configured in:
+
+```
+frontend/.env.local
+```
+
+Default:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+### Running the full stack locally
+
+To run both the backend and frontend together:
+
+**Terminal 1: Start the backend**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+$env:Path = 'C:\Program Files\nodejs;' + $env:Path
+cd 'C:/Users/User/ERP/backend'
+$env:DATABASE_URL='postgresql://postgres:Haroon@123@localhost:5432/erp'
+npm run start
+```
+
+**Terminal 2: Start the frontend**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+$env:Path = 'C:\Program Files\nodejs;' + $env:Path
+cd 'C:/Users/User/ERP/frontend'
+npm run dev
+```
+
+Then open:
+
+```
+http://localhost:3001/admin
+```
+
+The admin dashboard will now fetch and manage members through the live backend API.
+
+### Testing the API
+
+You can test the API directly with curl:
+
+```bash
+# Fetch all members
+curl http://localhost:3000/admin/members
+
+# Add a new member
+curl -X POST http://localhost:3000/admin/members \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "newuser@company.com",
+    "role": "Document Owner",
+    "department": "Quality"
+  }'
+
+# Update a member's role
+curl -X PUT http://localhost:3000/admin/members/1 \
+  -H "Content-Type: application/json" \
+  -d '{"role": "Approver"}'
+
+# Remove a member
+curl -X DELETE http://localhost:3000/admin/members/1
+```
+
+---
+
+## 11. Verify PostgreSQL Installation Directory
+
+Run:
+
+```powershell
+Get-ChildItem "C:\Program Files\PostgreSQL" -ErrorAction SilentlyContinue
+```
+
+For PostgreSQL 18, the directory should be:
+
+```powershell
+C:\Program Files\PostgreSQL\18
+```
+
+---
+
+## 12. Verify psql.exe
+
+Run:
+
+```powershell
+Test-Path "C:\Program Files\PostgreSQL\18\bin\psql.exe"
+```
+
+Expected:
+
+```powershell
+True
+```
+
+---
+
+## 13. Verify PostgreSQL Version
+
+Run:
+
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" --version
+```
+
+Expected:
+
+```powershell
+psql (PostgreSQL) 18.6
+```
+
+The patch version may differ.
+
+---
+
+## 14. Add PostgreSQL to PowerShell PATH
+
+For the current PowerShell session:
+
+```powershell
+$env:Path += ";C:\Program Files\PostgreSQL\18\bin"
+```
+
+Verify:
+
+```powershell
+psql --version
+```
+
+Expected:
+
+```powershell
+psql (PostgreSQL) 18.6
+```
+
+---
+
+## 15. Verify PostgreSQL Is Running
+
+Run:
+
+```powershell
+pg_isready
+```
+
+Expected:
+
+```powershell
+:5432 - accepting connections
+```
+
+This confirms that PostgreSQL is accepting connections on port `5432`.
+
+---
+
+## Troubleshooting and Revision Log
+
+This section documents the major setup issues encountered while bringing up the ERP stack locally on Windows and the steps used to resolve them.
+
+### 1. Git was not available initially
+
+Issue:
+
+- The repository was not initialized as a Git repository.
+- `git` commands failed with: `The term 'git' is not recognized...`
+
+Action taken:
+
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+Resolution:
+
+- Git was installed successfully.
+- The local project was initialized and connected to the GitHub remote.
+
+---
+
+### 2. Git identity was missing for the first commit
+
+Issue:
+
+- Commit failed because no Git user identity was configured.
+- Error: `Author identity unknown`
+
+Action taken:
+
+```powershell
+git config user.name "ERP User"
+git config user.email "erp.user@local"
+```
+
+Resolution:
+
+- A local repo identity was configured.
+- The initial commit was created successfully.
+
+---
+
+### 3. GitHub authentication was required for push
+
+Issue:
+
+- Push to GitHub prompted for authentication.
+- Error: `info: please complete authentication in your browser...`
+
+Action taken:
+
+- Completed the browser authentication prompt.
+- Created the requested branch `hamza` and pushed it.
+
+Resolution:
+
+- The repository was successfully pushed to the remote branch.
+
+---
+
+### 4. Node.js and npm were not in PATH for PowerShell
+
+Issue:
+
+- `npx` and `npm` were not recognized in the terminal session.
+- PowerShell returned: `The term 'npx' is not recognized...`
+
+Action taken:
+
+```powershell
+$env:Path = 'C:\Program Files\nodejs;' + $env:Path
+```
+
+Additionally, script execution restrictions were bypassed for the session:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Resolution:
+
+- Node.js tools became available from PowerShell.
+- The NestJS CLI was able to scaffold the project.
+
+---
+
+### 5. NestJS CLI generation succeeded, but the app initially failed to run
+
+Issue:
+
+- The NestJS app was created successfully, but runtime startup triggered Prisma initialization issues.
+
+Observed error:
+
+```text
+PrismaClient was instantiated without any options. A driver adapter is required to connect to your database.
+```
+
+Root cause analysis:
+
+- Prisma ORM 7 requires a driver adapter for direct PostgreSQL connections.
+- The project was using the default Prisma client initialization without the required adapter setup.
+
+Action taken:
+
+- Added the Prisma PostgreSQL adapter dependency to the NestJS app.
+- Updated the Prisma service to instantiate the client with:
+
+```ts
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
+```
+
+Resolution:
+
+- The backend was rebuilt successfully and started without the Prisma initialization error.
+
+---
+
+### 6. Prisma generator and module format mismatch caused build errors
+
+Issue:
+
+- The NestJS backend build failed with import and module compatibility issues.
+- The generated Prisma client output was incompatible with the Node ESM/CommonJS configuration in the project.
+
+Examples of errors encountered:
+
+- `Module '"@prisma/client"' has no exported member 'PrismaClient'.`
+- `Relative import paths need explicit file extensions in ECMAScript imports...`
+- `exports is not defined in ES module scope`
+
+Action taken:
+
+- Resolved the generated Prisma client path and import style.
+- Updated TypeScript import statements to match the project’s module setup.
+- Ensured the generated Prisma client was created using the correct output path in the schema.
+- Rebuilt the project after each fix.
+
+Resolution:
+
+- The backend build completed successfully.
+
+---
+
+### 7. Final backend verification
+
+After resolving the Prisma adapter and module configuration issues, the backend was started successfully with the existing PostgreSQL configuration.
+
+Command used:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+$env:Path = 'C:\Program Files\nodejs;' + $env:Path
+cd 'C:/Users/User/ERP/backend'
+$env:DATABASE_URL='postgresql://postgres:Haroon@123@localhost:5432/erp'
+npm run start
+```
+
+Runtime verification:
+
+```powershell
+Invoke-WebRequest -Uri http://localhost:3000 -UseBasicParsing | Select-Object -ExpandProperty Content
+```
+
+Result:
+
+```text
+ERP API is running and connected to PostgreSQL database: erp
+```
+
+This confirms that the current NestJS + Prisma + PostgreSQL setup is working locally.
+
+---
+
+### Summary of the debugging workflow
+
+The work followed a consistent pattern:
+
+1. Identify the error message and isolate the failing layer.
+2. Check the environment and PATH configuration.
+3. Validate whether the issue was caused by missing tools, missing permissions, or dependency/runtime incompatibility.
+4. Apply the smallest targeted fix.
+5. Rebuild or rerun the app to verify the fix.
+6. Repeat until the backend and database connection were confirmed working.
+
+This process was necessary because the project involved multiple systems working together:
+
+- GitHub repo setup
+- Node.js / npm environment
+- NestJS CLI generation
+- Prisma client generation
+- PostgreSQL runtime
+- Windows PowerShell execution policy differences
+- Prisma 7 driver adapter requirements
 
 ---
 
