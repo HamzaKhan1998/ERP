@@ -1,0 +1,18 @@
+# ERP Software — Development Environment Setup
+
+## Project Overview
+
+This project is an ERP platform intended for ISO/API-style audit and compliance management. The initial development environment is being built locally on Windows, with the eventual production environment planned on Google Cloud Platform (GCP).
+
+## Development Stack
+
+- Frontend: Next.js (planned)
+- Backend: NestJS (planned)
+- ORM: Prisma ORM 7.9.1
+- Database: PostgreSQL 18.6
+- Production Database: Google Cloud SQL for PostgreSQL (planned)
+- Cloud Platform: Google Cloud Platform (planned)
+- Analytics: BigQuery (planned for future analytics/reporting needs)
+
+---
+
