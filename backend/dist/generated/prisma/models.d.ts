@@ -1,1 +1,10 @@
+export type * from './models/Tenant.js';
+export type * from './models/User.js';
+export type * from './models/Document.js';
+export type * from './models/DocumentVersion.js';
+export type * from './models/WorkflowAssignment.js';
+export type * from './models/ApprovalDecision.js';
+export type * from './models/ComplianceReference.js';
+export type * from './models/RevisionHistory.js';
+export type * from './models/DocumentRelation.js';
 export type * from './commonInputTypes.js';

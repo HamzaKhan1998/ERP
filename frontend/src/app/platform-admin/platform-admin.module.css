@@ -1,0 +1,527 @@
+.page {
+  min-height: 100vh;
+  padding: 48px 32px 72px;
+  background: #edf2f5;
+  color: #16232b;
+}
+
+.topbar,
+.metrics,
+.workspace,
+.lowerGrid {
+  width: min(1240px, 100%);
+  margin-inline: auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+
+.kicker {
+  margin: 0 0 9px;
+  color: #16706b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.topbar h1,
+.sectionHeading h2,
+.accessPanel h2,
+.modal h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.topbar h1 {
+  max-width: 680px;
+  font-size: clamp(2.5rem, 5vw, 4.7rem);
+  line-height: 0.98;
+}
+
+.intro {
+  max-width: 570px;
+  margin: 16px 0 0;
+  color: #5a6b72;
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.identity {
+  min-width: 270px;
+  padding: 14px 0 3px 24px;
+  border-left: 1px solid #c5d1d3;
+}
+
+.identityLabel,
+.identity strong {
+  display: block;
+}
+
+.identityLabel {
+  margin-bottom: 7px;
+  color: #6b7b82;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.identity strong {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.metric {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 19px 20px;
+  border: 1px solid #d6e0e1;
+  background: #f9fbfa;
+}
+
+.metric span,
+.metric small {
+  color: #65767b;
+}
+
+.metric span {
+  font-size: 0.79rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.metric strong {
+  color: #16706b;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.9rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.metric small {
+  font-size: 0.78rem;
+}
+
+.workspace,
+.activityPanel,
+.accessPanel {
+  border: 1px solid #d6e0e1;
+  background: #f9fbfa;
+}
+
+.workspace {
+  padding: 28px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sectionHeading h2,
+.accessPanel h2,
+.modal h2 {
+  font-size: 1.7rem;
+}
+
+.primaryButton,
+.secondaryButton,
+.textButton,
+.iconButton,
+.closeButton {
+  font: inherit;
+  cursor: pointer;
+}
+
+.primaryButton,
+.secondaryButton {
+  border: 0;
+  padding: 11px 17px;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.primaryButton {
+  background: #16706b;
+  color: #fff;
+}
+
+.primaryButton:hover {
+  background: #0e5956;
+}
+
+.secondaryButton {
+  border: 1px solid #c8d4d5;
+  background: #edf2f5;
+  color: #16232b;
+}
+
+.toolbar {
+  display: flex;
+  gap: 14px;
+  align-items: end;
+  padding: 25px 0 18px;
+}
+
+.searchField,
+.filterField,
+.formLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #5b6d73;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.searchField {
+  flex: 1;
+}
+
+.filterField {
+  width: 160px;
+}
+
+.searchField input,
+.filterField select,
+.modalForm input {
+  width: 100%;
+  border: 1px solid #cad7d8;
+  border-radius: 0;
+  padding: 11px 12px;
+  background: #fff;
+  color: #16232b;
+  font: inherit;
+  font-size: 0.88rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.searchField input:focus,
+.filterField select:focus,
+.modalForm input:focus {
+  outline: 2px solid #75b9b1;
+  outline-offset: 1px;
+}
+
+.notice {
+  margin: 0 0 16px;
+  padding: 11px 13px;
+  border-left: 3px solid #16706b;
+  background: #e3f1ee;
+  color: #15544f;
+  font-size: 0.86rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-top: 1px solid #d6e0e1;
+}
+
+.table {
+  width: 100%;
+  min-width: 930px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 15px 12px;
+  color: #6b7b82;
+  font-size: 0.71rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 17px 12px;
+  border-top: 1px solid #e0e7e7;
+  color: #52636a;
+  font-size: 0.84rem;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background: #f0f6f4;
+}
+
+.companyCell,
+.adminCell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.companyCell > div,
+.adminCell {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.companyCell strong,
+.adminCell strong {
+  color: #16232b;
+  font-size: 0.88rem;
+}
+
+.companyCell span:not(.companyMark),
+.adminCell span {
+  color: #748388;
+  font-size: 0.76rem;
+}
+
+.companyMark {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  flex: 0 0 37px;
+  place-items: center;
+  background: #d8ebe6;
+  color: #16706b;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  content: '';
+}
+
+.active { color: #18734f; }
+.onboarding { color: #aa6817; }
+.suspended { color: #b34a4a; }
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+}
+
+.textButton,
+.iconButton {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #16706b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.iconButton {
+  color: #8b5a2b;
+}
+
+.textButton:hover,
+.iconButton:hover {
+  text-decoration: underline;
+}
+
+.emptyState {
+  padding: 32px;
+  color: #68797e;
+  text-align: center;
+}
+
+.lowerGrid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.activityPanel,
+.accessPanel {
+  padding: 26px;
+}
+
+.activityList {
+  display: grid;
+  gap: 17px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activityList li {
+  display: grid;
+  grid-template-columns: 8px 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e7e7;
+}
+
+.activityDot {
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: #d3943e;
+}
+
+.activityList strong,
+.activityList span,
+.activityList time {
+  display: block;
+}
+
+.activityList strong {
+  font-size: 0.86rem;
+}
+
+.activityList span,
+.activityList time {
+  margin-top: 3px;
+  color: #718187;
+  font-size: 0.78rem;
+}
+
+.accessPanel {
+  background: #173d3a;
+  color: #f2faf7;
+}
+
+.accessPanel .kicker {
+  color: #a8d8ce;
+}
+
+.accessPanel p:not(.kicker) {
+  color: #c1d8d4;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.scopeList {
+  display: grid;
+  gap: 10px;
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+}
+
+.scopeList span {
+  color: #c1d8d4;
+  font-size: 0.8rem;
+}
+
+.scopeList b {
+  margin-right: 6px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(13, 31, 35, 0.48);
+  z-index: 10;
+}
+
+.modal {
+  width: min(500px, 100%);
+  padding: 28px;
+  background: #f9fbfa;
+  box-shadow: 0 24px 70px rgba(12, 35, 38, 0.28);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.modal > p {
+  margin: 17px 0 24px;
+  color: #607177;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #cad7d8;
+  background: transparent;
+  color: #52636a;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.modalForm {
+  display: grid;
+  gap: 10px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 13px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 850px) {
+  .page { padding: 30px 16px 52px; }
+  .topbar { align-items: start; flex-direction: column; }
+  .identity { width: 100%; padding: 14px 0 0; border-top: 1px solid #c5d1d3; border-left: 0; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .lowerGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 540px) {
+  .workspace, .activityPanel, .accessPanel { padding: 20px; }
+  .sectionHeading { align-items: start; flex-direction: column; }
+  .toolbar { align-items: stretch; flex-direction: column; }
+  .filterField { width: 100%; }
+  .metrics { grid-template-columns: 1fr; }
+}

@@ -30,5 +30,32 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     $extends: runtime.Types.Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<OmitOpts>, ExtArgs, runtime.Types.Utils.Call<Prisma.TypeMapCb<OmitOpts>, {
         extArgs: ExtArgs;
     }>>;
+    get tenant(): Prisma.TenantDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get user(): Prisma.UserDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get document(): Prisma.DocumentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get documentVersion(): Prisma.DocumentVersionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get workflowAssignment(): Prisma.WorkflowAssignmentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get approvalDecision(): Prisma.ApprovalDecisionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get complianceReference(): Prisma.ComplianceReferenceDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get revisionHistory(): Prisma.RevisionHistoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get documentRelation(): Prisma.DocumentRelationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

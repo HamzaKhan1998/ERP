@@ -55,6 +55,524 @@ This architecture is intended to support a future multi-tenant ERP platform for 
 
 ---
 
+## Initial Prisma Data Model Foundation
+
+The initial schema has been defined and validated in both the root `prisma/schema.prisma` and the backend `backend/prisma/schema.prisma` locations.
+
+### Core entities
+
+- `Tenant`: client company, slug, subdomain, and tenant status
+- `User`: tenant member identified by unique email, designation, and tenant-admin flag
+- `Document`: tenant-scoped controlled document identity and current workflow status
+- `DocumentVersion`: issue/revision content, effective date, review date, and procedure sections
+- `WorkflowAssignment`: document-specific Prepared By, Reviewed By, or Approved By assignment
+- `ApprovalDecision`: approval or return-for-correction decision with comments and timestamp
+- `ComplianceReference`: standard, edition, clause, and requirement description
+- `RevisionHistory`: page, revision, and change description
+- `DocumentRelation`: links between procedures, work instructions, forms, and related documents
+
+The model keeps organizational designation separate from workflow assignment. A user may be a Departmental Head while being assigned as Prepared By for one document and Reviewed By for another.
+
+The initial migration is located at:
+
+```text
+backend/prisma/migrations/20260820182439_init_document_control/migration.sql
+```
+
+It has been applied to the local PostgreSQL `erp` database. Future schema changes should use new named migrations rather than editing this migration.
+
+Tenant isolation is represented through tenant ownership on users and documents, with unique document control numbers scoped to each tenant. The schema is validated and Prisma Client has been generated, but no database migration has been applied yet.
+
+---
+
+## Project Folder Structure
+
+```text
+frontend/src/app/
+├── platform-admin/              Platform Admin tenant console
+├── tenant-admin/                Tenant Admin members and assignments
+├── admin/                       Compatibility redirect to /tenant-admin
+├── documents/
+│   └── procedures/new/          Level 2 procedure form prototype
+└── page.tsx                     Main dashboard
+
+backend/src/
+├── tenant-admin/                Tenant member management API
+├── prisma/                      Prisma service and database access
+├── app.controller.ts            Backend health endpoint
+└── app.module.ts                Root NestJS module
+
+prisma/
+└── schema.prisma                Shared root Prisma schema
+```
+
+The structure is organized around product domains. The CEO/MD approval experience should be added under `frontend/src/app/documents/approvals/`, because approval is a document workflow rather than a separate organizational administration area.
+
+---
+
+## Quality Management System Document Hierarchy
+
+The system will organize each company’s controlled Quality Management System documentation into four levels. The hierarchy supports document governance, implementation guidance, and the capture of evidence that an activity was performed.
+
+### Level 1: Quality Manual and Quality Policy
+
+Level 1 contains the top-level documents:
+
+- Quality Policy: the organization’s commitment, direction, and quality objectives
+- Quality Manual: a high-level summary of how the organization’s Quality Management System addresses the applicable standard
+
+The Quality Manual summarizes the organization’s procedures and explains how relevant requirements from standards such as ISO 9001, API Spec Q1, or API Spec Q2 are implemented.
+
+### Level 2: Quality System Procedures
+
+Level 2 contains the detailed Quality System Procedures. These documents address specific requirements of the applicable standard and define how the organization implements those requirements.
+
+In a typical organizational structure, Level 2 procedures follow a management approval chain:
+
+- Prepared by: the relevant departmental head or departmental manager who owns the process
+- Reviewed by: the General Manager responsible for the function, another appropriate GM, or the Management Representative
+- Approved by: the Managing Director or Chief Executive Officer, depending on which position exists in the organization
+
+Examples of departmental procedure owners include the heads or managers of Sales, Marketing, Procurement, Production, Quality Assurance, and HR and Administration. The procedure owner is accountable for ensuring that the procedure accurately describes how their department implements the applicable requirement.
+
+The review and approval roles should be configurable per tenant because organizational titles and reporting structures may differ between companies.
+
+Examples include procedures for:
+
+- document and record control
+- internal audits
+- management review
+- corrective and preventive action
+- purchasing and supplier control
+- competency and training
+- inspection and testing
+
+Level 2 procedures explain the required process, responsibilities, controls, and outputs.
+
+### Level 3: Work Instructions, Specifications, and Organization-Specific Documents
+
+Level 3 contains detailed operational documents that explain how specific work is performed within the organization.
+
+Examples include:
+
+- work instructions
+- operating standards and specifications
+- product standards and drawings
+- material standards and in-house specifications
+- inspection and testing instructions
+- material receiving and handling instructions
+- job descriptions by staff designation
+- competence requirements by designation
+
+Level 3 documents translate the requirements and controls from Level 2 into organization-specific operational practices.
+
+### Level 4: Forms, Formats, and Logbooks
+
+Level 4 contains the blank controlled templates used to capture data while performing activities defined by Level 2 procedures or Level 3 work instructions. A blank form, format, or logbook is not itself a record.
+
+Examples include:
+
+- inspection and testing forms
+- material receiving forms
+- training and competency records
+- audit checklists
+- maintenance logbooks
+- production or service records
+- approval and review formats
+
+When an activity is performed and the relevant form, format, or logbook is completed, the captured data becomes the quality record. The completed record provides objective evidence that the relevant procedure or work instruction was followed. Each Level 4 template should be linked to the procedure or instruction that requires its use.
+
+### Document Relationships
+
+The intended relationship is:
+
+```text
+Level 1: Quality Policy and Quality Manual
+                  |
+                  v
+Level 2: Quality System Procedures
+                  |
+                  v
+Level 3: Work Instructions, Standards, Specifications, and Job Requirements
+                  |
+                  v
+Level 4: Blank Forms, Formats, and Logbooks
+                  |
+                  v
+Completed Activity Data: Quality Records
+```
+
+In the application, every controlled document should be associated with a document level, applicable standard or requirement, owner, reviewer, approver, revision, effective date, and related parent or child documents where applicable.
+
+---
+
+## Controlled Document Process 2: Change to an Approved Document
+
+Changes to an approved document must be controlled whether the document is a Level 1 Quality Manual or Quality Policy, a Level 2 Quality System Procedure, a Level 3 Work Instruction, Standard, Specification, or Drawing, or a Level 4 Form, Format, or Logbook.
+
+### 1. Internal Document Change Request
+
+Any person who identifies a required change may initiate an Internal Document Change Request Form. The request should include:
+
+- originator name, signature or electronic approval, and date
+- document title
+- document identification or control number
+- current issue or revision number
+- existing requirement or wording
+- proposed replacement wording, new process step, or new requirement
+- reason and justification for the change
+- affected department, document level, and related documents
+
+The request must be linked to the controlled document and remain part of its audit history.
+
+### 2. Initial Management Representative Review
+
+The Management Representative performs the initial review to determine whether the request is relevant to the Quality Management System and whether it requires formal document revision.
+
+The request may be:
+
+- accepted for further review
+- returned to the originator for clarification
+- rejected as not relevant or not sufficiently justified
+- redirected to another document or process
+
+The decision, reviewer, date, and comments should be recorded in the system.
+
+### 3. Review by the Original Approval Chain
+
+If the change request is accepted, it proceeds through the approval authority for the affected document. The same accountability chain that originally prepared, reviewed, and approved the document should review the proposed change unless the organization has formally assigned a replacement authority.
+
+For example, a Procurement procedure may follow this chain:
+
+```text
+Procurement Department Head
+          |
+          v
+General Manager or Management Representative
+          |
+          v
+Managing Director or Chief Executive Officer
+```
+
+The system should retain both the original approval chain and the approval chain used for the change.
+
+### 4. Incorporation and Release of the Change
+
+After the change is approved:
+
+1. The approved change is incorporated into the document.
+2. The document receives the next issue or revision number according to the tenant’s numbering convention.
+3. The updated document receives a new effective date.
+4. The completed change request is linked to the new version.
+5. The previous approved version is locked and moved to the obsolete or superseded document archive.
+6. The new version is published in the current approved-document location.
+
+The previous version must remain retrievable for audit purposes and must not be deleted or silently overwritten.
+
+For example:
+
+```text
+Issue 1: Superseded / obsolete archive
+Issue 2: Current approved document
+```
+
+The application should support both `Issue` and `Revision` terminology because different organizations may use different document-control conventions.
+
+### 5. Release Notification
+
+When the new version is released, the system should generate a notification stating that:
+
+- the previous issue or revision is obsolete or superseded
+- the new issue or revision is the current approved version
+- the document title and control number
+- the effective date
+- related forms, formats, or logbooks affected by the change
+- where users can access the current approved document
+- what action users are expected to take
+
+The notification should be sent to all concerned users, the relevant department, the Management Representative, Document Control, and HR when training is required. Email is a notification channel; the controlled system remains the authoritative source.
+
+### 6. Change-Related Training
+
+If the change affects how work is performed, the system should create a training task for the relevant department and HR. The task should identify:
+
+- affected department and personnel
+- changed document and issue or revision
+- training owner
+- required completion date
+- training material or related Level 4 template
+- attendance and competence evidence
+- completion status
+
+The completed training form or attendance record becomes a quality record. The blank training form remains a Level 4 template.
+
+### Change-Control Status Flow
+
+```text
+Change Request Initiated
+          |
+          v
+Management Representative Review
+          |
+          v
+Original Approval Chain Review
+          |
+          v
+Change Approved or Rejected
+          |
+          v
+Document Updated and Renumbered
+          |
+          v
+Previous Version Superseded and Archived
+          |
+          v
+New Version Published
+          |
+          v
+Notifications and Training Tasks Issued
+```
+
+---
+
+## Controlled Document Process 3: Periodic Review of an Approved Document
+
+Every approved controlled document must be reviewed periodically to confirm that it remains valid and suitable for use. This applies to Level 1 Quality Manuals and Policies, Level 2 Procedures, Level 3 Work Instructions, Standards, Specifications, Drawings, Job Descriptions, and Competence Requirements, and Level 4 Forms, Formats, and Logbooks.
+
+### Review Interval
+
+The review interval should be configurable per tenant and, where necessary, per document type. Common intervals may be three or five years, calculated from the document's effective date or most recent completed review.
+
+Each document should show:
+
+- last review date
+- next review due date
+- assigned reviewer or responsible department
+- review interval
+- current issue or revision
+- review status
+
+### Review Trigger
+
+When the review date arrives, the system should create a review task and display a clear dashboard notification or alert to the responsible person. The system should notify the document owner, relevant departmental head, Management Representative, and other required reviewers.
+
+The alert should identify:
+
+- document title and control number
+- document level
+- department or process owner
+- current issue or revision
+- effective date
+- last review date
+- review due date
+- applicable standard, statutory, regulatory, or legal references
+
+### Review Scope
+
+The reviewer should evaluate whether the document is still valid against:
+
+- current organizational policies and procedures
+- applicable standards
+- regulatory, statutory, and legal requirements
+- current organization structure and departmental responsibilities
+- current designations and job responsibilities
+- current processes, technology, equipment, and operating practices
+- related documents, forms, and records
+
+### Review Outcomes
+
+The review must be completed and recorded even when no changes are required. Possible outcomes include:
+
+1. **Reviewed and remains valid:** no content change is required; the current approved version remains in force and the next review date is scheduled.
+2. **Revision required:** changes are needed; the document enters the controlled change process described in Process 2.
+3. **Document withdrawn or retired:** the document is no longer applicable and is moved to the obsolete or superseded archive.
+4. **Review returned for clarification:** additional information or specialist review is required before the outcome can be finalized.
+
+### Review Evidence
+
+The system should record:
+
+- review decision
+- reviewer name, role, signature or electronic approval, and date
+- review comments and justification
+- references checked
+- identified risks or required actions
+- related change request, if a revision is required
+- next review due date
+
+A completed periodic-review checklist or review form becomes a quality record. The blank checklist or form remains a Level 4 template.
+
+### Periodic Review Status Flow
+
+```text
+Approved Document
+  |
+  v
+Review Due Date Arrives
+  |
+  v
+System Alert and Review Task Created
+  |
+  v
+Document and Requirements Reviewed
+  |
+  +------------------------------+
+  |                              |
+  v                              v
+No Change Required              Revision Required
+  |                              |
+  v                              v
+Review Recorded                 Process 2: Change Control
+  |                              |
+  +---------------+--------------+
+      v
+       Next Review Date Scheduled
+```
+
+The periodic review is mandatory even when the reviewer confirms that no change is needed. A document must not remain current merely because its review date passed without a recorded decision.
+
+---
+
+## Procedure Form Template: Template #01
+
+The root file `Template # 01.docx` is a reusable Quality System Procedure template. It should become a structured form and document template in the application rather than remaining only as a Word file.
+
+### Extracted Header Fields
+
+The template contains an approval and ownership block for:
+
+- Prepared By
+- Reviewed By
+- Approved By
+- Revision Date
+- Process Owner
+
+The application should store these as structured fields linked to tenant users and the document approval workflow. They should not be treated as unstructured text only.
+
+### Extracted Procedure Sections
+
+The main procedure template contains these editable sections:
+
+1. Purpose
+2. Scope
+3. Responsibilities
+4. Procedure
+5. Records
+6. Related Documents
+7. Compliance Note
+
+The Procedure section is the main operational content. The Records section should link to the applicable Level 4 blank forms, formats, or logbooks. When those templates are completed during execution, the resulting entries become quality records.
+
+### Extracted Supporting Tables
+
+The template includes:
+
+- Revision History: Page Number, Revision Number, Change Description
+- Records Register: Form Number and Title
+- Related Documents Register: Document Number and Title
+- Compliance Register: Standard, edition, and clause reference
+
+The compliance examples in the template include API Spec Q2 2nd Edition, ISO 9001:2015, ISO 14001:2015, and ISO 45001:2018. These should be configurable because each tenant may use different standards.
+
+### Document Header and Controlled Identity
+
+The Word header contains placeholders for:
+
+- Title
+- Document or procedure number
+- Revision number
+- Page X of Y
+
+The application should generate these values consistently for previews, PDF exports, and approved copies.
+
+### Recommended Form Architecture
+
+The procedure form should be composed of:
+
+```text
+Document Metadata
+  |
+  +-- Approval and Ownership
+  +-- Revision History
+  +-- Rich Procedure Content
+  +-- Related Level 4 Templates
+  +-- Related Documents
+  +-- Compliance References
+```
+
+The first implementation should support saving a draft, assigning the process owner, routing the procedure through Prepared By / Reviewed By / Approved By, recording revisions, and publishing an approved version. The Word template can remain an import/export reference while the structured form becomes the system's authoritative working record.
+
+### Procedure Form Prototype
+
+The first structured procedure form is available at:
+
+```text
+http://localhost:3000/documents/procedures/new
+```
+
+The prototype includes:
+
+- document title, control number, issue/revision, review interval, department, and effective date
+- Prepared By, Reviewed By, and Approved By assignment cards
+- organizational designation selection for the approval chain
+- Purpose, Scope, Responsibilities, and Procedure fields
+- Records and related-document fields
+- applicable standard and clause reference
+- revision history row
+- Save Draft and Submit for Review actions
+
+The current form stores interactions in local UI state. The next implementation step is to persist the structured procedure, revisions, approval decisions, related Level 4 templates, and compliance references through NestJS and Prisma.
+
+### CEO/MD Approver Workspace
+
+The approval workspace is available at:
+
+```text
+http://localhost:3000/documents/approvals
+```
+
+It represents the experience for the person assigned as **Approved By**, normally the CEO or Managing Director. The workspace includes:
+
+- documents awaiting the approver's decision
+- document control number, issue/revision, department, and due date
+- Process Owner, Prepared By, and Reviewed By identities
+- purpose and procedure summary
+- compliance standard and clause
+- related Level 4 forms and related documents
+- revision context
+- approval comments
+- Approve and Sign action
+- Return for Correction action
+
+The approver does not silently edit the document. Approval applies to the selected document version and records the decision. Returning a document sends it back to the process owner for correction while preserving the approver's comments in the future audit trail.
+
+The current page uses local prototype data. The next backend implementation must persist approval assignments, decisions, electronic approval evidence, comments, and document-version state.
+
+### Document and Approval API
+
+The first Prisma-backed document endpoints are available through the NestJS backend:
+
+```text
+POST /documents/procedures
+GET  /documents/:id
+POST /documents/:id/submit
+GET  /documents/approvals?approverEmail=user@example.com
+POST /documents/versions/:versionId/decision
+```
+
+The API currently supports:
+
+- creating a Level 2 procedure with a first version
+- assigning Prepared By, Reviewed By, and Approved By users by email
+- loading a document with versions, assignments, compliance references, and revision history
+- submitting draft or returned documents for approval
+- loading the approval queue for an assigned approver
+- recording an approval or return-for-correction decision
+
+The database must contain the referenced tenant and users before a procedure can be created. Authentication, authorization, tenant-context extraction, email invitations, and production request validation are still required before these endpoints are exposed to real users.
+
+---
+
 ## Current Status
 
 ### Completed
@@ -82,12 +600,40 @@ This architecture is intended to support a future multi-tenant ERP platform for 
 - Created the initial ERP dashboard homepage for the frontend
 - Designed the Tenant Admin role and permission model
 - Created the Tenant Admin dashboard page for member management
+- Added predefined organizational designation assignment for tenant members
 - Built backend API routes for member operations (CRUD)
 - Verified backend builds and compiles with new admin module
+- Created the Platform Admin page for managing client tenants
+- Added five hardcoded client tenant records for the initial prototype
+- Added tenant search, status filtering, Tenant Admin assignment, and status controls
+- Added Platform Admin identity for `hamzakhannaghar1998@gmail.com`
+- Verified the frontend build includes the `/platform-admin` route
+- Renamed the Tenant Admin frontend route from `/admin` to `/tenant-admin`
+- Renamed the backend admin module to `tenant-admin`
+- Retained `/admin` as a compatibility redirect to `/tenant-admin`
+- Renamed member API routes from `/admin/members` to `/tenant-admin/members`
+- Created the Level 2 Quality System Procedure form UI
+- Added structured procedure metadata, approval roles, content sections, records, related documents, compliance references, and revision history
+- Verified the frontend build includes the `/documents/procedures/new` route
+- Created the CEO/MD Approver Workspace at `/documents/approvals`
+- Added an approval queue with document metadata, ownership, compliance, related forms, and revision context
+- Added Approve and Sign and Return for Correction actions with local prototype state
+- Defined and validated the initial multi-tenant document-control Prisma schema
+- Generated Prisma Client for Tenant, User, Document, DocumentVersion, WorkflowAssignment, ApprovalDecision, ComplianceReference, RevisionHistory, and DocumentRelation
+- Created and applied the initial `init_document_control` database migration to the local `erp` database
+- Verified the Prisma database schema is up to date
+- Added Prisma-backed document creation, submission, approval queue, and decision endpoints
+- Verified the NestJS document API builds successfully
 
 ### Not Yet Completed
 
 - Connect frontend admin page to backend API
+- Persist tenant member designations in Prisma
+- Connect the procedure form to NestJS and Prisma
+- Connect the Approver Workspace to document and approval APIs
+- Build NestJS document and approval APIs using the migrated Prisma models
+- Add tenant/user onboarding and authentication before production API use
+- Connect Platform Admin tenant actions to backend APIs and Prisma
 - Design the initial multi-tenant ERP data model
 - Create Prisma models for Tenant, User, Member, Role, Permission
 - Create initial database migration
@@ -107,6 +653,46 @@ This architecture is intended to support a future multi-tenant ERP platform for 
 ## Local Installation Steps
 
 Follow the steps below to set up the local development environment for the ERP project.
+
+---
+
+## Platform Admin Page
+
+The Platform Admin is the product owner and manages all client tenants from a platform-level console. The initial prototype uses the hardcoded identity:
+
+```text
+hamzakhannaghar1998@gmail.com
+```
+
+The page is available at:
+
+```text
+http://localhost:3001/platform-admin
+```
+
+### Platform Admin capabilities
+
+- View all client companies in the platform
+- Review tenant subdomains, status, user counts, and recent activity
+- Search and filter tenants
+- Assign or replace a Tenant Admin using an email address
+- Suspend or activate a tenant in the prototype UI
+- Review platform activity and access boundaries
+
+The first prototype includes five client tenants:
+
+- Acme Manufacturing
+- Northstar Healthcare
+- Meridian Logistics
+- Vertex Technologies
+- BluePeak Consulting
+
+### Role boundary
+
+- Platform Admin: manages all tenants and platform-level operations
+- Tenant Admin: manages users, roles, and permissions inside one company only
+
+The current Platform Admin page uses in-memory prototype data. Tenant records, admin assignments, status changes, authentication, and platform audit logs will be connected to NestJS, Prisma, and PostgreSQL as the tenant data model is implemented.
 
 ### 1. Initialize the project directory
 
@@ -169,13 +755,14 @@ The Tenant Admin module provides role-based access control and member management
 The Tenant Admin dashboard page is located at:
 
 ```
-frontend/src/app/admin/page.tsx
+frontend/src/app/tenant-admin/page.tsx
 ```
 
 Capabilities:
 
 - Add new members to the company by email address
 - Assign roles to members (Tenant Admin, Document Owner, Reviewer, Approver)
+- Assign an organizational designation to each member
 - View all members in the company
 - Update member roles inline
 - View member status (active, pending, inactive)
@@ -185,7 +772,9 @@ Capabilities:
 Access the page at:
 
 ```
-http://localhost:3000/admin
+http://localhost:3000/tenant-admin
+
+The previous `/admin` route redirects to `/tenant-admin` for compatibility.
 ```
 
 ### Backend: Member Management API
@@ -193,24 +782,24 @@ http://localhost:3000/admin
 The backend provides REST API endpoints for member management at:
 
 ```
-backend/src/admin/
+backend/src/tenant-admin/
 ```
 
 API Routes:
 
 ```
-GET    /admin/members             - Fetch all members for tenant
-GET    /admin/members/:id         - Fetch a single member
-POST   /admin/members             - Add a new member
-PUT    /admin/members/:id         - Update member role/department
-DELETE /admin/members/:id         - Remove a member
+GET    /tenant-admin/members             - Fetch all members for tenant
+GET    /tenant-admin/members/:id         - Fetch a single member
+POST   /tenant-admin/members             - Add a new member
+PUT    /tenant-admin/members/:id         - Update member role/department
+DELETE /tenant-admin/members/:id         - Remove a member
 ```
 
 Example requests:
 
 ```bash
 # Add a new member
-curl -X POST http://localhost:3000/admin/members \
+curl -X POST http://localhost:3000/tenant-admin/members \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@company.com",
@@ -219,24 +808,84 @@ curl -X POST http://localhost:3000/admin/members \
   }'
 
 # Update a member's role
-curl -X PUT http://localhost:3000/admin/members/1 \
+curl -X PUT http://localhost:3000/tenant-admin/members/1 \
   -H "Content-Type: application/json" \
   -d '{
     "role": "Approver"
   }'
 
 # Fetch all members
-curl http://localhost:3000/admin/members
+curl http://localhost:3000/tenant-admin/members
 ```
 
-### Roles and Permissions
+### Tenant Admin Permissions
 
-The system currently supports four core roles:
+The Tenant Admin manages users and assigns document-workflow responsibilities. Prepared By, Reviewed By, and Approved By are not general personas that every user receives as permanent system roles. They are controlled assignments made to specific people for a document or document workflow.
 
-1. **Tenant Admin**: Full access to member management and tenant configuration
-2. **Document Owner**: Creates and edits document content
-3. **Reviewer**: Validates documents and provides feedback
-4. **Approver**: Final sign-off authority for documents
+- **Prepared By:** the departmental head or process owner responsible for preparing the content
+- **Reviewed By:** the assigned General Manager or Management Representative responsible for reviewing it
+- **Approved By:** the assigned CEO or Managing Director responsible for final approval
+
+The same person may receive different workflow assignments for different documents, but the assignment must always be visible in the document's approval chain.
+
+Tenant Admin retains the system permission to manage members, invite users by email, and assign these workflow responsibilities within the tenant. Tenant Admin does not automatically become Prepared By, Reviewed By, or Approved By.
+
+### Organizational Designations
+
+Designation is stored separately from application role. The role controls what a person can do in the system, while the designation represents the person's organizational position.
+
+The initial designation dropdown includes:
+
+- CEO / Managing Director
+- General Manager
+- Management Representative
+- Departmental Head
+- Departmental Manager
+- Process Owner
+- Supervisor
+- Officer / Coordinator
+- Staff Member
+
+This separation allows the Tenant Admin to assign the appropriate person for each workflow step without confusing organizational designation, tenant administration permissions, and document approval accountability.
+
+### Approver Experience: CEO or Managing Director
+
+When the Tenant Admin adds the CEO or Managing Director by email and assigns them the Approved By responsibility, that person should receive access to an Approver workspace rather than the Tenant Admin workspace.
+
+The Approver should see:
+
+- documents awaiting their approval
+- document title, control number, level, department, issue/revision, and effective date
+- Prepared By and Reviewed By identities and completed dates
+- a read-only document preview or downloadable approved-layout version
+- related Level 4 forms, formats, logbooks, and compliance references
+- revision history and linked change request, if applicable
+- comments, risks, and review observations
+- Approve and Return for Correction actions
+- electronic approval/signature evidence, date, and audit trail
+
+The Approver should not be able to silently edit the document content. If changes are required, they should return the document with comments, sending it back to the appropriate process owner or reviewer. Approval should be an explicit decision recorded against that document version.
+
+The resulting experience should be:
+
+```text
+Tenant Admin invites MD/CEO by email
+          |
+          v
+MD/CEO signs in to Approver workspace
+          |
+          v
+Reviews assigned documents and approval evidence
+          |
+          +-----------------------+
+          |                       |
+          v                       v
+Approve and sign          Return for correction
+          |                       |
+          v                       v
+Document published        Process Owner revises
+as current version        and workflow restarts
+```
 
 ### Implementation Notes
 
@@ -251,18 +900,18 @@ The frontend admin page is now connected to the backend API routes.
 
 **How it works:**
 
-1. The admin page (`frontend/src/app/admin/page.tsx`) is a client component that uses React hooks
-2. On page load, it fetches all members from `GET /admin/members`
-3. Form submission sends a `POST /admin/members` request to add a new member
-4. Role dropdown changes trigger `PUT /admin/members/:id` to update the role
-5. Delete button calls `DELETE /admin/members/:id` to remove a member
+1. The Tenant Admin page (`frontend/src/app/tenant-admin/page.tsx`) is a client component that uses React hooks
+2. On page load, it fetches all members from `GET /tenant-admin/members`
+3. Form submission sends a `POST /tenant-admin/members` request to add a new member
+4. Role dropdown changes trigger `PUT /tenant-admin/members/:id` to update the role
+5. Delete button calls `DELETE /tenant-admin/members/:id` to remove a member
 
 **API client:**
 
 The API client is located at:
 
 ```
-frontend/src/app/admin/api-client.ts
+frontend/src/app/tenant-admin/api-client.ts
 ```
 
 It provides these functions:
@@ -324,10 +973,10 @@ You can test the API directly with curl:
 
 ```bash
 # Fetch all members
-curl http://localhost:3000/admin/members
+curl http://localhost:3000/tenant-admin/members
 
 # Add a new member
-curl -X POST http://localhost:3000/admin/members \
+curl -X POST http://localhost:3000/tenant-admin/members \
   -H "Content-Type: application/json" \
   -d '{
     "email": "newuser@company.com",
@@ -336,12 +985,12 @@ curl -X POST http://localhost:3000/admin/members \
   }'
 
 # Update a member's role
-curl -X PUT http://localhost:3000/admin/members/1 \
+curl -X PUT http://localhost:3000/tenant-admin/members/1 \
   -H "Content-Type: application/json" \
   -d '{"role": "Approver"}'
 
 # Remove a member
-curl -X DELETE http://localhost:3000/admin/members/1
+curl -X DELETE http://localhost:3000/tenant-admin/members/1
 ```
 
 ---
