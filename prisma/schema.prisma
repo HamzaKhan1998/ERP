@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -10,4 +5,180 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum TenantStatus {
+  ONBOARDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+}
+
+enum DocumentLevel {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+  LEVEL_4
+}
+
+enum DocumentStatus {
+  DRAFT
+  DOCUMENT_CONTROL_REVIEW
+  PENDING_APPROVAL
+  APPROVED
+  PUBLISHED
+  RETURNED_FOR_CORRECTION
+  SUPERSEDED
+  RETIRED
+}
+
+enum WorkflowAssignmentType {
+  PREPARED_BY
+  REVIEWED_BY
+  APPROVED_BY
+}
+
+enum ApprovalDecisionType {
+  APPROVED
+  RETURNED_FOR_CORRECTION
+}
+
+model Tenant {
+  id          String       @id @default(uuid())
+  name        String
+  slug        String       @unique
+  subdomain   String       @unique
+  status      TenantStatus @default(ONBOARDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  users       User[]
+  documents   Document[]
+}
+
+model User {
+  id             String               @id @default(uuid())
+  tenantId       String?
+  email          String               @unique
+  name           String
+  designation    String?
+  isTenantAdmin  Boolean              @default(false)
+  status         UserStatus           @default(INVITED)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  tenant         Tenant?              @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  assignments    WorkflowAssignment[]
+  approvals      ApprovalDecision[]
+}
+
+model Document {
+  id                 String             @id @default(uuid())
+  tenantId           String
+  title              String
+  controlNumber      String
+  level              DocumentLevel
+  status             DocumentStatus     @default(DRAFT)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  tenant             Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  versions           DocumentVersion[]
+  relatedFrom        DocumentRelation[] @relation("DocumentRelationFrom")
+  relatedTo          DocumentRelation[] @relation("DocumentRelationTo")
+
+  @@unique([tenantId, controlNumber])
+  @@index([tenantId, status])
+  @@index([tenantId, level])
+}
+
+model DocumentVersion {
+  id                  String               @id @default(uuid())
+  documentId          String
+  versionLabel        String
+  revisionNumber      Int
+  effectiveDate       DateTime?
+  nextReviewDate      DateTime?
+  purpose             String?
+  scope               String?
+  responsibilities    String?
+  procedureContent    String?
+  recordsDescription  String?
+  relatedDocuments    String?
+  complianceNote      String?
+  createdAt           DateTime             @default(now())
+  document            Document             @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  assignments         WorkflowAssignment[]
+  approvals           ApprovalDecision[]
+  complianceRefs      ComplianceReference[]
+  revisionHistory     RevisionHistory[]
+
+  @@unique([documentId, revisionNumber])
+  @@index([documentId, effectiveDate])
+}
+
+model WorkflowAssignment {
+  id             String                 @id @default(uuid())
+  versionId      String
+  userId         String
+  type           WorkflowAssignmentType
+  assignedAt     DateTime               @default(now())
+  completedAt    DateTime?
+  version        DocumentVersion        @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([versionId, type])
+  @@index([userId, type])
+}
+
+model ApprovalDecision {
+  id          String               @id @default(uuid())
+  versionId   String
+  userId      String
+  decision    ApprovalDecisionType
+  comment     String?
+  decidedAt   DateTime             @default(now())
+  version     DocumentVersion      @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([versionId, decidedAt])
+  @@index([userId, decision])
+}
+
+model ComplianceReference {
+  id          String          @id @default(uuid())
+  versionId   String
+  standard    String
+  edition     String?
+  clause      String
+  description String?
+  version     DocumentVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@index([versionId])
+}
+
+model RevisionHistory {
+  id                 String          @id @default(uuid())
+  versionId          String
+  pageNumber         String?
+  revisionNumber     String
+  changeDescription  String
+  createdAt          DateTime        @default(now())
+  version            DocumentVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@index([versionId])
+}
+
+model DocumentRelation {
+  id               String   @id @default(uuid())
+  fromDocumentId   String
+  toDocumentId     String
+  relationLabel    String?
+  fromDocument     Document @relation("DocumentRelationFrom", fields: [fromDocumentId], references: [id], onDelete: Cascade)
+  toDocument       Document @relation("DocumentRelationTo", fields: [toDocumentId], references: [id], onDelete: Cascade)
+
+  @@unique([fromDocumentId, toDocumentId])
+  @@index([toDocumentId])
 }
