@@ -169,6 +169,9 @@ export declare const ModelName: {
     readonly ComplianceReference: "ComplianceReference";
     readonly RevisionHistory: "RevisionHistory";
     readonly DocumentRelation: "DocumentRelation";
+    readonly ChangeRequest: "ChangeRequest";
+    readonly PeriodicReview: "PeriodicReview";
+    readonly FileAsset: "FileAsset";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -181,7 +184,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "tenant" | "user" | "document" | "documentVersion" | "workflowAssignment" | "approvalDecision" | "complianceReference" | "revisionHistory" | "documentRelation";
+        modelProps: "tenant" | "user" | "document" | "documentVersion" | "workflowAssignment" | "approvalDecision" | "complianceReference" | "revisionHistory" | "documentRelation" | "changeRequest" | "periodicReview" | "fileAsset";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -851,6 +854,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        ChangeRequest: {
+            payload: Prisma.$ChangeRequestPayload<ExtArgs>;
+            fields: Prisma.ChangeRequestFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.ChangeRequestFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.ChangeRequestFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                findFirst: {
+                    args: Prisma.ChangeRequestFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.ChangeRequestFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                findMany: {
+                    args: Prisma.ChangeRequestFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>[];
+                };
+                create: {
+                    args: Prisma.ChangeRequestCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                createMany: {
+                    args: Prisma.ChangeRequestCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.ChangeRequestCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>[];
+                };
+                delete: {
+                    args: Prisma.ChangeRequestDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                update: {
+                    args: Prisma.ChangeRequestUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.ChangeRequestDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.ChangeRequestUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.ChangeRequestUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>[];
+                };
+                upsert: {
+                    args: Prisma.ChangeRequestUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChangeRequestPayload>;
+                };
+                aggregate: {
+                    args: Prisma.ChangeRequestAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateChangeRequest>;
+                };
+                groupBy: {
+                    args: Prisma.ChangeRequestGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ChangeRequestGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.ChangeRequestCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ChangeRequestCountAggregateOutputType> | number;
+                };
+            };
+        };
+        PeriodicReview: {
+            payload: Prisma.$PeriodicReviewPayload<ExtArgs>;
+            fields: Prisma.PeriodicReviewFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.PeriodicReviewFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.PeriodicReviewFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                findFirst: {
+                    args: Prisma.PeriodicReviewFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.PeriodicReviewFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                findMany: {
+                    args: Prisma.PeriodicReviewFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>[];
+                };
+                create: {
+                    args: Prisma.PeriodicReviewCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                createMany: {
+                    args: Prisma.PeriodicReviewCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.PeriodicReviewCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>[];
+                };
+                delete: {
+                    args: Prisma.PeriodicReviewDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                update: {
+                    args: Prisma.PeriodicReviewUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.PeriodicReviewDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.PeriodicReviewUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.PeriodicReviewUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>[];
+                };
+                upsert: {
+                    args: Prisma.PeriodicReviewUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodicReviewPayload>;
+                };
+                aggregate: {
+                    args: Prisma.PeriodicReviewAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregatePeriodicReview>;
+                };
+                groupBy: {
+                    args: Prisma.PeriodicReviewGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PeriodicReviewGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.PeriodicReviewCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PeriodicReviewCountAggregateOutputType> | number;
+                };
+            };
+        };
+        FileAsset: {
+            payload: Prisma.$FileAssetPayload<ExtArgs>;
+            fields: Prisma.FileAssetFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.FileAssetFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.FileAssetFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                findFirst: {
+                    args: Prisma.FileAssetFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.FileAssetFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                findMany: {
+                    args: Prisma.FileAssetFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>[];
+                };
+                create: {
+                    args: Prisma.FileAssetCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                createMany: {
+                    args: Prisma.FileAssetCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.FileAssetCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>[];
+                };
+                delete: {
+                    args: Prisma.FileAssetDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                update: {
+                    args: Prisma.FileAssetUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.FileAssetDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.FileAssetUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.FileAssetUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>[];
+                };
+                upsert: {
+                    args: Prisma.FileAssetUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FileAssetPayload>;
+                };
+                aggregate: {
+                    args: Prisma.FileAssetAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateFileAsset>;
+                };
+                groupBy: {
+                    args: Prisma.FileAssetGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FileAssetGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.FileAssetCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FileAssetCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -897,7 +1122,10 @@ export declare const UserScalarFieldEnum: {
     readonly tenantId: "tenantId";
     readonly email: "email";
     readonly name: "name";
+    readonly passwordHash: "passwordHash";
     readonly designation: "designation";
+    readonly systemRole: "systemRole";
+    readonly isPlatformAdmin: "isPlatformAdmin";
     readonly isTenantAdmin: "isTenantAdmin";
     readonly status: "status";
     readonly createdAt: "createdAt";
@@ -920,6 +1148,7 @@ export declare const DocumentVersionScalarFieldEnum: {
     readonly documentId: "documentId";
     readonly versionLabel: "versionLabel";
     readonly revisionNumber: "revisionNumber";
+    readonly status: "status";
     readonly effectiveDate: "effectiveDate";
     readonly nextReviewDate: "nextReviewDate";
     readonly purpose: "purpose";
@@ -975,6 +1204,49 @@ export declare const DocumentRelationScalarFieldEnum: {
     readonly relationLabel: "relationLabel";
 };
 export type DocumentRelationScalarFieldEnum = (typeof DocumentRelationScalarFieldEnum)[keyof typeof DocumentRelationScalarFieldEnum];
+export declare const ChangeRequestScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly sourceVersionId: "sourceVersionId";
+    readonly incorporatedVersionId: "incorporatedVersionId";
+    readonly requestedById: "requestedById";
+    readonly reviewedById: "reviewedById";
+    readonly status: "status";
+    readonly existingRequirement: "existingRequirement";
+    readonly proposedChange: "proposedChange";
+    readonly reason: "reason";
+    readonly managementComment: "managementComment";
+    readonly createdAt: "createdAt";
+    readonly reviewedAt: "reviewedAt";
+};
+export type ChangeRequestScalarFieldEnum = (typeof ChangeRequestScalarFieldEnum)[keyof typeof ChangeRequestScalarFieldEnum];
+export declare const PeriodicReviewScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly versionId: "versionId";
+    readonly reviewedById: "reviewedById";
+    readonly outcome: "outcome";
+    readonly comments: "comments";
+    readonly referencesChecked: "referencesChecked";
+    readonly reviewedAt: "reviewedAt";
+    readonly nextReviewDate: "nextReviewDate";
+};
+export type PeriodicReviewScalarFieldEnum = (typeof PeriodicReviewScalarFieldEnum)[keyof typeof PeriodicReviewScalarFieldEnum];
+export declare const FileAssetScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly versionId: "versionId";
+    readonly uploadedById: "uploadedById";
+    readonly originalName: "originalName";
+    readonly storageKey: "storageKey";
+    readonly mimeType: "mimeType";
+    readonly sizeBytes: "sizeBytes";
+    readonly checksum: "checksum";
+    readonly createdAt: "createdAt";
+};
+export type FileAssetScalarFieldEnum = (typeof FileAssetScalarFieldEnum)[keyof typeof FileAssetScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -1005,10 +1277,16 @@ export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type EnumDocumentVersionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentVersionStatus'>;
+export type ListEnumDocumentVersionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentVersionStatus[]'>;
 export type EnumWorkflowAssignmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkflowAssignmentType'>;
 export type ListEnumWorkflowAssignmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkflowAssignmentType[]'>;
 export type EnumApprovalDecisionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalDecisionType'>;
 export type ListEnumApprovalDecisionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalDecisionType[]'>;
+export type EnumChangeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChangeRequestStatus'>;
+export type ListEnumChangeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChangeRequestStatus[]'>;
+export type EnumPeriodicReviewOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodicReviewOutcome'>;
+export type ListEnumPeriodicReviewOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodicReviewOutcome[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -1048,6 +1326,9 @@ export type GlobalOmitConfig = {
     complianceReference?: Prisma.ComplianceReferenceOmit;
     revisionHistory?: Prisma.RevisionHistoryOmit;
     documentRelation?: Prisma.DocumentRelationOmit;
+    changeRequest?: Prisma.ChangeRequestOmit;
+    periodicReview?: Prisma.PeriodicReviewOmit;
+    fileAsset?: Prisma.FileAssetOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

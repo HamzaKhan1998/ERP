@@ -24,6 +24,11 @@ export const DocumentStatus = {
     SUPERSEDED: 'SUPERSEDED',
     RETIRED: 'RETIRED'
 };
+export const DocumentVersionStatus = {
+    CURRENT: 'CURRENT',
+    DRAFT: 'DRAFT',
+    SUPERSEDED: 'SUPERSEDED'
+};
 export const WorkflowAssignmentType = {
     PREPARED_BY: 'PREPARED_BY',
     REVIEWED_BY: 'REVIEWED_BY',
@@ -32,5 +37,17 @@ export const WorkflowAssignmentType = {
 export const ApprovalDecisionType = {
     APPROVED: 'APPROVED',
     RETURNED_FOR_CORRECTION: 'RETURNED_FOR_CORRECTION'
+};
+export const ChangeRequestStatus = {
+    SUBMITTED: 'SUBMITTED',
+    ACCEPTED_FOR_CHANGE: 'ACCEPTED_FOR_CHANGE',
+    REJECTED: 'REJECTED',
+    INCORPORATED: 'INCORPORATED'
+};
+export const PeriodicReviewOutcome = {
+    REMAINS_VALID: 'REMAINS_VALID',
+    REVISION_REQUIRED: 'REVISION_REQUIRED',
+    RETIRED: 'RETIRED',
+    RETURNED_FOR_CLARIFICATION: 'RETURNED_FOR_CLARIFICATION'
 };
 //# sourceMappingURL=enums.js.map

@@ -37,6 +37,12 @@ enum DocumentStatus {
   RETIRED
 }
 
+enum DocumentVersionStatus {
+  CURRENT
+  DRAFT
+  SUPERSEDED
+}
+
 enum WorkflowAssignmentType {
   PREPARED_BY
   REVIEWED_BY
@@ -46,6 +52,20 @@ enum WorkflowAssignmentType {
 enum ApprovalDecisionType {
   APPROVED
   RETURNED_FOR_CORRECTION
+}
+
+enum ChangeRequestStatus {
+  SUBMITTED
+  ACCEPTED_FOR_CHANGE
+  REJECTED
+  INCORPORATED
+}
+
+enum PeriodicReviewOutcome {
+  REMAINS_VALID
+  REVISION_REQUIRED
+  RETIRED
+  RETURNED_FOR_CLARIFICATION
 }
 
 model Tenant {
@@ -58,6 +78,9 @@ model Tenant {
   updatedAt   DateTime     @updatedAt
   users       User[]
   documents   Document[]
+  changeRequests ChangeRequest[]
+  periodicReviews PeriodicReview[]
+  files          FileAsset[]
 }
 
 model User {
@@ -65,7 +88,10 @@ model User {
   tenantId       String?
   email          String               @unique
   name           String
+  passwordHash   String?
   designation    String?
+  systemRole     String               @default("MEMBER")
+  isPlatformAdmin Boolean              @default(false)
   isTenantAdmin  Boolean              @default(false)
   status         UserStatus           @default(INVITED)
   createdAt      DateTime             @default(now())
@@ -73,6 +99,10 @@ model User {
   tenant         Tenant?              @relation(fields: [tenantId], references: [id], onDelete: SetNull)
   assignments    WorkflowAssignment[]
   approvals      ApprovalDecision[]
+  changeRequestsInitiated ChangeRequest[] @relation("ChangeRequestInitiator")
+  changeRequestsReviewed ChangeRequest[] @relation("ChangeRequestReviewer")
+  periodicReviews      PeriodicReview[]
+  uploadedFiles        FileAsset[]
 }
 
 model Document {
@@ -86,8 +116,10 @@ model Document {
   updatedAt          DateTime           @updatedAt
   tenant             Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   versions           DocumentVersion[]
+  changeRequests     ChangeRequest[]
   relatedFrom        DocumentRelation[] @relation("DocumentRelationFrom")
   relatedTo          DocumentRelation[] @relation("DocumentRelationTo")
+  files              FileAsset[]
 
   @@unique([tenantId, controlNumber])
   @@index([tenantId, status])
@@ -99,6 +131,7 @@ model DocumentVersion {
   documentId          String
   versionLabel        String
   revisionNumber      Int
+  status              DocumentVersionStatus @default(CURRENT)
   effectiveDate       DateTime?
   nextReviewDate      DateTime?
   purpose             String?
@@ -114,6 +147,10 @@ model DocumentVersion {
   approvals           ApprovalDecision[]
   complianceRefs      ComplianceReference[]
   revisionHistory     RevisionHistory[]
+  changeRequests      ChangeRequest[]
+  incorporatedChangeRequests ChangeRequest[] @relation("ChangeRequestIncorporatedVersion")
+  periodicReviews      PeriodicReview[]
+  files               FileAsset[]
 
   @@unique([documentId, revisionNumber])
   @@index([documentId, effectiveDate])
@@ -181,4 +218,71 @@ model DocumentRelation {
 
   @@unique([fromDocumentId, toDocumentId])
   @@index([toDocumentId])
+}
+
+model ChangeRequest {
+  id                    String             @id @default(uuid())
+  tenantId              String
+  documentId            String
+  sourceVersionId       String
+  incorporatedVersionId String?
+    incorporatedVersion   DocumentVersion?    @relation("ChangeRequestIncorporatedVersion", fields: [incorporatedVersionId], references: [id], onDelete: SetNull)
+  requestedById         String
+  reviewedById          String?
+  status                ChangeRequestStatus @default(SUBMITTED)
+  existingRequirement   String
+  proposedChange        String
+  reason                String
+  managementComment     String?
+  createdAt             DateTime           @default(now())
+  reviewedAt            DateTime?
+  tenant                Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  document              Document           @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  sourceVersion         DocumentVersion    @relation(fields: [sourceVersionId], references: [id], onDelete: Restrict)
+  requestedBy           User               @relation("ChangeRequestInitiator", fields: [requestedById], references: [id], onDelete: Restrict)
+  reviewedBy            User?              @relation("ChangeRequestReviewer", fields: [reviewedById], references: [id], onDelete: Restrict)
+
+  @@index([tenantId, status])
+  @@index([documentId, createdAt])
+  @@index([requestedById])
+}
+
+model PeriodicReview {
+  id                String              @id @default(uuid())
+  tenantId          String
+  versionId         String
+  reviewedById      String
+  outcome           PeriodicReviewOutcome
+  comments          String?
+  referencesChecked String?
+  reviewedAt        DateTime            @default(now())
+  nextReviewDate    DateTime?
+  tenant            Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  version           DocumentVersion     @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  reviewedBy        User                @relation(fields: [reviewedById], references: [id], onDelete: Restrict)
+
+  @@index([tenantId, reviewedAt])
+  @@index([versionId, reviewedAt])
+}
+
+model FileAsset {
+  id           String           @id @default(uuid())
+  tenantId     String
+  documentId   String?
+  versionId    String?
+  uploadedById String
+  originalName String
+  storageKey   String           @unique
+  mimeType     String
+  sizeBytes    Int
+  checksum     String
+  createdAt    DateTime         @default(now())
+  tenant       Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  document     Document?        @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  version      DocumentVersion? @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  uploadedBy   User             @relation(fields: [uploadedById], references: [id], onDelete: Restrict)
+
+  @@index([tenantId, createdAt])
+  @@index([documentId])
+  @@index([versionId])
 }

@@ -10,68 +10,162 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Body, Controller, Get, Param, Post, Query, } from '@nestjs/common';
-import { CreateProcedureDto, DocumentDecisionDto } from './dto/document.dto.js';
+import { Body, Controller, Get, Param, Post, Req, UseGuards, } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { CreateChangeRequestDto, CreateProcedureDto, DocumentDecisionDto, IncorporateChangeRequestDto, PeriodicReviewDto, ReviewChangeRequestDto, } from './dto/document.dto.js';
 import { DocumentsService } from './documents.service.js';
 let DocumentsController = class DocumentsController {
     documentsService;
     constructor(documentsService) {
         this.documentsService = documentsService;
     }
-    createProcedure(dto) {
-        return this.documentsService.createProcedure(dto);
+    createProcedure(request, dto) {
+        return this.documentsService.createProcedure(dto, request.user);
     }
-    getApprovalQueue(approverEmail) {
-        return this.documentsService.getApprovalQueue(approverEmail);
+    createChangeRequest(request, dto) {
+        return this.documentsService.createChangeRequest(dto, request.user);
     }
-    getDocument(documentId) {
-        return this.documentsService.getDocument(documentId);
+    listChangeRequests(request) {
+        return this.documentsService.listChangeRequests(request.user);
     }
-    submitForReview(documentId) {
-        return this.documentsService.submitForReview(documentId);
+    getChangeRequest(request, changeRequestId) {
+        return this.documentsService.getChangeRequest(changeRequestId, request.user);
     }
-    recordDecision(versionId, dto) {
-        return this.documentsService.recordDecision(versionId, dto);
+    reviewChangeRequest(request, changeRequestId, dto) {
+        return this.documentsService.reviewChangeRequest(changeRequestId, dto, request.user);
+    }
+    incorporateChangeRequest(request, changeRequestId, dto) {
+        return this.documentsService.incorporateChangeRequest(changeRequestId, dto, request.user);
+    }
+    getApprovalQueue(request) {
+        return this.documentsService.getApprovalQueue(request.user);
+    }
+    listDueReviews(request) {
+        return this.documentsService.listDueReviews(request.user);
+    }
+    recordPeriodicReview(request, dto) {
+        return this.documentsService.recordPeriodicReview(dto, request.user);
+    }
+    getDocument(request, documentId) {
+        return this.documentsService.getDocument(documentId, request.user);
+    }
+    submitForReview(request, documentId) {
+        return this.documentsService.submitForReview(documentId, request.user);
+    }
+    recordDecision(request, versionId, dto) {
+        return this.documentsService.recordDecision(versionId, dto, request.user);
+    }
+    publishVersion(request, versionId) {
+        return this.documentsService.publishVersion(versionId, request.user);
     }
 };
 __decorate([
     Post('procedures'),
-    __param(0, Body()),
+    __param(0, Req()),
+    __param(1, Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateProcedureDto]),
+    __metadata("design:paramtypes", [Object, CreateProcedureDto]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "createProcedure", null);
 __decorate([
-    Get('approvals'),
-    __param(0, Query('approverEmail')),
+    Post('change-requests'),
+    __param(0, Req()),
+    __param(1, Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, CreateChangeRequestDto]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "createChangeRequest", null);
+__decorate([
+    Get('change-requests'),
+    __param(0, Req()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "listChangeRequests", null);
+__decorate([
+    Get('change-requests/:id'),
+    __param(0, Req()),
+    __param(1, Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "getChangeRequest", null);
+__decorate([
+    Post('change-requests/:id/review'),
+    __param(0, Req()),
+    __param(1, Param('id')),
+    __param(2, Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, ReviewChangeRequestDto]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "reviewChangeRequest", null);
+__decorate([
+    Post('change-requests/:id/incorporate'),
+    __param(0, Req()),
+    __param(1, Param('id')),
+    __param(2, Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, IncorporateChangeRequestDto]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "incorporateChangeRequest", null);
+__decorate([
+    Get('approvals'),
+    __param(0, Req()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "getApprovalQueue", null);
 __decorate([
-    Get(':id'),
-    __param(0, Param('id')),
+    Get('periodic-reviews/due'),
+    __param(0, Req()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "listDueReviews", null);
+__decorate([
+    Post('periodic-reviews'),
+    __param(0, Req()),
+    __param(1, Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, PeriodicReviewDto]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "recordPeriodicReview", null);
+__decorate([
+    Get(':id'),
+    __param(0, Req()),
+    __param(1, Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "getDocument", null);
 __decorate([
     Post(':id/submit'),
-    __param(0, Param('id')),
+    __param(0, Req()),
+    __param(1, Param('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "submitForReview", null);
 __decorate([
     Post('versions/:versionId/decision'),
-    __param(0, Param('versionId')),
-    __param(1, Body()),
+    __param(0, Req()),
+    __param(1, Param('versionId')),
+    __param(2, Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, DocumentDecisionDto]),
+    __metadata("design:paramtypes", [Object, String, DocumentDecisionDto]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "recordDecision", null);
+__decorate([
+    Post('versions/:versionId/publish'),
+    __param(0, Req()),
+    __param(1, Param('versionId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "publishVersion", null);
 DocumentsController = __decorate([
     Controller('documents'),
+    UseGuards(JwtAuthGuard),
     __metadata("design:paramtypes", [DocumentsService])
 ], DocumentsController);
 export { DocumentsController };

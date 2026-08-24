@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './procedure-form.module.css';
+import { createProcedure, submitProcedure, uploadProcedureFile } from './procedure-client';
 
 const designations = [
   'CEO / Managing Director',
@@ -22,11 +23,50 @@ const standards = [
 
 export default function NewProcedurePage() {
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>, message: string) {
+  async function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSavedMessage(message);
-    window.setTimeout(() => setSavedMessage(null), 4000);
+    const form = new FormData(event.currentTarget);
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const submitForReview = submitter?.dataset.action === 'submit-review';
+    setSavedMessage(null);
+    setSaving(true);
+
+    try {
+      const created = await createProcedure({
+        title: String(form.get('title')),
+        controlNumber: String(form.get('controlNumber')),
+        versionLabel: String(form.get('revision')),
+        revisionNumber: 1,
+        preparedByEmail: String(form.get('preparedBy')),
+        reviewedByEmail: String(form.get('reviewedBy')),
+        approvedByEmail: String(form.get('approvedBy')),
+        purpose: String(form.get('purpose') || ''),
+        scope: String(form.get('scope') || ''),
+        responsibilities: String(form.get('responsibilities') || ''),
+        procedureContent: String(form.get('procedure') || ''),
+        recordsDescription: String(form.get('records') || ''),
+        relatedDocuments: String(form.get('relatedDocuments') || ''),
+        complianceNote: String(form.get('complianceNote') || ''),
+      });
+
+      const files = form.getAll('attachments').filter((value): value is File => value instanceof File && value.size > 0);
+      for (const file of files) {
+        await uploadProcedureFile(created.id, created.versions[0].id, file);
+      }
+
+      if (submitForReview) {
+        await submitProcedure(created.id);
+        setSavedMessage('Procedure submitted for document-control review.');
+      } else {
+        setSavedMessage('Procedure draft saved to the database.');
+      }
+    } catch (error) {
+      setSavedMessage(error instanceof Error ? error.message : 'The procedure could not be saved');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -49,7 +89,7 @@ export default function NewProcedurePage() {
 
       {savedMessage && <div className={styles.toast} role="status">{savedMessage}</div>}
 
-      <form className={styles.form} onSubmit={(event) => handleSubmit(event, 'Procedure draft saved locally for review.')}>
+      <form className={styles.form} onSubmit={handleSave}>
         <section className={styles.panel}>
           <div className={styles.panelHeading}>
             <div>
@@ -96,6 +136,21 @@ export default function NewProcedurePage() {
               <input type="date" name="effectiveDate" />
             </label>
           </div>
+        </section>
+
+        <section className={styles.panel}>
+          <div className={styles.panelHeading}>
+            <div>
+              <p className={styles.sectionNumber}>07</p>
+              <h2>Supporting files</h2>
+            </div>
+            <p>Attach supporting PDFs, drawings, specifications, or images to this procedure version.</p>
+          </div>
+          <label className={styles.field}>
+            <span>PDF or image attachments</span>
+            <input name="attachments" type="file" accept="application/pdf,image/jpeg,image/png" multiple />
+          </label>
+          <p className={styles.fileHint}>Supported formats: PDF, JPEG, and PNG. Maximum size: 10 MB per file.</p>
         </section>
 
         <section className={styles.panel}>
@@ -219,8 +274,8 @@ export default function NewProcedurePage() {
           <p>Saving keeps this document in Draft. Submitting starts the document-control review.</p>
           <div className={styles.actions}>
             <button type="button" className={styles.secondaryButton} onClick={() => setSavedMessage('Draft changes discarded from this prototype form.')}>Cancel</button>
-            <button type="submit" className={styles.secondaryButton}>Save draft</button>
-            <button type="button" className={styles.primaryButton} onClick={(event) => handleSubmit(event as unknown as React.FormEvent<HTMLFormElement>, 'Procedure submitted for document-control review.')}>Submit for review</button>
+            <button type="submit" className={styles.secondaryButton} disabled={saving}>{saving ? 'Saving...' : 'Save draft'}</button>
+            <button type="submit" data-action="submit-review" className={styles.primaryButton} disabled={saving}>Submit for review</button>
           </div>
         </footer>
       </form>

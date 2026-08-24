@@ -115,6 +115,9 @@ export type TenantWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string;
     users?: Prisma.UserListRelationFilter;
     documents?: Prisma.DocumentListRelationFilter;
+    changeRequests?: Prisma.ChangeRequestListRelationFilter;
+    periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
+    files?: Prisma.FileAssetListRelationFilter;
 };
 export type TenantOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -126,6 +129,9 @@ export type TenantOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     users?: Prisma.UserOrderByRelationAggregateInput;
     documents?: Prisma.DocumentOrderByRelationAggregateInput;
+    changeRequests?: Prisma.ChangeRequestOrderByRelationAggregateInput;
+    periodicReviews?: Prisma.PeriodicReviewOrderByRelationAggregateInput;
+    files?: Prisma.FileAssetOrderByRelationAggregateInput;
 };
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -140,6 +146,9 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string;
     users?: Prisma.UserListRelationFilter;
     documents?: Prisma.DocumentListRelationFilter;
+    changeRequests?: Prisma.ChangeRequestListRelationFilter;
+    periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
+    files?: Prisma.FileAssetListRelationFilter;
 }, "id" | "slug" | "subdomain">;
 export type TenantOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -175,6 +184,9 @@ export type TenantCreateInput = {
     updatedAt?: Date | string;
     users?: Prisma.UserCreateNestedManyWithoutTenantInput;
     documents?: Prisma.DocumentCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutTenantInput;
 };
 export type TenantUncheckedCreateInput = {
     id?: string;
@@ -186,6 +198,9 @@ export type TenantUncheckedCreateInput = {
     updatedAt?: Date | string;
     users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutTenantInput;
 };
 export type TenantUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -197,6 +212,9 @@ export type TenantUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUpdateManyWithoutTenantNestedInput;
     documents?: Prisma.DocumentUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutTenantNestedInput;
 };
 export type TenantUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -208,6 +226,9 @@ export type TenantUncheckedUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutTenantNestedInput;
 };
 export type TenantCreateManyInput = {
     id?: string;
@@ -306,6 +327,42 @@ export type TenantUpdateOneRequiredWithoutDocumentsNestedInput = {
     connect?: Prisma.TenantWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutDocumentsInput, Prisma.TenantUpdateWithoutDocumentsInput>, Prisma.TenantUncheckedUpdateWithoutDocumentsInput>;
 };
+export type TenantCreateNestedOneWithoutChangeRequestsInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutChangeRequestsInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutChangeRequestsInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+};
+export type TenantUpdateOneRequiredWithoutChangeRequestsNestedInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutChangeRequestsInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutChangeRequestsInput;
+    upsert?: Prisma.TenantUpsertWithoutChangeRequestsInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutChangeRequestsInput, Prisma.TenantUpdateWithoutChangeRequestsInput>, Prisma.TenantUncheckedUpdateWithoutChangeRequestsInput>;
+};
+export type TenantCreateNestedOneWithoutPeriodicReviewsInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedCreateWithoutPeriodicReviewsInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPeriodicReviewsInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+};
+export type TenantUpdateOneRequiredWithoutPeriodicReviewsNestedInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedCreateWithoutPeriodicReviewsInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPeriodicReviewsInput;
+    upsert?: Prisma.TenantUpsertWithoutPeriodicReviewsInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPeriodicReviewsInput, Prisma.TenantUpdateWithoutPeriodicReviewsInput>, Prisma.TenantUncheckedUpdateWithoutPeriodicReviewsInput>;
+};
+export type TenantCreateNestedOneWithoutFilesInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutFilesInput, Prisma.TenantUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFilesInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+};
+export type TenantUpdateOneRequiredWithoutFilesNestedInput = {
+    create?: Prisma.XOR<Prisma.TenantCreateWithoutFilesInput, Prisma.TenantUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFilesInput;
+    upsert?: Prisma.TenantUpsertWithoutFilesInput;
+    connect?: Prisma.TenantWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutFilesInput, Prisma.TenantUpdateWithoutFilesInput>, Prisma.TenantUncheckedUpdateWithoutFilesInput>;
+};
 export type TenantCreateWithoutUsersInput = {
     id?: string;
     name: string;
@@ -315,6 +372,9 @@ export type TenantCreateWithoutUsersInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutTenantInput;
 };
 export type TenantUncheckedCreateWithoutUsersInput = {
     id?: string;
@@ -325,6 +385,9 @@ export type TenantUncheckedCreateWithoutUsersInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutTenantInput;
 };
 export type TenantCreateOrConnectWithoutUsersInput = {
     where: Prisma.TenantWhereUniqueInput;
@@ -348,6 +411,9 @@ export type TenantUpdateWithoutUsersInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutTenantNestedInput;
 };
 export type TenantUncheckedUpdateWithoutUsersInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -358,6 +424,9 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     documents?: Prisma.DocumentUncheckedUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutTenantNestedInput;
 };
 export type TenantCreateWithoutDocumentsInput = {
     id?: string;
@@ -368,6 +437,9 @@ export type TenantCreateWithoutDocumentsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     users?: Prisma.UserCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutTenantInput;
 };
 export type TenantUncheckedCreateWithoutDocumentsInput = {
     id?: string;
@@ -378,6 +450,9 @@ export type TenantUncheckedCreateWithoutDocumentsInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutTenantInput;
 };
 export type TenantCreateOrConnectWithoutDocumentsInput = {
     where: Prisma.TenantWhereUniqueInput;
@@ -401,6 +476,9 @@ export type TenantUpdateWithoutDocumentsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutTenantNestedInput;
 };
 export type TenantUncheckedUpdateWithoutDocumentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -411,14 +489,218 @@ export type TenantUncheckedUpdateWithoutDocumentsInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutTenantNestedInput;
+};
+export type TenantCreateWithoutChangeRequestsInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutTenantInput;
+};
+export type TenantUncheckedCreateWithoutChangeRequestsInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutTenantInput;
+};
+export type TenantCreateOrConnectWithoutChangeRequestsInput = {
+    where: Prisma.TenantWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutChangeRequestsInput>;
+};
+export type TenantUpsertWithoutChangeRequestsInput = {
+    update: Prisma.XOR<Prisma.TenantUpdateWithoutChangeRequestsInput, Prisma.TenantUncheckedUpdateWithoutChangeRequestsInput>;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutChangeRequestsInput>;
+    where?: Prisma.TenantWhereInput;
+};
+export type TenantUpdateToOneWithWhereWithoutChangeRequestsInput = {
+    where?: Prisma.TenantWhereInput;
+    data: Prisma.XOR<Prisma.TenantUpdateWithoutChangeRequestsInput, Prisma.TenantUncheckedUpdateWithoutChangeRequestsInput>;
+};
+export type TenantUpdateWithoutChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutTenantNestedInput;
+};
+export type TenantUncheckedUpdateWithoutChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUncheckedUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutTenantNestedInput;
+};
+export type TenantCreateWithoutPeriodicReviewsInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutTenantInput;
+};
+export type TenantUncheckedCreateWithoutPeriodicReviewsInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutTenantInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutTenantInput;
+};
+export type TenantCreateOrConnectWithoutPeriodicReviewsInput = {
+    where: Prisma.TenantWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedCreateWithoutPeriodicReviewsInput>;
+};
+export type TenantUpsertWithoutPeriodicReviewsInput = {
+    update: Prisma.XOR<Prisma.TenantUpdateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedUpdateWithoutPeriodicReviewsInput>;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedCreateWithoutPeriodicReviewsInput>;
+    where?: Prisma.TenantWhereInput;
+};
+export type TenantUpdateToOneWithWhereWithoutPeriodicReviewsInput = {
+    where?: Prisma.TenantWhereInput;
+    data: Prisma.XOR<Prisma.TenantUpdateWithoutPeriodicReviewsInput, Prisma.TenantUncheckedUpdateWithoutPeriodicReviewsInput>;
+};
+export type TenantUpdateWithoutPeriodicReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutTenantNestedInput;
+};
+export type TenantUncheckedUpdateWithoutPeriodicReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUncheckedUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutTenantNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutTenantNestedInput;
+};
+export type TenantCreateWithoutFilesInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutTenantInput;
+};
+export type TenantUncheckedCreateWithoutFilesInput = {
+    id?: string;
+    name: string;
+    slug: string;
+    subdomain: string;
+    status?: $Enums.TenantStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput;
+    documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutTenantInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutTenantInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutTenantInput;
+};
+export type TenantCreateOrConnectWithoutFilesInput = {
+    where: Prisma.TenantWhereUniqueInput;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutFilesInput, Prisma.TenantUncheckedCreateWithoutFilesInput>;
+};
+export type TenantUpsertWithoutFilesInput = {
+    update: Prisma.XOR<Prisma.TenantUpdateWithoutFilesInput, Prisma.TenantUncheckedUpdateWithoutFilesInput>;
+    create: Prisma.XOR<Prisma.TenantCreateWithoutFilesInput, Prisma.TenantUncheckedCreateWithoutFilesInput>;
+    where?: Prisma.TenantWhereInput;
+};
+export type TenantUpdateToOneWithWhereWithoutFilesInput = {
+    where?: Prisma.TenantWhereInput;
+    data: Prisma.XOR<Prisma.TenantUpdateWithoutFilesInput, Prisma.TenantUncheckedUpdateWithoutFilesInput>;
+};
+export type TenantUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutTenantNestedInput;
+};
+export type TenantUncheckedUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    subdomain?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumTenantStatusFieldUpdateOperationsInput | $Enums.TenantStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput;
+    documents?: Prisma.DocumentUncheckedUpdateManyWithoutTenantNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutTenantNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutTenantNestedInput;
 };
 export type TenantCountOutputType = {
     users: number;
     documents: number;
+    changeRequests: number;
+    periodicReviews: number;
+    files: number;
 };
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     users?: boolean | TenantCountOutputTypeCountUsersArgs;
     documents?: boolean | TenantCountOutputTypeCountDocumentsArgs;
+    changeRequests?: boolean | TenantCountOutputTypeCountChangeRequestsArgs;
+    periodicReviews?: boolean | TenantCountOutputTypeCountPeriodicReviewsArgs;
+    files?: boolean | TenantCountOutputTypeCountFilesArgs;
 };
 export type TenantCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.TenantCountOutputTypeSelect<ExtArgs> | null;
@@ -428,6 +710,15 @@ export type TenantCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Ex
 };
 export type TenantCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.DocumentWhereInput;
+};
+export type TenantCountOutputTypeCountChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ChangeRequestWhereInput;
+};
+export type TenantCountOutputTypeCountPeriodicReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PeriodicReviewWhereInput;
+};
+export type TenantCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FileAssetWhereInput;
 };
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -439,6 +730,9 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     updatedAt?: boolean;
     users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>;
     documents?: boolean | Prisma.Tenant$documentsArgs<ExtArgs>;
+    changeRequests?: boolean | Prisma.Tenant$changeRequestsArgs<ExtArgs>;
+    periodicReviews?: boolean | Prisma.Tenant$periodicReviewsArgs<ExtArgs>;
+    files?: boolean | Prisma.Tenant$filesArgs<ExtArgs>;
     _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["tenant"]>;
 export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -472,6 +766,9 @@ export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>;
     documents?: boolean | Prisma.Tenant$documentsArgs<ExtArgs>;
+    changeRequests?: boolean | Prisma.Tenant$changeRequestsArgs<ExtArgs>;
+    periodicReviews?: boolean | Prisma.Tenant$periodicReviewsArgs<ExtArgs>;
+    files?: boolean | Prisma.Tenant$filesArgs<ExtArgs>;
     _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -481,6 +778,9 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     objects: {
         users: Prisma.$UserPayload<ExtArgs>[];
         documents: Prisma.$DocumentPayload<ExtArgs>[];
+        changeRequests: Prisma.$ChangeRequestPayload<ExtArgs>[];
+        periodicReviews: Prisma.$PeriodicReviewPayload<ExtArgs>[];
+        files: Prisma.$FileAssetPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -544,6 +844,9 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
     readonly [Symbol.toStringTag]: "PrismaPromise";
     users<T extends Prisma.Tenant$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     documents<T extends Prisma.Tenant$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    changeRequests<T extends Prisma.Tenant$changeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$changeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    periodicReviews<T extends Prisma.Tenant$periodicReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$periodicReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PeriodicReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    files<T extends Prisma.Tenant$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FileAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -676,6 +979,39 @@ export type Tenant$documentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
     take?: number;
     skip?: number;
     distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[];
+};
+export type Tenant$changeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ChangeRequestSelect<ExtArgs> | null;
+    omit?: Prisma.ChangeRequestOmit<ExtArgs> | null;
+    include?: Prisma.ChangeRequestInclude<ExtArgs> | null;
+    where?: Prisma.ChangeRequestWhereInput;
+    orderBy?: Prisma.ChangeRequestOrderByWithRelationInput | Prisma.ChangeRequestOrderByWithRelationInput[];
+    cursor?: Prisma.ChangeRequestWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ChangeRequestScalarFieldEnum | Prisma.ChangeRequestScalarFieldEnum[];
+};
+export type Tenant$periodicReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.PeriodicReviewSelect<ExtArgs> | null;
+    omit?: Prisma.PeriodicReviewOmit<ExtArgs> | null;
+    include?: Prisma.PeriodicReviewInclude<ExtArgs> | null;
+    where?: Prisma.PeriodicReviewWhereInput;
+    orderBy?: Prisma.PeriodicReviewOrderByWithRelationInput | Prisma.PeriodicReviewOrderByWithRelationInput[];
+    cursor?: Prisma.PeriodicReviewWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PeriodicReviewScalarFieldEnum | Prisma.PeriodicReviewScalarFieldEnum[];
+};
+export type Tenant$filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.FileAssetSelect<ExtArgs> | null;
+    omit?: Prisma.FileAssetOmit<ExtArgs> | null;
+    include?: Prisma.FileAssetInclude<ExtArgs> | null;
+    where?: Prisma.FileAssetWhereInput;
+    orderBy?: Prisma.FileAssetOrderByWithRelationInput | Prisma.FileAssetOrderByWithRelationInput[];
+    cursor?: Prisma.FileAssetWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FileAssetScalarFieldEnum | Prisma.FileAssetScalarFieldEnum[];
 };
 export type TenantDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.TenantSelect<ExtArgs> | null;

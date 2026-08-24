@@ -81,7 +81,7 @@ backend/prisma/migrations/20260820182439_init_document_control/migration.sql
 
 It has been applied to the local PostgreSQL `erp` database. Future schema changes should use new named migrations rather than editing this migration.
 
-Tenant isolation is represented through tenant ownership on users and documents, with unique document control numbers scoped to each tenant. The schema is validated and Prisma Client has been generated, but no database migration has been applied yet.
+Tenant isolation is represented through tenant ownership on users and documents, with unique document control numbers scoped to each tenant. The schema is validated, Prisma Client has been generated, and the initial migrations have been applied to the local database.
 
 ---
 
@@ -431,6 +431,28 @@ Review Recorded                 Process 2: Change Control
 
 The periodic review is mandatory even when the reviewer confirms that no change is needed. A document must not remain current merely because its review date passed without a recorded decision.
 
+### Periodic Review Implementation
+
+The Periodic Review workspace is available at:
+
+```text
+/documents/periodic-reviews
+```
+
+The secured API supports:
+
+```text
+GET  /documents/periodic-reviews/due
+POST /documents/periodic-reviews
+```
+
+The due-review queue returns current document versions whose `nextReviewDate` has arrived. A permitted Tenant Admin, General Manager, or Management Representative can complete the review after confirming the required organizational, standards, legal, and related-document checks.
+
+- `REMAINS_VALID` records the review and schedules the next review date.
+- `REVISION_REQUIRED` records the review and creates a Change Request.
+- `RETIRED` retires the parent document.
+- `RETURNED_FOR_CLARIFICATION` records that more information is needed.
+
 ---
 
 ## Procedure Form Template: Template #01
@@ -521,7 +543,7 @@ The prototype includes:
 - revision history row
 - Save Draft and Submit for Review actions
 
-The current form stores interactions in local UI state. The next implementation step is to persist the structured procedure, revisions, approval decisions, related Level 4 templates, and compliance references through NestJS and Prisma.
+The form now sends structured procedure data to NestJS using the authenticated JWT. Save Draft creates a persisted draft, while Submit for Review creates the document and moves it to `PENDING_APPROVAL`. Revision history, related Level 4 templates, compliance references, and approval decisions still need their full persisted UI workflows.
 
 ### CEO/MD Approver Workspace
 
@@ -546,7 +568,101 @@ It represents the experience for the person assigned as **Approved By**, normall
 
 The approver does not silently edit the document. Approval applies to the selected document version and records the decision. Returning a document sends it back to the process owner for correction while preserving the approver's comments in the future audit trail.
 
-The current page uses local prototype data. The next backend implementation must persist approval assignments, decisions, electronic approval evidence, comments, and document-version state.
+The workspace now loads assigned documents from `GET /documents/approvals` and records decisions through `POST /documents/versions/:versionId/decision`. Approval comments and document-version decisions are persisted by the backend. Electronic signature, notifications, and a richer document preview remain future additions.
+
+### Change Request Workflow
+
+The first slice of Process 2 is available at:
+
+```text
+/documents/change-requests
+/documents/change-requests/new
+```
+
+The secured API supports:
+
+```text
+POST /documents/change-requests
+GET  /documents/change-requests
+GET  /documents/change-requests/:id
+POST /documents/change-requests/:id/review
+```
+
+The workflow captures the approved document, existing requirement, proposed change, and reason for change. A tenant user submits the request as `SUBMITTED`. A General Manager or Management Representative in the same tenant can accept it as `ACCEPTED_FOR_CHANGE` or reject it, with reviewer identity, comment, and timestamp persisted.
+
+Accepted requests now create the next draft version, supersede the prior version, copy the original Prepared By / Reviewed By / Approved By assignments, and link the new version back to the request. The new revision then completes the normal review, approval, and publication cycle.
+
+The publication endpoint is:
+
+```text
+POST /documents/versions/:versionId/publish
+```
+
+Only an approved version can be published. Publishing marks the selected version `CURRENT`, marks older versions `SUPERSEDED`, and changes the parent document to `PUBLISHED`.
+
+### Separate Login Experiences
+
+The application has separate entry points for tenant users and the Platform Admin:
+
+```text
+/login                   Tenant user login
+/login/platform-admin    Platform Admin login
+```
+
+The tenant login asks for:
+
+- company subdomain
+- user email
+- password
+
+The Platform Admin login asks for:
+
+- platform email
+- password
+
+This separation reflects the security boundary in the product. Tenant users enter one company workspace, while the Platform Admin can manage the platform and all client tenants.
+
+The backend authentication endpoints are:
+
+```text
+POST /auth/tenant/login
+POST /auth/platform/login
+```
+
+Successful requests return a signed JWT with a distinct scope: `TENANT_USER` or `PLATFORM_ADMIN`. Local development accounts can be created with:
+
+```powershell
+cd 'C:/Users/User/ERP/backend'
+$env:DATABASE_URL='postgresql://postgres:Haroon@123@localhost:5432/erp'
+$env:SEED_PASSWORD='ChangeMe123!'
+npm run db:seed
+```
+
+Seeded local accounts:
+
+- Platform Admin: `hamzakhannaghar1998@gmail.com`
+- Tenant user / Tenant Admin: `tenant.admin@acme.com`, subdomain `acme`
+- Tenant CEO/MD approver: `ceo@acme.com`, subdomain `acme`
+
+The seeded password is for local development only. Production work still requires MFA, session management, secure secrets, refresh-token/revocation handling, and broader authorization coverage.
+
+### Protected API Access
+
+The backend now verifies Bearer JWTs on protected routes:
+
+- Tenant Admin member routes require a valid `TENANT_USER` token with `isTenantAdmin: true` and a tenant ID.
+- Document and approval routes require a valid JWT.
+- Approval queue and decision identity are derived from the authenticated user rather than a request-supplied email.
+- Tenant Admin member routes derive the tenant ID from the authenticated JWT rather than using a hardcoded tenant.
+
+Smoke-test result:
+
+```text
+Unauthenticated /tenant-admin/members: 401
+Authenticated Tenant Admin /tenant-admin/members: 200
+```
+
+The remaining security work is to extend Platform Admin authorization to platform APIs, add role-specific document authorization, and implement MFA, session management, and token revocation.
 
 ### Document and Approval API
 
@@ -617,36 +733,387 @@ The database must contain the referenced tenant and users before a procedure can
 - Verified the frontend build includes the `/documents/procedures/new` route
 - Created the CEO/MD Approver Workspace at `/documents/approvals`
 - Added an approval queue with document metadata, ownership, compliance, related forms, and revision context
-- Added Approve and Sign and Return for Correction actions with local prototype state
+- Added Approve and Sign and Return for Correction actions in the approval UI
+- Connected the Approver Workspace to the secured approval queue and decision APIs
+- Added API-backed approval comments and document-version decisions
+- Verified a seeded CEO/MD loaded the approval queue and recorded an `APPROVED` decision
+- Created separate Tenant User and Platform Admin login pages
+- Added tenant subdomain input to the general login page
+- Added a dedicated Platform Admin login route and access boundary
+- Added separate NestJS JWT login endpoints for tenant and platform identities
+- Added bcrypt password hashing and local authentication seed accounts
+- Verified platform and tenant login requests return distinct JWT scopes
+- Added JWT authentication guard and Tenant Admin authorization guard
+- Protected Tenant Admin member routes and document/approval routes
+- Replaced hardcoded Tenant Admin tenant context with authenticated JWT tenant claims
+- Replaced approval email query/body identity with the authenticated JWT user
+- Verified unauthenticated member access returns `401`
+- Added persisted tenant system roles separate from document workflow assignments
+- Replaced mock Tenant Admin member storage with tenant-scoped Prisma queries
+- Added soft suspension for removed tenant members
+- Added tenant ownership checks for document reads, submissions, and approval decisions
+- Added reusable Platform Admin authorization guard
+- Verified Platform Admin access to Tenant Admin routes returns `403`
+- Verified unauthenticated document access returns `401`
 - Defined and validated the initial multi-tenant document-control Prisma schema
 - Generated Prisma Client for Tenant, User, Document, DocumentVersion, WorkflowAssignment, ApprovalDecision, ComplianceReference, RevisionHistory, and DocumentRelation
 - Created and applied the initial `init_document_control` database migration to the local `erp` database
 - Verified the Prisma database schema is up to date
 - Added Prisma-backed document creation, submission, approval queue, and decision endpoints
 - Verified the NestJS document API builds successfully
+- Connected the Level 2 procedure form to the secured document API
+- Added persisted Save Draft and Submit for Review actions
+- Verified an authenticated Tenant Admin can create a procedure and move it to `PENDING_APPROVAL`
+- Added persisted Change Request model and migration `add_change_requests`
+- Added Change Request submission, listing, detail, and Management Representative review APIs
+- Added Change Request initiation and review UI routes
+- Verified Tenant Admin submission and Management Representative acceptance end to end
+- Added document-version lifecycle states: `CURRENT`, `DRAFT`, and `SUPERSEDED`
+- Added accepted Change Request incorporation endpoint and UI action
+- Copied original Prepared By / Reviewed By / Approved By assignments into the next revision
+- Linked incorporated revisions back to their Change Request
+- Verified accepted Change Request creates a new `Revision 2` draft and supersedes the prior version
+- Added explicit submit, approve, and publish lifecycle for document versions
+- Restricted the approval queue to draft versions only
+- Added secured version publication for Tenant Admin or Platform Admin
+- Verified a fresh Revision 2 completed `PENDING_APPROVAL` → `APPROVED` → `PUBLISHED`
+- Verified Revision 2 became `CURRENT` and the previous version remained `SUPERSEDED`
+- Added Periodic Review model and migration `add_periodic_reviews`
+- Added due-review queue and authenticated review submission APIs
+- Added mandatory checklist and outcome UI at `/documents/periodic-reviews`
+- Added `REMAINS_VALID`, `REVISION_REQUIRED`, `RETIRED`, and clarification outcomes
+- Added automatic next-review scheduling for completed no-change reviews
+- Added automatic Change Request creation for revision-required reviews
+- Verified an overdue document returned `REMAINS_VALID` and received a new review date
+- Added tenant-scoped `FileAsset` metadata model and migration `add_file_assets`
+- Added secure PDF/JPEG/PNG upload and download API endpoints
+- Added local storage under `backend/storage/uploads`
+- Added PDF/image attachment picker to the Level 2 procedure form
+- Added file size, MIME type, checksum, document ownership, and tenant access checks
+- Verified unsupported DOCX upload is rejected with HTTP `400`
+### Change Request Workflow
 
 ### Not Yet Completed
 
-- Connect frontend admin page to backend API
-- Persist tenant member designations in Prisma
-- Connect the procedure form to NestJS and Prisma
-- Connect the Approver Workspace to document and approval APIs
-- Build NestJS document and approval APIs using the migrated Prisma models
-- Add tenant/user onboarding and authentication before production API use
 - Connect Platform Admin tenant actions to backend APIs and Prisma
-- Design the initial multi-tenant ERP data model
-- Create Prisma models for Tenant, User, Member, Role, Permission
-- Create initial database migration
-- Implement authentication and JWT token handling
+- Add role-specific document permissions beyond approval assignment checks
+- Implement MFA, session management, and token revocation
 - Implement role-based access control (RBAC)
-- Implement tenant/company isolation at the data layer
-- Build document control and workflow pages
 - Implement audit management
 - Implement findings and CAPA management
-- Implement document/evidence management
+- Complete document/evidence management with records, retention, and cloud storage
 - Implement application audit logs
 - Deploy to GCP
 - Migrate PostgreSQL from local development to Cloud SQL
+
+---
+
+## Future Product Direction and Competitive Readiness
+
+The long-term goal is to build a practical, multi-tenant Quality Management System and ERP platform for small and mid-sized organizations working with ISO and API standards. The product should prioritize clear workflows, tenant isolation, controlled documentation, and evidence of implementation rather than attempting to match large enterprise platforms feature-for-feature from the beginning.
+
+### Market Reference Systems
+
+The product will operate in a market that includes established QMS and quality-document platforms such as:
+
+- MasterControl
+- Veeva Quality
+- ETQ Reliance
+- TrackWise Digital
+- Intelex QMS
+- Ideagen Quality Management
+- Qualio
+- Greenlight Guru
+- Arena QMS and PLM
+- SAP Quality Management
+
+These platforms provide useful reference points for capabilities such as document control, training, audits, CAPA, change management, electronic approvals, quality records, risk, and compliance reporting.
+
+The initial target should not be to compete with the largest enterprise platforms on feature count. The product should focus on a narrower and better-defined customer need:
+
+> A practical QMS document-control and compliance platform for ISO/API-certified small and mid-sized organizations.
+
+### Feature Completeness
+
+Feature completeness is the breadth of business workflows supported by the platform. Future capabilities should include:
+
+#### Controlled document management
+
+- Level 1 through Level 4 document hierarchy
+- document creation and structured forms
+- Word and PDF import/export
+- PDF and image attachments
+- document version and issue control
+- obsolete and superseded document archive
+- document master list
+- document numbering conventions per tenant
+- document templates by level and document type
+- related-document relationships
+- controlled approved-document repository
+- document download and read-access tracking
+
+#### Approval and change workflows
+
+- document-specific Prepared By, Reviewed By, and Approved By assignments
+- configurable tenant approval chains
+- electronic approval evidence
+- Internal Document Change Request Form
+- impact and relevance review by the Management Representative
+- original approval-chain reuse for revisions
+- return-for-correction workflow
+- change reason and before/after description
+- revision history
+- release notifications
+- training tasks after document issue or revision
+
+#### Periodic review
+
+- configurable three-year, five-year, or tenant-defined review intervals
+- automatic next-review calculation
+- dashboard alerts and overdue notifications
+- periodic review checklists
+- no-change review outcome
+- revision-required outcome
+- retirement or withdrawal outcome
+- review evidence and management comments
+
+#### Quality forms and records
+
+- blank Level 4 forms, formats, and logbooks
+- form version control
+- forms linked to procedures and work instructions
+- dynamic form fields and validation
+- completed form submissions
+- completed entries stored as quality records
+- record retention periods
+- record search and filtering
+- PDF/image evidence attached to completed records
+- record approval and verification
+- record export for audits
+
+#### Audit management
+
+- audit program and annual audit planning
+- internal, external, supplier, and customer audits
+- audit scope, criteria, and checklist
+- auditor assignment
+- audit findings
+- evidence attachments
+- finding severity and classification
+- responses and target dates
+- audit report generation
+- audit closure and follow-up
+
+#### Findings and CAPA
+
+- finding and nonconformance registration
+- containment and correction
+- root-cause analysis
+- corrective-action plan
+- preventive action
+- responsible person and target date
+- effectiveness verification
+- overdue action escalation
+- CAPA status dashboard
+- linked procedures, forms, audits, and evidence
+
+#### Training and competence
+
+- designation-specific competence requirements
+- employee competence profiles
+- training needs analysis
+- training assignments after document release
+- departmental and HR notifications
+- attendance records
+- competency evaluation
+- training effectiveness review
+- expired or overdue training alerts
+- training records linked to document revisions
+
+#### Tenant and user management
+
+- Platform Admin tenant management
+- Tenant Admin member management
+- email-based invitations
+- tenant subdomains
+- tenant-specific designations
+- tenant-specific departments
+- tenant-specific approval chains
+- tenant-scoped permissions
+- user activation, suspension, and removal
+- role and assignment history
+
+#### Notifications and communication
+
+- document release emails
+- change-request notifications
+- approval reminders
+- periodic-review reminders
+- training notifications
+- overdue escalations
+- in-app notifications
+- email delivery history
+- notification templates per tenant
+
+### Compliance Maturity
+
+Compliance maturity is more than storing documents. The platform must demonstrate that the organization controls, uses, reviews, and retains evidence for its documented information.
+
+Future compliance capabilities should include:
+
+- immutable audit history for important actions
+- electronic approval records with identity, date, time, and decision
+- controlled document access
+- version traceability
+- evidence that obsolete versions were removed from active use
+- evidence that affected users were notified
+- evidence that required training was conducted
+- periodic-review evidence, including no-change reviews
+- record retention and disposition rules
+- configurable regulatory and standard references
+- clause-to-document mapping
+- clause-to-process mapping
+- document-to-form and record traceability
+- audit-ready exports
+- complete history of changes to metadata and content
+- separation of draft, review, approval, publication, and archive states
+
+The system must never rely on email alone as evidence of control. Email should notify users, while the application remains the authoritative source for current documents, approvals, records, and audit history.
+
+### Security and Tenant Isolation
+
+Security maturity is currently behind established QMS platforms and must become a primary build area. Future requirements include:
+
+- authenticated user sessions
+- secure email invitation and account activation
+- passwordless or secure password authentication
+- multi-factor authentication
+- Platform Admin and Tenant Admin separation
+- tenant context derived from the authenticated session
+- server-side authorization checks
+- tenant-scoped database queries
+- prevention of cross-tenant document access
+- document and file access authorization
+- role and permission enforcement on every protected endpoint
+- secure file upload validation
+- malware scanning for uploaded files
+- encrypted storage and transport
+- secrets management
+- session expiration and revocation
+- login and access audit logs
+- rate limiting
+- input validation
+- protection against unauthorized document downloads
+- backup and recovery procedures
+
+The current API uses email query parameters and prototype data in some areas. This is acceptable for early development only and must be replaced with authenticated identity and server-derived tenant context before production use.
+
+### File and Evidence Storage
+
+The product must support PDFs, images, scanned forms, drawings, specifications, and other evidence files.
+
+The intended architecture is:
+
+```text
+Next.js upload interface
+          |
+          v
+NestJS authorized upload endpoint
+          |
+          v
+Object storage: local development storage, then Google Cloud Storage
+          |
+          v
+PostgreSQL file metadata and tenant relationship
+```
+
+Metadata should include:
+
+- original file name
+- MIME type
+- size
+- checksum
+- storage key
+- tenant ID
+- document or quality-record ID
+- issue or revision
+- uploaded by
+- upload date
+- approval state
+- archive state
+- retention and disposal date
+
+### Integration and Platform Maturity
+
+Future platform capabilities should include:
+
+- REST API documentation
+- webhook support
+- email provider integration
+- cloud storage integration
+- PDF generation
+- Word import/export
+- calendar integration for review and training due dates
+- single sign-on for larger clients
+- identity provider integration
+- ERP or HR system integration
+- supplier and customer portals
+- audit export packages
+- analytics dashboards
+- Google Cloud deployment
+- Cloud SQL migration
+- automated backups
+- observability and error monitoring
+
+### Current Position Against the Market
+
+The current product is a well-defined prototype foundation, not yet a production competitor to established QMS platforms.
+
+| Maturity area | Current position | Future requirement |
+|---|---|---|
+| Feature completeness | Early functional vertical slice for document control | Complete document, audit, CAPA, training, records, and notification modules |
+| Compliance maturity | Document hierarchy, approval, change, and version rules defined and partially persisted | Immutable audit evidence, retention, traceability, and audit-ready reporting |
+| Security | JWT authentication, protected routes, and tenant-scoped member/document access implemented | MFA, session controls, token revocation, secure files, and monitoring |
+| Document control | Persisted procedures, versions, approvals, Change Requests, supersession, publication, and periodic reviews | Full electronic signatures, notifications, archive enforcement, and records |
+| QMS specialization | Good ISO/API-oriented direction | Clause mapping, standard templates, and industry-specific workflows |
+| Multi-tenancy | Tenant context and scoped member/document queries implemented for the current modules | Complete database/file isolation and Platform Admin tenant APIs |
+| User management | JWT login, Tenant Admin persistence, designations, and workflow assignments implemented | Invitations, MFA, granular permissions, delegation, and access history |
+| Files and evidence | Local PDF/image upload, metadata, checksum, and tenant-authorized download implemented | Cloud object storage, records, retention, scanning, and production access controls |
+| Integrations | Not implemented | Email, cloud storage, identity, HR, ERP, and reporting integrations |
+| Production readiness | Local development only | Testing, deployment, backups, observability, recovery, and operational support |
+
+### Competitive Advantage to Preserve
+
+The product should preserve these advantages as it grows:
+
+- practical approval chains that match real organizational structures
+- explicit four-level QMS document hierarchy
+- clear distinction between blank templates and completed quality records
+- document-specific workflow assignments
+- tenant-aware approval and document control
+- support for ISO and API standards
+- simpler workflows for small and mid-sized organizations
+- managed multi-client architecture for consultants and service providers
+
+The product should compete on clarity, focused workflows, standards-aware implementation, and ease of adoption rather than on enterprise feature volume alone.
+
+### Recommended Build Sequence
+
+1. Authentication, user identity, and tenant isolation
+2. Persisted Tenant Admin and Platform Admin operations
+3. Persisted structured procedures and document versions
+4. Approval assignments and electronic approval evidence
+5. Change requests and periodic review workflows
+6. PDF/image file storage and document attachments
+7. Level 4 forms and completed quality records
+8. Training and competence management
+9. Audit management and findings
+10. CAPA management
+11. Notifications and escalations
+12. Security hardening and audit logs
+13. Automated tests and production deployment
+
+This roadmap keeps the first release focused on the document-control foundation while leaving room to grow into a broader ERP and QMS platform.
 
 ---
 
@@ -889,10 +1356,10 @@ as current version        and workflow restarts
 
 ### Implementation Notes
 
-- The API routes currently use mock in-memory data
-- Tenant isolation is implemented via tenantId parameter (TODO: extract from JWT)
+- Tenant Admin members and document workflows use tenant-scoped Prisma persistence
+- Protected routes derive tenant context and approval identity from JWT claims
 - Email invitations are logged but not yet sent (TODO: implement email service)
-- The backend will be connected to Prisma models once the schema is finalized
+- Platform Admin tenant actions still use prototype data and need backend APIs
 
 ### Frontend Integration
 

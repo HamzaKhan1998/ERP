@@ -7,4 +7,7 @@ export type * from './models/ApprovalDecision.js';
 export type * from './models/ComplianceReference.js';
 export type * from './models/RevisionHistory.js';
 export type * from './models/DocumentRelation.js';
+export type * from './models/ChangeRequest.js';
+export type * from './models/PeriodicReview.js';
+export type * from './models/FileAsset.js';
 export type * from './commonInputTypes.js';
