@@ -57,5 +57,14 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get documentRelation(): Prisma.DocumentRelationDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get changeRequest(): Prisma.ChangeRequestDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get periodicReview(): Prisma.PeriodicReviewDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get fileAsset(): Prisma.FileAssetDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

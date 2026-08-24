@@ -170,6 +170,12 @@
   line-height: 1.55;
 }
 
+.fileHint {
+  margin: 12px 0 0;
+  color: #6b7b81;
+  font-size: 0.78rem;
+}
+
 .field input:focus,
 .field select:focus,
 .field textarea:focus,

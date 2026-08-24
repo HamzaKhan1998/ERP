@@ -1,7 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './approvals.module.css';
+import { fetchApprovalQueue, recordApprovalDecision } from './approval-client';
 
 type ApprovalStatus = 'Awaiting approval' | 'Returned for correction' | 'Approved';
 
@@ -25,71 +26,49 @@ interface ApprovalDocument {
   relatedDocuments: string[];
 }
 
-const initialDocuments: ApprovalDocument[] = [
-  {
-    id: 'qsp-001',
-    title: 'Supplier Evaluation and Control',
-    number: 'QSP-PR-001',
-    department: 'Procurement',
-    processOwner: 'Ayesha Malik',
-    preparedBy: 'Ayesha Malik · Departmental Head',
-    reviewedBy: 'Omar Farooq · General Manager',
-    revision: 'Issue 1',
-    submitted: 'Aug 18, 2026',
-    due: 'Aug 25, 2026',
+function mapAssignment(item: import('./approval-client').ApprovalAssignment): ApprovalDocument {
+  const assignments = Object.fromEntries(item.version.assignments.map((assignment) => [assignment.type, assignment.user]));
+  const compliance = item.version.complianceRefs[0];
+
+  return {
+    id: item.version.id,
+    title: item.version.document.title,
+    number: item.version.document.controlNumber,
+    department: item.version.document.tenant.name,
+    processOwner: assignments.PREPARED_BY?.name ?? 'Unassigned',
+    preparedBy: assignments.PREPARED_BY ? `${assignments.PREPARED_BY.name} · ${assignments.PREPARED_BY.designation ?? 'Process Owner'}` : 'Unassigned',
+    reviewedBy: assignments.REVIEWED_BY ? `${assignments.REVIEWED_BY.name} · ${assignments.REVIEWED_BY.designation ?? 'Reviewer'}` : 'Unassigned',
+    revision: item.version.versionLabel,
+    submitted: 'Recently submitted',
+    due: 'Review required',
     status: 'Awaiting approval',
-    standard: 'ISO 9001:2015',
-    clause: '8.4',
-    purpose: 'Define how external providers are evaluated, selected, monitored, and re-evaluated.',
-    procedureSummary: 'The procedure covers supplier qualification, risk classification, evaluation criteria, approval, performance monitoring, and retained evidence.',
-    relatedForms: ['FR-PR-001 Supplier Evaluation Form', 'FR-PR-002 Approved Supplier List'],
-    relatedDocuments: ['QSP-DC-001 Document Control Procedure', 'WI-PR-001 Purchase Order Review'],
-  },
-  {
-    id: 'qsp-014',
-    title: 'Internal Audit Management',
-    number: 'QSP-QA-014',
-    department: 'Quality Assurance',
-    processOwner: 'Nadia Ahmed',
-    preparedBy: 'Nadia Ahmed · Quality Head',
-    reviewedBy: 'Omar Farooq · Management Representative',
-    revision: 'Issue 2',
-    submitted: 'Aug 16, 2026',
-    due: 'Aug 23, 2026',
-    status: 'Awaiting approval',
-    standard: 'API Spec Q2 2nd Edition',
-    clause: '6.2',
-    purpose: 'Establish the organization-wide method for planning, conducting, reporting, and closing internal audits.',
-    procedureSummary: 'The procedure defines the annual audit program, auditor competence, independence, findings classification, corrective action, and follow-up.',
-    relatedForms: ['FR-QA-014 Internal Audit Plan', 'FR-QA-015 Audit Report'],
-    relatedDocuments: ['QSP-CAPA-003 Corrective Action Procedure'],
-  },
-  {
-    id: 'qsp-022',
-    title: 'Training and Competence Management',
-    number: 'QSP-HR-022',
-    department: 'HR and Administration',
-    processOwner: 'Hina Shah · HR Head',
-    preparedBy: 'Hina Shah · Departmental Head',
-    reviewedBy: 'Omar Farooq · General Manager',
-    revision: 'Revision 3',
-    submitted: 'Aug 12, 2026',
-    due: 'Aug 20, 2026',
-    status: 'Returned for correction',
-    standard: 'ISO 9001:2015',
-    clause: '7.2',
-    purpose: 'Define how competency needs are identified, training is planned, and effectiveness is evaluated.',
-    procedureSummary: 'This revision adds post-training effectiveness checks and links competence records to designation-specific requirements.',
-    relatedForms: ['FR-HR-022 Training Attendance Record', 'FR-HR-023 Competence Evaluation'],
-    relatedDocuments: ['WI-HR-004 New Employee Induction'],
-  },
-];
+    standard: compliance?.standard ?? 'Not specified',
+    clause: compliance?.clause ?? 'Not specified',
+    purpose: item.version.purpose ?? 'No purpose provided.',
+    procedureSummary: item.version.procedureContent ?? 'No procedure summary provided.',
+    relatedForms: item.version.document.title ? ['Related Level 4 templates will appear here.'] : [],
+    relatedDocuments: [],
+  };
+}
 
 export default function ApprovalsPage() {
-  const [documents, setDocuments] = useState(initialDocuments);
-  const [selectedId, setSelectedId] = useState(initialDocuments[0].id);
+  const [documents, setDocuments] = useState<ApprovalDocument[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [comment, setComment] = useState('');
   const [notice, setNotice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [working, setWorking] = useState(false);
+
+  useEffect(() => {
+    fetchApprovalQueue()
+      .then((items) => {
+        const mapped = items.map(mapAssignment);
+        setDocuments(mapped);
+        setSelectedId(mapped[0]?.id ?? null);
+      })
+      .catch((error) => setNotice(error instanceof Error ? error.message : 'Approval queue could not be loaded'))
+      .finally(() => setLoading(false));
+  }, []);
 
   const selectedDocument = documents.find((document) => document.id === selectedId) ?? documents[0];
   const awaitingCount = documents.filter((document) => document.status === 'Awaiting approval').length;
@@ -100,16 +79,24 @@ export default function ApprovalsPage() {
     [documents],
   );
 
-  function updateDecision(status: ApprovalStatus, message: string) {
+  async function updateDecision(status: ApprovalStatus, message: string) {
     if (!selectedDocument) return;
 
-    setDocuments((current) =>
-      current.map((document) =>
-        document.id === selectedDocument.id ? { ...document, status } : document,
-      ),
-    );
-    setComment('');
-    setNotice(message);
+    setWorking(true);
+    try {
+      await recordApprovalDecision(
+        selectedDocument.id,
+        status === 'Approved' ? 'APPROVED' : 'RETURNED_FOR_CORRECTION',
+        comment,
+      );
+      setDocuments((current) => current.map((document) => document.id === selectedDocument.id ? { ...document, status } : document));
+      setComment('');
+      setNotice(message);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Approval decision could not be recorded');
+    } finally {
+      setWorking(false);
+    }
   }
 
   return (
@@ -130,6 +117,7 @@ export default function ApprovalsPage() {
       </header>
 
       {notice && <div className={styles.notice} role="status">{notice}</div>}
+      {loading && <div className={styles.notice} role="status">Loading assigned documents...</div>}
 
       <section className={styles.summary} aria-label="Approval summary">
         <article><span>Awaiting approval</span><strong>{awaitingCount}</strong><small>Requires your decision</small></article>
@@ -213,8 +201,8 @@ export default function ApprovalsPage() {
               </div>
               <textarea value={comment} onChange={(event) => setComment(event.target.value)} placeholder="Add an approval note or correction request..." rows={4} />
               <div className={styles.actions}>
-                <button type="button" className={styles.returnButton} onClick={() => updateDecision('Returned for correction', 'Document returned to the process owner for correction.')}>Return for correction</button>
-                <button type="button" className={styles.approveButton} onClick={() => updateDecision('Approved', 'Document approved. Electronic approval evidence recorded for this version.')}>Approve and sign</button>
+                <button type="button" className={styles.returnButton} disabled={working} onClick={() => updateDecision('Returned for correction', 'Document returned to the process owner for correction.')}>Return for correction</button>
+                <button type="button" className={styles.approveButton} disabled={working} onClick={() => updateDecision('Approved', 'Document approved. Electronic approval evidence recorded for this version.')}>Approve and sign</button>
               </div>
             </section>
           </article>

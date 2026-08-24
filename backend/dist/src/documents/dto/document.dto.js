@@ -16,8 +16,27 @@ export class CreateProcedureDto {
     complianceNote;
 }
 export class DocumentDecisionDto {
-    approverEmail;
     decision;
     comment;
+}
+export class CreateChangeRequestDto {
+    documentId;
+    existingRequirement;
+    proposedChange;
+    reason;
+}
+export class ReviewChangeRequestDto {
+    decision;
+    comment;
+}
+export class IncorporateChangeRequestDto {
+    versionLabel;
+}
+export class PeriodicReviewDto {
+    versionId;
+    outcome;
+    comments;
+    referencesChecked;
+    nextReviewDate;
 }
 //# sourceMappingURL=document.dto.js.map

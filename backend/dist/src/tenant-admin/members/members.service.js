@@ -4,98 +4,76 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Injectable } from '@nestjs/common';
-const mockMembers = new Map([
-    [
-        '1',
-        {
-            id: '1',
-            email: 'admin@company.com',
-            name: 'John Doe',
-            role: 'Tenant Admin',
-            designation: 'Departmental Head',
-            status: 'active',
-            dateAdded: '2026-01-15',
-        },
-    ],
-    [
-        '2',
-        {
-            id: '2',
-            email: 'owner@company.com',
-            name: 'Jane Smith',
-            role: 'Document Owner',
-            designation: 'Departmental Head',
-            status: 'active',
-            dateAdded: '2026-02-01',
-        },
-    ],
-    [
-        '3',
-        {
-            id: '3',
-            email: 'reviewer@company.com',
-            name: 'Bob Johnson',
-            role: 'Reviewer',
-            designation: 'General Manager',
-            status: 'active',
-            dateAdded: '2026-03-10',
-        },
-    ],
-    [
-        '4',
-        {
-            id: '4',
-            email: 'approver@company.com',
-            name: 'Alice Brown',
-            role: 'Approver',
-            designation: 'CEO / Managing Director',
-            status: 'pending',
-            dateAdded: '2026-08-20',
-        },
-    ],
-]);
-let nextId = 5;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { ConflictException, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service.js';
 let MembersService = class MembersService {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
     async getAllMembers(tenantId) {
-        return Array.from(mockMembers.values());
+        const members = await this.prisma.user.findMany({
+            where: { tenantId },
+            orderBy: { createdAt: 'asc' },
+        });
+        return members.map((member) => this.toResponse(member));
     }
     async getMemberById(tenantId, memberId) {
-        const member = mockMembers.get(memberId);
-        return member || null;
+        const member = await this.prisma.user.findFirst({ where: { id: memberId, tenantId } });
+        return member ? this.toResponse(member) : null;
     }
     async createMember(tenantId, dto) {
-        const id = String(nextId++);
-        const newMember = {
-            id,
-            email: dto.email,
-            name: this.extractNameFromEmail(dto.email),
-            role: dto.role,
-            designation: dto.designation,
-            status: 'pending',
-            dateAdded: new Date().toISOString().split('T')[0],
-            department: dto.department,
-        };
-        mockMembers.set(id, newMember);
-        console.log(`Invitation sent to ${dto.email}`);
-        return newMember;
+        const existing = await this.prisma.user.findUnique({ where: { email: dto.email } });
+        if (existing) {
+            throw new ConflictException('A user with this email already exists');
+        }
+        const member = await this.prisma.user.create({
+            data: {
+                tenantId,
+                email: dto.email,
+                name: this.extractNameFromEmail(dto.email),
+                designation: dto.designation,
+                systemRole: dto.role,
+                status: 'INVITED',
+            },
+        });
+        return this.toResponse(member);
     }
     async updateMember(tenantId, memberId, dto) {
-        const member = mockMembers.get(memberId);
-        if (!member) {
+        const existing = await this.prisma.user.findFirst({ where: { id: memberId, tenantId } });
+        if (!existing) {
             return null;
         }
-        const updated = {
-            ...member,
-            ...dto,
-        };
-        mockMembers.set(memberId, updated);
-        return updated;
+        const member = await this.prisma.user.update({
+            where: { id: memberId },
+            data: {
+                ...(dto.role ? { systemRole: dto.role } : {}),
+                ...(dto.designation ? { designation: dto.designation } : {}),
+            },
+        });
+        return this.toResponse(member);
     }
     async deleteMember(tenantId, memberId) {
-        const existed = mockMembers.has(memberId);
-        mockMembers.delete(memberId);
-        return existed;
+        const existing = await this.prisma.user.findFirst({ where: { id: memberId, tenantId } });
+        if (!existing) {
+            return false;
+        }
+        await this.prisma.user.update({ where: { id: memberId }, data: { status: 'SUSPENDED' } });
+        return true;
+    }
+    toResponse(member) {
+        return {
+            id: member.id,
+            email: member.email,
+            name: member.name,
+            role: member.systemRole,
+            designation: member.designation ?? 'Staff Member',
+            status: member.status.toLowerCase(),
+            dateAdded: member.createdAt.toISOString().split('T')[0],
+        };
     }
     extractNameFromEmail(email) {
         const name = email.split('@')[0];
@@ -103,7 +81,8 @@ let MembersService = class MembersService {
     }
 };
 MembersService = __decorate([
-    Injectable()
+    Injectable(),
+    __metadata("design:paramtypes", [PrismaService])
 ], MembersService);
 export { MembersService };
 //# sourceMappingURL=members.service.js.map

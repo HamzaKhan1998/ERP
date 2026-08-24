@@ -15,3 +15,6 @@ export type ApprovalDecision = Prisma.ApprovalDecisionModel;
 export type ComplianceReference = Prisma.ComplianceReferenceModel;
 export type RevisionHistory = Prisma.RevisionHistoryModel;
 export type DocumentRelation = Prisma.DocumentRelationModel;
+export type ChangeRequest = Prisma.ChangeRequestModel;
+export type PeriodicReview = Prisma.PeriodicReviewModel;
+export type FileAsset = Prisma.FileAssetModel;

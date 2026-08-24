@@ -8,11 +8,17 @@ import {
   Param,
   HttpException,
   HttpStatus,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard.js';
+import type { AuthenticatedRequest } from '../../auth/guards/jwt-auth.guard.js';
+import { TenantAdminGuard } from '../../auth/guards/tenant-admin.guard.js';
 import { MembersService } from './members.service.js';
 import { CreateMemberDto, UpdateMemberDto, MemberResponseDto } from '../dto/member.dto.js';
 
 @Controller('tenant-admin/members')
+@UseGuards(JwtAuthGuard, TenantAdminGuard)
 export class MembersController {
   constructor(private readonly membersService: MembersService) {}
 
@@ -21,9 +27,8 @@ export class MembersController {
    * Fetch all members for the current tenant
    */
   @Get()
-  async getAllMembers(): Promise<MemberResponseDto[]> {
-    // TODO: Extract tenantId from JWT token or request context
-    const tenantId = 'default-tenant';
+  async getAllMembers(@Req() request: AuthenticatedRequest): Promise<MemberResponseDto[]> {
+    const tenantId = request.user.tenantId as string;
     return this.membersService.getAllMembers(tenantId);
   }
 
@@ -32,9 +37,8 @@ export class MembersController {
    * Fetch a single member by ID
    */
   @Get(':id')
-  async getMemberById(@Param('id') memberId: string): Promise<MemberResponseDto> {
-    // TODO: Extract tenantId from JWT token or request context
-    const tenantId = 'default-tenant';
+  async getMemberById(@Req() request: AuthenticatedRequest, @Param('id') memberId: string): Promise<MemberResponseDto> {
+    const tenantId = request.user.tenantId as string;
 
     const member = await this.membersService.getMemberById(tenantId, memberId);
 
@@ -50,9 +54,8 @@ export class MembersController {
    * Add a new member to the tenant
    */
   @Post()
-  async createMember(@Body() dto: CreateMemberDto): Promise<MemberResponseDto> {
-    // TODO: Extract tenantId from JWT token or request context
-    const tenantId = 'default-tenant';
+  async createMember(@Req() request: AuthenticatedRequest, @Body() dto: CreateMemberDto): Promise<MemberResponseDto> {
+    const tenantId = request.user.tenantId as string;
 
     if (!dto.email || !dto.role || !dto.designation) {
       throw new HttpException(
@@ -70,11 +73,11 @@ export class MembersController {
    */
   @Put(':id')
   async updateMember(
+    @Req() request: AuthenticatedRequest,
     @Param('id') memberId: string,
     @Body() dto: UpdateMemberDto,
   ): Promise<MemberResponseDto> {
-    // TODO: Extract tenantId from JWT token or request context
-    const tenantId = 'default-tenant';
+    const tenantId = request.user.tenantId as string;
 
     const updated = await this.membersService.updateMember(
       tenantId,
@@ -94,9 +97,8 @@ export class MembersController {
    * Remove a member from the tenant
    */
   @Delete(':id')
-  async deleteMember(@Param('id') memberId: string): Promise<{ success: boolean }> {
-    // TODO: Extract tenantId from JWT token or request context
-    const tenantId = 'default-tenant';
+  async deleteMember(@Req() request: AuthenticatedRequest, @Param('id') memberId: string): Promise<{ success: boolean }> {
+    const tenantId = request.user.tenantId as string;
 
     const success = await this.membersService.deleteMember(tenantId, memberId);
 

@@ -17,7 +17,10 @@ export const ModelName = {
     ApprovalDecision: 'ApprovalDecision',
     ComplianceReference: 'ComplianceReference',
     RevisionHistory: 'RevisionHistory',
-    DocumentRelation: 'DocumentRelation'
+    DocumentRelation: 'DocumentRelation',
+    ChangeRequest: 'ChangeRequest',
+    PeriodicReview: 'PeriodicReview',
+    FileAsset: 'FileAsset'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -39,7 +42,10 @@ export const UserScalarFieldEnum = {
     tenantId: 'tenantId',
     email: 'email',
     name: 'name',
+    passwordHash: 'passwordHash',
     designation: 'designation',
+    systemRole: 'systemRole',
+    isPlatformAdmin: 'isPlatformAdmin',
     isTenantAdmin: 'isTenantAdmin',
     status: 'status',
     createdAt: 'createdAt',
@@ -60,6 +66,7 @@ export const DocumentVersionScalarFieldEnum = {
     documentId: 'documentId',
     versionLabel: 'versionLabel',
     revisionNumber: 'revisionNumber',
+    status: 'status',
     effectiveDate: 'effectiveDate',
     nextReviewDate: 'nextReviewDate',
     purpose: 'purpose',
@@ -108,6 +115,46 @@ export const DocumentRelationScalarFieldEnum = {
     fromDocumentId: 'fromDocumentId',
     toDocumentId: 'toDocumentId',
     relationLabel: 'relationLabel'
+};
+export const ChangeRequestScalarFieldEnum = {
+    id: 'id',
+    tenantId: 'tenantId',
+    documentId: 'documentId',
+    sourceVersionId: 'sourceVersionId',
+    incorporatedVersionId: 'incorporatedVersionId',
+    requestedById: 'requestedById',
+    reviewedById: 'reviewedById',
+    status: 'status',
+    existingRequirement: 'existingRequirement',
+    proposedChange: 'proposedChange',
+    reason: 'reason',
+    managementComment: 'managementComment',
+    createdAt: 'createdAt',
+    reviewedAt: 'reviewedAt'
+};
+export const PeriodicReviewScalarFieldEnum = {
+    id: 'id',
+    tenantId: 'tenantId',
+    versionId: 'versionId',
+    reviewedById: 'reviewedById',
+    outcome: 'outcome',
+    comments: 'comments',
+    referencesChecked: 'referencesChecked',
+    reviewedAt: 'reviewedAt',
+    nextReviewDate: 'nextReviewDate'
+};
+export const FileAssetScalarFieldEnum = {
+    id: 'id',
+    tenantId: 'tenantId',
+    documentId: 'documentId',
+    versionId: 'versionId',
+    uploadedById: 'uploadedById',
+    originalName: 'originalName',
+    storageKey: 'storageKey',
+    mimeType: 'mimeType',
+    sizeBytes: 'sizeBytes',
+    checksum: 'checksum',
+    createdAt: 'createdAt'
 };
 export const SortOrder = {
     asc: 'asc',

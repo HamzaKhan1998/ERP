@@ -28,6 +28,12 @@ export declare const DocumentStatus: {
     readonly RETIRED: "RETIRED";
 };
 export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus];
+export declare const DocumentVersionStatus: {
+    readonly CURRENT: "CURRENT";
+    readonly DRAFT: "DRAFT";
+    readonly SUPERSEDED: "SUPERSEDED";
+};
+export type DocumentVersionStatus = (typeof DocumentVersionStatus)[keyof typeof DocumentVersionStatus];
 export declare const WorkflowAssignmentType: {
     readonly PREPARED_BY: "PREPARED_BY";
     readonly REVIEWED_BY: "REVIEWED_BY";
@@ -39,3 +45,17 @@ export declare const ApprovalDecisionType: {
     readonly RETURNED_FOR_CORRECTION: "RETURNED_FOR_CORRECTION";
 };
 export type ApprovalDecisionType = (typeof ApprovalDecisionType)[keyof typeof ApprovalDecisionType];
+export declare const ChangeRequestStatus: {
+    readonly SUBMITTED: "SUBMITTED";
+    readonly ACCEPTED_FOR_CHANGE: "ACCEPTED_FOR_CHANGE";
+    readonly REJECTED: "REJECTED";
+    readonly INCORPORATED: "INCORPORATED";
+};
+export type ChangeRequestStatus = (typeof ChangeRequestStatus)[keyof typeof ChangeRequestStatus];
+export declare const PeriodicReviewOutcome: {
+    readonly REMAINS_VALID: "REMAINS_VALID";
+    readonly REVISION_REQUIRED: "REVISION_REQUIRED";
+    readonly RETIRED: "RETIRED";
+    readonly RETURNED_FOR_CLARIFICATION: "RETURNED_FOR_CLARIFICATION";
+};
+export type PeriodicReviewOutcome = (typeof PeriodicReviewOutcome)[keyof typeof PeriodicReviewOutcome];

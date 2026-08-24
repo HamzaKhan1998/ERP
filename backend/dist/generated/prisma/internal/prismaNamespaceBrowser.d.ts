@@ -20,6 +20,9 @@ export declare const ModelName: {
     readonly ComplianceReference: "ComplianceReference";
     readonly RevisionHistory: "RevisionHistory";
     readonly DocumentRelation: "DocumentRelation";
+    readonly ChangeRequest: "ChangeRequest";
+    readonly PeriodicReview: "PeriodicReview";
+    readonly FileAsset: "FileAsset";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -44,7 +47,10 @@ export declare const UserScalarFieldEnum: {
     readonly tenantId: "tenantId";
     readonly email: "email";
     readonly name: "name";
+    readonly passwordHash: "passwordHash";
     readonly designation: "designation";
+    readonly systemRole: "systemRole";
+    readonly isPlatformAdmin: "isPlatformAdmin";
     readonly isTenantAdmin: "isTenantAdmin";
     readonly status: "status";
     readonly createdAt: "createdAt";
@@ -67,6 +73,7 @@ export declare const DocumentVersionScalarFieldEnum: {
     readonly documentId: "documentId";
     readonly versionLabel: "versionLabel";
     readonly revisionNumber: "revisionNumber";
+    readonly status: "status";
     readonly effectiveDate: "effectiveDate";
     readonly nextReviewDate: "nextReviewDate";
     readonly purpose: "purpose";
@@ -122,6 +129,49 @@ export declare const DocumentRelationScalarFieldEnum: {
     readonly relationLabel: "relationLabel";
 };
 export type DocumentRelationScalarFieldEnum = (typeof DocumentRelationScalarFieldEnum)[keyof typeof DocumentRelationScalarFieldEnum];
+export declare const ChangeRequestScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly sourceVersionId: "sourceVersionId";
+    readonly incorporatedVersionId: "incorporatedVersionId";
+    readonly requestedById: "requestedById";
+    readonly reviewedById: "reviewedById";
+    readonly status: "status";
+    readonly existingRequirement: "existingRequirement";
+    readonly proposedChange: "proposedChange";
+    readonly reason: "reason";
+    readonly managementComment: "managementComment";
+    readonly createdAt: "createdAt";
+    readonly reviewedAt: "reviewedAt";
+};
+export type ChangeRequestScalarFieldEnum = (typeof ChangeRequestScalarFieldEnum)[keyof typeof ChangeRequestScalarFieldEnum];
+export declare const PeriodicReviewScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly versionId: "versionId";
+    readonly reviewedById: "reviewedById";
+    readonly outcome: "outcome";
+    readonly comments: "comments";
+    readonly referencesChecked: "referencesChecked";
+    readonly reviewedAt: "reviewedAt";
+    readonly nextReviewDate: "nextReviewDate";
+};
+export type PeriodicReviewScalarFieldEnum = (typeof PeriodicReviewScalarFieldEnum)[keyof typeof PeriodicReviewScalarFieldEnum];
+export declare const FileAssetScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly versionId: "versionId";
+    readonly uploadedById: "uploadedById";
+    readonly originalName: "originalName";
+    readonly storageKey: "storageKey";
+    readonly mimeType: "mimeType";
+    readonly sizeBytes: "sizeBytes";
+    readonly checksum: "checksum";
+    readonly createdAt: "createdAt";
+};
+export type FileAssetScalarFieldEnum = (typeof FileAssetScalarFieldEnum)[keyof typeof FileAssetScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

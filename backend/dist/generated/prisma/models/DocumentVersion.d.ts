@@ -1,4 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 export type DocumentVersionModel = runtime.Types.Result.DefaultSelection<Prisma.$DocumentVersionPayload>;
 export type AggregateDocumentVersion = {
@@ -19,6 +20,7 @@ export type DocumentVersionMinAggregateOutputType = {
     documentId: string | null;
     versionLabel: string | null;
     revisionNumber: number | null;
+    status: $Enums.DocumentVersionStatus | null;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
     purpose: string | null;
@@ -35,6 +37,7 @@ export type DocumentVersionMaxAggregateOutputType = {
     documentId: string | null;
     versionLabel: string | null;
     revisionNumber: number | null;
+    status: $Enums.DocumentVersionStatus | null;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
     purpose: string | null;
@@ -51,6 +54,7 @@ export type DocumentVersionCountAggregateOutputType = {
     documentId: number;
     versionLabel: number;
     revisionNumber: number;
+    status: number;
     effectiveDate: number;
     nextReviewDate: number;
     purpose: number;
@@ -74,6 +78,7 @@ export type DocumentVersionMinAggregateInputType = {
     documentId?: true;
     versionLabel?: true;
     revisionNumber?: true;
+    status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
     purpose?: true;
@@ -90,6 +95,7 @@ export type DocumentVersionMaxAggregateInputType = {
     documentId?: true;
     versionLabel?: true;
     revisionNumber?: true;
+    status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
     purpose?: true;
@@ -106,6 +112,7 @@ export type DocumentVersionCountAggregateInputType = {
     documentId?: true;
     versionLabel?: true;
     revisionNumber?: true;
+    status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
     purpose?: true;
@@ -151,6 +158,7 @@ export type DocumentVersionGroupByOutputType = {
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status: $Enums.DocumentVersionStatus;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
     purpose: string | null;
@@ -178,6 +186,7 @@ export type DocumentVersionWhereInput = {
     documentId?: Prisma.StringFilter<"DocumentVersion"> | string;
     versionLabel?: Prisma.StringFilter<"DocumentVersion"> | string;
     revisionNumber?: Prisma.IntFilter<"DocumentVersion"> | number;
+    status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -193,12 +202,17 @@ export type DocumentVersionWhereInput = {
     approvals?: Prisma.ApprovalDecisionListRelationFilter;
     complianceRefs?: Prisma.ComplianceReferenceListRelationFilter;
     revisionHistory?: Prisma.RevisionHistoryListRelationFilter;
+    changeRequests?: Prisma.ChangeRequestListRelationFilter;
+    incorporatedChangeRequests?: Prisma.ChangeRequestListRelationFilter;
+    periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
+    files?: Prisma.FileAssetListRelationFilter;
 };
 export type DocumentVersionOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     documentId?: Prisma.SortOrder;
     versionLabel?: Prisma.SortOrder;
     revisionNumber?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     purpose?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -214,6 +228,10 @@ export type DocumentVersionOrderByWithRelationInput = {
     approvals?: Prisma.ApprovalDecisionOrderByRelationAggregateInput;
     complianceRefs?: Prisma.ComplianceReferenceOrderByRelationAggregateInput;
     revisionHistory?: Prisma.RevisionHistoryOrderByRelationAggregateInput;
+    changeRequests?: Prisma.ChangeRequestOrderByRelationAggregateInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestOrderByRelationAggregateInput;
+    periodicReviews?: Prisma.PeriodicReviewOrderByRelationAggregateInput;
+    files?: Prisma.FileAssetOrderByRelationAggregateInput;
 };
 export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -224,6 +242,7 @@ export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     documentId?: Prisma.StringFilter<"DocumentVersion"> | string;
     versionLabel?: Prisma.StringFilter<"DocumentVersion"> | string;
     revisionNumber?: Prisma.IntFilter<"DocumentVersion"> | number;
+    status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -239,12 +258,17 @@ export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     approvals?: Prisma.ApprovalDecisionListRelationFilter;
     complianceRefs?: Prisma.ComplianceReferenceListRelationFilter;
     revisionHistory?: Prisma.RevisionHistoryListRelationFilter;
+    changeRequests?: Prisma.ChangeRequestListRelationFilter;
+    incorporatedChangeRequests?: Prisma.ChangeRequestListRelationFilter;
+    periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
+    files?: Prisma.FileAssetListRelationFilter;
 }, "id" | "documentId_revisionNumber">;
 export type DocumentVersionOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     documentId?: Prisma.SortOrder;
     versionLabel?: Prisma.SortOrder;
     revisionNumber?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     purpose?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -269,6 +293,7 @@ export type DocumentVersionScalarWhereWithAggregatesInput = {
     documentId?: Prisma.StringWithAggregatesFilter<"DocumentVersion"> | string;
     versionLabel?: Prisma.StringWithAggregatesFilter<"DocumentVersion"> | string;
     revisionNumber?: Prisma.IntWithAggregatesFilter<"DocumentVersion"> | number;
+    status?: Prisma.EnumDocumentVersionStatusWithAggregatesFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentVersion"> | Date | string | null;
     purpose?: Prisma.StringNullableWithAggregatesFilter<"DocumentVersion"> | string | null;
@@ -284,6 +309,7 @@ export type DocumentVersionCreateInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -299,12 +325,17 @@ export type DocumentVersionCreateInput = {
     approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -319,11 +350,16 @@ export type DocumentVersionUncheckedCreateInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -339,12 +375,17 @@ export type DocumentVersionUpdateInput = {
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -359,12 +400,17 @@ export type DocumentVersionUncheckedUpdateInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateManyInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -380,6 +426,7 @@ export type DocumentVersionUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -396,6 +443,7 @@ export type DocumentVersionUncheckedUpdateManyInput = {
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -424,6 +472,7 @@ export type DocumentVersionCountOrderByAggregateInput = {
     documentId?: Prisma.SortOrder;
     versionLabel?: Prisma.SortOrder;
     revisionNumber?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
@@ -443,6 +492,7 @@ export type DocumentVersionMaxOrderByAggregateInput = {
     documentId?: Prisma.SortOrder;
     versionLabel?: Prisma.SortOrder;
     revisionNumber?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
@@ -459,6 +509,7 @@ export type DocumentVersionMinOrderByAggregateInput = {
     documentId?: Prisma.SortOrder;
     versionLabel?: Prisma.SortOrder;
     revisionNumber?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
@@ -476,6 +527,10 @@ export type DocumentVersionSumOrderByAggregateInput = {
 export type DocumentVersionScalarRelationFilter = {
     is?: Prisma.DocumentVersionWhereInput;
     isNot?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionNullableScalarRelationFilter = {
+    is?: Prisma.DocumentVersionWhereInput | null;
+    isNot?: Prisma.DocumentVersionWhereInput | null;
 };
 export type DocumentVersionCreateNestedManyWithoutDocumentInput = {
     create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutDocumentInput, Prisma.DocumentVersionUncheckedCreateWithoutDocumentInput> | Prisma.DocumentVersionCreateWithoutDocumentInput[] | Prisma.DocumentVersionUncheckedCreateWithoutDocumentInput[];
@@ -521,6 +576,9 @@ export type IntFieldUpdateOperationsInput = {
     decrement?: number;
     multiply?: number;
     divide?: number;
+};
+export type EnumDocumentVersionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentVersionStatus;
 };
 export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null;
@@ -573,10 +631,63 @@ export type DocumentVersionUpdateOneRequiredWithoutRevisionHistoryNestedInput = 
     connect?: Prisma.DocumentVersionWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutRevisionHistoryInput, Prisma.DocumentVersionUpdateWithoutRevisionHistoryInput>, Prisma.DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput>;
 };
+export type DocumentVersionCreateNestedOneWithoutChangeRequestsInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutChangeRequestsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutChangeRequestsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+};
+export type DocumentVersionCreateNestedOneWithoutIncorporatedChangeRequestsInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutIncorporatedChangeRequestsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+};
+export type DocumentVersionUpdateOneRequiredWithoutChangeRequestsNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutChangeRequestsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutChangeRequestsInput;
+    upsert?: Prisma.DocumentVersionUpsertWithoutChangeRequestsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutChangeRequestsInput, Prisma.DocumentVersionUpdateWithoutChangeRequestsInput>, Prisma.DocumentVersionUncheckedUpdateWithoutChangeRequestsInput>;
+};
+export type DocumentVersionUpdateOneWithoutIncorporatedChangeRequestsNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutIncorporatedChangeRequestsInput;
+    upsert?: Prisma.DocumentVersionUpsertWithoutIncorporatedChangeRequestsInput;
+    disconnect?: Prisma.DocumentVersionWhereInput | boolean;
+    delete?: Prisma.DocumentVersionWhereInput | boolean;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput>, Prisma.DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput>;
+};
+export type DocumentVersionCreateNestedOneWithoutPeriodicReviewsInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutPeriodicReviewsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+};
+export type DocumentVersionUpdateOneRequiredWithoutPeriodicReviewsNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutPeriodicReviewsInput;
+    upsert?: Prisma.DocumentVersionUpsertWithoutPeriodicReviewsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutPeriodicReviewsInput, Prisma.DocumentVersionUpdateWithoutPeriodicReviewsInput>, Prisma.DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput>;
+};
+export type DocumentVersionCreateNestedOneWithoutFilesInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutFilesInput, Prisma.DocumentVersionUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutFilesInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+};
+export type DocumentVersionUpdateOneWithoutFilesNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutFilesInput, Prisma.DocumentVersionUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutFilesInput;
+    upsert?: Prisma.DocumentVersionUpsertWithoutFilesInput;
+    disconnect?: Prisma.DocumentVersionWhereInput | boolean;
+    delete?: Prisma.DocumentVersionWhereInput | boolean;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutFilesInput, Prisma.DocumentVersionUpdateWithoutFilesInput>, Prisma.DocumentVersionUncheckedUpdateWithoutFilesInput>;
+};
 export type DocumentVersionCreateWithoutDocumentInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -591,11 +702,16 @@ export type DocumentVersionCreateWithoutDocumentInput = {
     approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutDocumentInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -610,6 +726,10 @@ export type DocumentVersionUncheckedCreateWithoutDocumentInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutDocumentInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -640,6 +760,7 @@ export type DocumentVersionScalarWhereInput = {
     documentId?: Prisma.StringFilter<"DocumentVersion"> | string;
     versionLabel?: Prisma.StringFilter<"DocumentVersion"> | string;
     revisionNumber?: Prisma.IntFilter<"DocumentVersion"> | number;
+    status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -655,6 +776,7 @@ export type DocumentVersionCreateWithoutAssignmentsInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -669,12 +791,17 @@ export type DocumentVersionCreateWithoutAssignmentsInput = {
     approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutAssignmentsInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -688,6 +815,10 @@ export type DocumentVersionUncheckedCreateWithoutAssignmentsInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutAssignmentsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -706,6 +837,7 @@ export type DocumentVersionUpdateWithoutAssignmentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -720,12 +852,17 @@ export type DocumentVersionUpdateWithoutAssignmentsInput = {
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutAssignmentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -739,11 +876,16 @@ export type DocumentVersionUncheckedUpdateWithoutAssignmentsInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutApprovalsInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -758,12 +900,17 @@ export type DocumentVersionCreateWithoutApprovalsInput = {
     assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutApprovalsInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -777,6 +924,10 @@ export type DocumentVersionUncheckedCreateWithoutApprovalsInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutApprovalsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -795,6 +946,7 @@ export type DocumentVersionUpdateWithoutApprovalsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -809,12 +961,17 @@ export type DocumentVersionUpdateWithoutApprovalsInput = {
     assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutApprovalsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -828,11 +985,16 @@ export type DocumentVersionUncheckedUpdateWithoutApprovalsInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutComplianceRefsInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -847,12 +1009,17 @@ export type DocumentVersionCreateWithoutComplianceRefsInput = {
     assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
     approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutComplianceRefsInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -866,6 +1033,10 @@ export type DocumentVersionUncheckedCreateWithoutComplianceRefsInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
     approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutComplianceRefsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -884,6 +1055,7 @@ export type DocumentVersionUpdateWithoutComplianceRefsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -898,12 +1070,17 @@ export type DocumentVersionUpdateWithoutComplianceRefsInput = {
     assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutComplianceRefsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -917,11 +1094,16 @@ export type DocumentVersionUncheckedUpdateWithoutComplianceRefsInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
     approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutRevisionHistoryInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -936,12 +1118,17 @@ export type DocumentVersionCreateWithoutRevisionHistoryInput = {
     assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
     approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutRevisionHistoryInput = {
     id?: string;
     documentId: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -955,6 +1142,10 @@ export type DocumentVersionUncheckedCreateWithoutRevisionHistoryInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
     approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutRevisionHistoryInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -973,6 +1164,7 @@ export type DocumentVersionUpdateWithoutRevisionHistoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -987,12 +1179,17 @@ export type DocumentVersionUpdateWithoutRevisionHistoryInput = {
     assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1006,11 +1203,452 @@ export type DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput = {
     assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
     approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionCreateWithoutChangeRequestsInput = {
+    id?: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    document: Prisma.DocumentCreateNestedOneWithoutVersionsInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionUncheckedCreateWithoutChangeRequestsInput = {
+    id?: string;
+    documentId: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionCreateOrConnectWithoutChangeRequestsInput = {
+    where: Prisma.DocumentVersionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutChangeRequestsInput>;
+};
+export type DocumentVersionCreateWithoutIncorporatedChangeRequestsInput = {
+    id?: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    document: Prisma.DocumentCreateNestedOneWithoutVersionsInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput = {
+    id?: string;
+    documentId: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionCreateOrConnectWithoutIncorporatedChangeRequestsInput = {
+    where: Prisma.DocumentVersionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput>;
+};
+export type DocumentVersionUpsertWithoutChangeRequestsInput = {
+    update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedUpdateWithoutChangeRequestsInput>;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutChangeRequestsInput>;
+    where?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionUpdateToOneWithWhereWithoutChangeRequestsInput = {
+    where?: Prisma.DocumentVersionWhereInput;
+    data: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutChangeRequestsInput, Prisma.DocumentVersionUncheckedUpdateWithoutChangeRequestsInput>;
+};
+export type DocumentVersionUpdateWithoutChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    document?: Prisma.DocumentUpdateOneRequiredWithoutVersionsNestedInput;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUncheckedUpdateWithoutChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUpsertWithoutIncorporatedChangeRequestsInput = {
+    update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput>;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput>;
+    where?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionUpdateToOneWithWhereWithoutIncorporatedChangeRequestsInput = {
+    where?: Prisma.DocumentVersionWhereInput;
+    data: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput>;
+};
+export type DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    document?: Prisma.DocumentUpdateOneRequiredWithoutVersionsNestedInput;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionCreateWithoutPeriodicReviewsInput = {
+    id?: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    document: Prisma.DocumentCreateNestedOneWithoutVersionsInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput = {
+    id?: string;
+    documentId: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionCreateOrConnectWithoutPeriodicReviewsInput = {
+    where: Prisma.DocumentVersionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput>;
+};
+export type DocumentVersionUpsertWithoutPeriodicReviewsInput = {
+    update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput>;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput>;
+    where?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionUpdateToOneWithWhereWithoutPeriodicReviewsInput = {
+    where?: Prisma.DocumentVersionWhereInput;
+    data: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutPeriodicReviewsInput, Prisma.DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput>;
+};
+export type DocumentVersionUpdateWithoutPeriodicReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    document?: Prisma.DocumentUpdateOneRequiredWithoutVersionsNestedInput;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionCreateWithoutFilesInput = {
+    id?: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    document: Prisma.DocumentCreateNestedOneWithoutVersionsInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionUncheckedCreateWithoutFilesInput = {
+    id?: string;
+    documentId: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionCreateOrConnectWithoutFilesInput = {
+    where: Prisma.DocumentVersionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutFilesInput, Prisma.DocumentVersionUncheckedCreateWithoutFilesInput>;
+};
+export type DocumentVersionUpsertWithoutFilesInput = {
+    update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutFilesInput, Prisma.DocumentVersionUncheckedUpdateWithoutFilesInput>;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutFilesInput, Prisma.DocumentVersionUncheckedCreateWithoutFilesInput>;
+    where?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionUpdateToOneWithWhereWithoutFilesInput = {
+    where?: Prisma.DocumentVersionWhereInput;
+    data: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutFilesInput, Prisma.DocumentVersionUncheckedUpdateWithoutFilesInput>;
+};
+export type DocumentVersionUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    document?: Prisma.DocumentUpdateOneRequiredWithoutVersionsNestedInput;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUncheckedUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateManyDocumentInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
     purpose?: string | null;
@@ -1026,6 +1664,7 @@ export type DocumentVersionUpdateWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1040,11 +1679,16 @@ export type DocumentVersionUpdateWithoutDocumentInput = {
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1059,11 +1703,16 @@ export type DocumentVersionUncheckedUpdateWithoutDocumentInput = {
     approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
     revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateManyWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1080,12 +1729,20 @@ export type DocumentVersionCountOutputType = {
     approvals: number;
     complianceRefs: number;
     revisionHistory: number;
+    changeRequests: number;
+    incorporatedChangeRequests: number;
+    periodicReviews: number;
+    files: number;
 };
 export type DocumentVersionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assignments?: boolean | DocumentVersionCountOutputTypeCountAssignmentsArgs;
     approvals?: boolean | DocumentVersionCountOutputTypeCountApprovalsArgs;
     complianceRefs?: boolean | DocumentVersionCountOutputTypeCountComplianceRefsArgs;
     revisionHistory?: boolean | DocumentVersionCountOutputTypeCountRevisionHistoryArgs;
+    changeRequests?: boolean | DocumentVersionCountOutputTypeCountChangeRequestsArgs;
+    incorporatedChangeRequests?: boolean | DocumentVersionCountOutputTypeCountIncorporatedChangeRequestsArgs;
+    periodicReviews?: boolean | DocumentVersionCountOutputTypeCountPeriodicReviewsArgs;
+    files?: boolean | DocumentVersionCountOutputTypeCountFilesArgs;
 };
 export type DocumentVersionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentVersionCountOutputTypeSelect<ExtArgs> | null;
@@ -1102,11 +1759,24 @@ export type DocumentVersionCountOutputTypeCountComplianceRefsArgs<ExtArgs extend
 export type DocumentVersionCountOutputTypeCountRevisionHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.RevisionHistoryWhereInput;
 };
+export type DocumentVersionCountOutputTypeCountChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ChangeRequestWhereInput;
+};
+export type DocumentVersionCountOutputTypeCountIncorporatedChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ChangeRequestWhereInput;
+};
+export type DocumentVersionCountOutputTypeCountPeriodicReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PeriodicReviewWhereInput;
+};
+export type DocumentVersionCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FileAssetWhereInput;
+};
 export type DocumentVersionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     documentId?: boolean;
     versionLabel?: boolean;
     revisionNumber?: boolean;
+    status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
     purpose?: boolean;
@@ -1122,6 +1792,10 @@ export type DocumentVersionSelect<ExtArgs extends runtime.Types.Extensions.Inter
     approvals?: boolean | Prisma.DocumentVersion$approvalsArgs<ExtArgs>;
     complianceRefs?: boolean | Prisma.DocumentVersion$complianceRefsArgs<ExtArgs>;
     revisionHistory?: boolean | Prisma.DocumentVersion$revisionHistoryArgs<ExtArgs>;
+    changeRequests?: boolean | Prisma.DocumentVersion$changeRequestsArgs<ExtArgs>;
+    incorporatedChangeRequests?: boolean | Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>;
+    periodicReviews?: boolean | Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>;
+    files?: boolean | Prisma.DocumentVersion$filesArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentVersionCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["documentVersion"]>;
 export type DocumentVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1129,6 +1803,7 @@ export type DocumentVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     documentId?: boolean;
     versionLabel?: boolean;
     revisionNumber?: boolean;
+    status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
     purpose?: boolean;
@@ -1146,6 +1821,7 @@ export type DocumentVersionSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     documentId?: boolean;
     versionLabel?: boolean;
     revisionNumber?: boolean;
+    status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
     purpose?: boolean;
@@ -1163,6 +1839,7 @@ export type DocumentVersionSelectScalar = {
     documentId?: boolean;
     versionLabel?: boolean;
     revisionNumber?: boolean;
+    status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
     purpose?: boolean;
@@ -1174,13 +1851,17 @@ export type DocumentVersionSelectScalar = {
     complianceNote?: boolean;
     createdAt?: boolean;
 };
-export type DocumentVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "versionLabel" | "revisionNumber" | "effectiveDate" | "nextReviewDate" | "purpose" | "scope" | "responsibilities" | "procedureContent" | "recordsDescription" | "relatedDocuments" | "complianceNote" | "createdAt", ExtArgs["result"]["documentVersion"]>;
+export type DocumentVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "versionLabel" | "revisionNumber" | "status" | "effectiveDate" | "nextReviewDate" | "purpose" | "scope" | "responsibilities" | "procedureContent" | "recordsDescription" | "relatedDocuments" | "complianceNote" | "createdAt", ExtArgs["result"]["documentVersion"]>;
 export type DocumentVersionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>;
     assignments?: boolean | Prisma.DocumentVersion$assignmentsArgs<ExtArgs>;
     approvals?: boolean | Prisma.DocumentVersion$approvalsArgs<ExtArgs>;
     complianceRefs?: boolean | Prisma.DocumentVersion$complianceRefsArgs<ExtArgs>;
     revisionHistory?: boolean | Prisma.DocumentVersion$revisionHistoryArgs<ExtArgs>;
+    changeRequests?: boolean | Prisma.DocumentVersion$changeRequestsArgs<ExtArgs>;
+    incorporatedChangeRequests?: boolean | Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>;
+    periodicReviews?: boolean | Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>;
+    files?: boolean | Prisma.DocumentVersion$filesArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentVersionCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type DocumentVersionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1197,12 +1878,17 @@ export type $DocumentVersionPayload<ExtArgs extends runtime.Types.Extensions.Int
         approvals: Prisma.$ApprovalDecisionPayload<ExtArgs>[];
         complianceRefs: Prisma.$ComplianceReferencePayload<ExtArgs>[];
         revisionHistory: Prisma.$RevisionHistoryPayload<ExtArgs>[];
+        changeRequests: Prisma.$ChangeRequestPayload<ExtArgs>[];
+        incorporatedChangeRequests: Prisma.$ChangeRequestPayload<ExtArgs>[];
+        periodicReviews: Prisma.$PeriodicReviewPayload<ExtArgs>[];
+        files: Prisma.$FileAssetPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         documentId: string;
         versionLabel: string;
         revisionNumber: number;
+        status: $Enums.DocumentVersionStatus;
         effectiveDate: Date | null;
         nextReviewDate: Date | null;
         purpose: string | null;
@@ -1270,6 +1956,10 @@ export interface Prisma__DocumentVersionClient<T, Null = never, ExtArgs extends 
     approvals<T extends Prisma.DocumentVersion$approvalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     complianceRefs<T extends Prisma.DocumentVersion$complianceRefsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$complianceRefsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComplianceReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     revisionHistory<T extends Prisma.DocumentVersion$revisionHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$revisionHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RevisionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    changeRequests<T extends Prisma.DocumentVersion$changeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$changeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    incorporatedChangeRequests<T extends Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    periodicReviews<T extends Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PeriodicReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    files<T extends Prisma.DocumentVersion$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FileAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1279,6 +1969,7 @@ export interface DocumentVersionFieldRefs {
     readonly documentId: Prisma.FieldRef<"DocumentVersion", 'String'>;
     readonly versionLabel: Prisma.FieldRef<"DocumentVersion", 'String'>;
     readonly revisionNumber: Prisma.FieldRef<"DocumentVersion", 'Int'>;
+    readonly status: Prisma.FieldRef<"DocumentVersion", 'DocumentVersionStatus'>;
     readonly effectiveDate: Prisma.FieldRef<"DocumentVersion", 'DateTime'>;
     readonly nextReviewDate: Prisma.FieldRef<"DocumentVersion", 'DateTime'>;
     readonly purpose: Prisma.FieldRef<"DocumentVersion", 'String'>;
@@ -1433,6 +2124,50 @@ export type DocumentVersion$revisionHistoryArgs<ExtArgs extends runtime.Types.Ex
     take?: number;
     skip?: number;
     distinct?: Prisma.RevisionHistoryScalarFieldEnum | Prisma.RevisionHistoryScalarFieldEnum[];
+};
+export type DocumentVersion$changeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ChangeRequestSelect<ExtArgs> | null;
+    omit?: Prisma.ChangeRequestOmit<ExtArgs> | null;
+    include?: Prisma.ChangeRequestInclude<ExtArgs> | null;
+    where?: Prisma.ChangeRequestWhereInput;
+    orderBy?: Prisma.ChangeRequestOrderByWithRelationInput | Prisma.ChangeRequestOrderByWithRelationInput[];
+    cursor?: Prisma.ChangeRequestWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ChangeRequestScalarFieldEnum | Prisma.ChangeRequestScalarFieldEnum[];
+};
+export type DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ChangeRequestSelect<ExtArgs> | null;
+    omit?: Prisma.ChangeRequestOmit<ExtArgs> | null;
+    include?: Prisma.ChangeRequestInclude<ExtArgs> | null;
+    where?: Prisma.ChangeRequestWhereInput;
+    orderBy?: Prisma.ChangeRequestOrderByWithRelationInput | Prisma.ChangeRequestOrderByWithRelationInput[];
+    cursor?: Prisma.ChangeRequestWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ChangeRequestScalarFieldEnum | Prisma.ChangeRequestScalarFieldEnum[];
+};
+export type DocumentVersion$periodicReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.PeriodicReviewSelect<ExtArgs> | null;
+    omit?: Prisma.PeriodicReviewOmit<ExtArgs> | null;
+    include?: Prisma.PeriodicReviewInclude<ExtArgs> | null;
+    where?: Prisma.PeriodicReviewWhereInput;
+    orderBy?: Prisma.PeriodicReviewOrderByWithRelationInput | Prisma.PeriodicReviewOrderByWithRelationInput[];
+    cursor?: Prisma.PeriodicReviewWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PeriodicReviewScalarFieldEnum | Prisma.PeriodicReviewScalarFieldEnum[];
+};
+export type DocumentVersion$filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.FileAssetSelect<ExtArgs> | null;
+    omit?: Prisma.FileAssetOmit<ExtArgs> | null;
+    include?: Prisma.FileAssetInclude<ExtArgs> | null;
+    where?: Prisma.FileAssetWhereInput;
+    orderBy?: Prisma.FileAssetOrderByWithRelationInput | Prisma.FileAssetOrderByWithRelationInput[];
+    cursor?: Prisma.FileAssetWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FileAssetScalarFieldEnum | Prisma.FileAssetScalarFieldEnum[];
 };
 export type DocumentVersionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentVersionSelect<ExtArgs> | null;

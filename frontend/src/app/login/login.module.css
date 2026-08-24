@@ -1,0 +1,225 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(380px, 0.82fr) minmax(420px, 1.18fr);
+  background: #edf2f3;
+  color: #15252b;
+}
+
+.panel {
+  display: flex;
+  width: min(440px, calc(100% - 48px));
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  padding: 56px 0;
+}
+
+.brandMark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  margin-bottom: 42px;
+  background: #17716b;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.platformMark {
+  background: #a66b2a;
+}
+
+.eyebrow,
+.sideLabel {
+  margin: 0 0 11px;
+  color: #17716b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.platformPage .eyebrow,
+.platformPage .sideLabel {
+  color: #a66b2a;
+}
+
+.panel h1,
+.sidePanel h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+
+.panel h1 {
+  max-width: 390px;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.98;
+}
+
+.intro {
+  max-width: 390px;
+  margin: 17px 0 34px;
+  color: #63747a;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.form {
+  display: grid;
+  gap: 17px;
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+}
+
+.form label > span {
+  color: #52646a;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.form input {
+  width: 100%;
+  border: 1px solid #c7d5d6;
+  border-radius: 0;
+  padding: 13px 14px;
+  background: #fafdfe;
+  color: #15252b;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.form input:focus {
+  outline: 2px solid #75b9b1;
+  outline-offset: 1px;
+}
+
+.subdomainField {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  border: 1px solid #c7d5d6;
+  background: #fafdfe;
+}
+
+.subdomainField input {
+  border: 0;
+}
+
+.subdomainField strong {
+  padding-right: 13px;
+  color: #77878b;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.form button {
+  margin-top: 8px;
+  border: 0;
+  padding: 14px 17px;
+  background: #17716b;
+  color: #fff;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.platformPage .form button {
+  background: #a66b2a;
+}
+
+.form button:hover {
+  filter: brightness(0.9);
+}
+
+.message {
+  margin: 19px 0 0;
+  padding: 11px 13px;
+  border-left: 3px solid #17716b;
+  background: #dfeeea;
+  color: #155a55;
+  font-size: 0.82rem;
+}
+
+.platformPage .message {
+  border-color: #a66b2a;
+  background: #f5e9d9;
+  color: #795021;
+}
+
+.support {
+  margin: 24px 0 0;
+  color: #738287;
+  font-size: 0.78rem;
+}
+
+.switchLink {
+  width: fit-content;
+  margin-top: 19px;
+  color: #17716b;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.platformPage .switchLink {
+  color: #a66b2a;
+}
+
+.sidePanel {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: end;
+  padding: 10% 12%;
+  background: #173e3b;
+  color: #f3fbf8;
+}
+
+.platformPage .sidePanel {
+  background: #354452;
+}
+
+.sidePanel h2 {
+  max-width: 520px;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 0.98;
+}
+
+.sidePanel ul {
+  display: grid;
+  gap: 14px;
+  max-width: 420px;
+  margin: 34px 0 0;
+  padding: 22px 0 0 19px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  color: #c5d9d6;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .page {
+    display: block;
+  }
+
+  .panel {
+    min-height: 100vh;
+    padding: 42px 0;
+  }
+
+  .sidePanel {
+    min-height: auto;
+    padding: 60px 24px;
+  }
+}
