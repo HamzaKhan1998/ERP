@@ -27,6 +27,7 @@ export const DocumentStatus = {
 export const DocumentVersionStatus = {
     CURRENT: 'CURRENT',
     DRAFT: 'DRAFT',
+    APPROVED: 'APPROVED',
     SUPERSEDED: 'SUPERSEDED'
 };
 export const WorkflowAssignmentType = {
@@ -49,5 +50,14 @@ export const PeriodicReviewOutcome = {
     REVISION_REQUIRED: 'REVISION_REQUIRED',
     RETIRED: 'RETIRED',
     RETURNED_FOR_CLARIFICATION: 'RETURNED_FOR_CLARIFICATION'
+};
+export const FormFieldType = {
+    TEXT: 'TEXT',
+    TEXTAREA: 'TEXTAREA',
+    NUMBER: 'NUMBER',
+    DATE: 'DATE',
+    SELECT: 'SELECT',
+    CHECKBOX: 'CHECKBOX',
+    FILE: 'FILE'
 };
 //# sourceMappingURL=enums.js.map

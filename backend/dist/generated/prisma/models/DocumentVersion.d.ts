@@ -11,9 +11,11 @@ export type AggregateDocumentVersion = {
 };
 export type DocumentVersionAvgAggregateOutputType = {
     revisionNumber: number | null;
+    reviewIntervalYears: number | null;
 };
 export type DocumentVersionSumAggregateOutputType = {
     revisionNumber: number | null;
+    reviewIntervalYears: number | null;
 };
 export type DocumentVersionMinAggregateOutputType = {
     id: string | null;
@@ -23,6 +25,7 @@ export type DocumentVersionMinAggregateOutputType = {
     status: $Enums.DocumentVersionStatus | null;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
+    reviewIntervalYears: number | null;
     purpose: string | null;
     scope: string | null;
     responsibilities: string | null;
@@ -40,6 +43,7 @@ export type DocumentVersionMaxAggregateOutputType = {
     status: $Enums.DocumentVersionStatus | null;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
+    reviewIntervalYears: number | null;
     purpose: string | null;
     scope: string | null;
     responsibilities: string | null;
@@ -57,6 +61,7 @@ export type DocumentVersionCountAggregateOutputType = {
     status: number;
     effectiveDate: number;
     nextReviewDate: number;
+    reviewIntervalYears: number;
     purpose: number;
     scope: number;
     responsibilities: number;
@@ -69,9 +74,11 @@ export type DocumentVersionCountAggregateOutputType = {
 };
 export type DocumentVersionAvgAggregateInputType = {
     revisionNumber?: true;
+    reviewIntervalYears?: true;
 };
 export type DocumentVersionSumAggregateInputType = {
     revisionNumber?: true;
+    reviewIntervalYears?: true;
 };
 export type DocumentVersionMinAggregateInputType = {
     id?: true;
@@ -81,6 +88,7 @@ export type DocumentVersionMinAggregateInputType = {
     status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
+    reviewIntervalYears?: true;
     purpose?: true;
     scope?: true;
     responsibilities?: true;
@@ -98,6 +106,7 @@ export type DocumentVersionMaxAggregateInputType = {
     status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
+    reviewIntervalYears?: true;
     purpose?: true;
     scope?: true;
     responsibilities?: true;
@@ -115,6 +124,7 @@ export type DocumentVersionCountAggregateInputType = {
     status?: true;
     effectiveDate?: true;
     nextReviewDate?: true;
+    reviewIntervalYears?: true;
     purpose?: true;
     scope?: true;
     responsibilities?: true;
@@ -161,6 +171,7 @@ export type DocumentVersionGroupByOutputType = {
     status: $Enums.DocumentVersionStatus;
     effectiveDate: Date | null;
     nextReviewDate: Date | null;
+    reviewIntervalYears: number;
     purpose: string | null;
     scope: string | null;
     responsibilities: string | null;
@@ -189,6 +200,7 @@ export type DocumentVersionWhereInput = {
     status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFilter<"DocumentVersion"> | number;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     scope?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     responsibilities?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -206,6 +218,7 @@ export type DocumentVersionWhereInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestListRelationFilter;
     periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
     files?: Prisma.FileAssetListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 };
 export type DocumentVersionOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -215,6 +228,7 @@ export type DocumentVersionOrderByWithRelationInput = {
     status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
     purpose?: Prisma.SortOrderInput | Prisma.SortOrder;
     scope?: Prisma.SortOrderInput | Prisma.SortOrder;
     responsibilities?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -232,6 +246,7 @@ export type DocumentVersionOrderByWithRelationInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestOrderByRelationAggregateInput;
     periodicReviews?: Prisma.PeriodicReviewOrderByRelationAggregateInput;
     files?: Prisma.FileAssetOrderByRelationAggregateInput;
+    qualityRecords?: Prisma.QualityRecordOrderByRelationAggregateInput;
 };
 export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -245,6 +260,7 @@ export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFilter<"DocumentVersion"> | number;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     scope?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     responsibilities?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -262,6 +278,7 @@ export type DocumentVersionWhereUniqueInput = Prisma.AtLeast<{
     incorporatedChangeRequests?: Prisma.ChangeRequestListRelationFilter;
     periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
     files?: Prisma.FileAssetListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 }, "id" | "documentId_revisionNumber">;
 export type DocumentVersionOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -271,6 +288,7 @@ export type DocumentVersionOrderByWithAggregationInput = {
     status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrderInput | Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrderInput | Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
     purpose?: Prisma.SortOrderInput | Prisma.SortOrder;
     scope?: Prisma.SortOrderInput | Prisma.SortOrder;
     responsibilities?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -296,6 +314,7 @@ export type DocumentVersionScalarWhereWithAggregatesInput = {
     status?: Prisma.EnumDocumentVersionStatusWithAggregatesFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentVersion"> | Date | string | null;
+    reviewIntervalYears?: Prisma.IntWithAggregatesFilter<"DocumentVersion"> | number;
     purpose?: Prisma.StringNullableWithAggregatesFilter<"DocumentVersion"> | string | null;
     scope?: Prisma.StringNullableWithAggregatesFilter<"DocumentVersion"> | string | null;
     responsibilities?: Prisma.StringNullableWithAggregatesFilter<"DocumentVersion"> | string | null;
@@ -312,6 +331,7 @@ export type DocumentVersionCreateInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -329,6 +349,7 @@ export type DocumentVersionCreateInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateInput = {
     id?: string;
@@ -338,6 +359,7 @@ export type DocumentVersionUncheckedCreateInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -354,6 +376,7 @@ export type DocumentVersionUncheckedCreateInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -362,6 +385,7 @@ export type DocumentVersionUpdateInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -379,6 +403,7 @@ export type DocumentVersionUpdateInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -388,6 +413,7 @@ export type DocumentVersionUncheckedUpdateInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -404,6 +430,7 @@ export type DocumentVersionUncheckedUpdateInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateManyInput = {
     id?: string;
@@ -413,6 +440,7 @@ export type DocumentVersionCreateManyInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -429,6 +457,7 @@ export type DocumentVersionUpdateManyMutationInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -446,6 +475,7 @@ export type DocumentVersionUncheckedUpdateManyInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -475,6 +505,7 @@ export type DocumentVersionCountOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
     scope?: Prisma.SortOrder;
     responsibilities?: Prisma.SortOrder;
@@ -486,6 +517,7 @@ export type DocumentVersionCountOrderByAggregateInput = {
 };
 export type DocumentVersionAvgOrderByAggregateInput = {
     revisionNumber?: Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
 };
 export type DocumentVersionMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -495,6 +527,7 @@ export type DocumentVersionMaxOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
     scope?: Prisma.SortOrder;
     responsibilities?: Prisma.SortOrder;
@@ -512,6 +545,7 @@ export type DocumentVersionMinOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     effectiveDate?: Prisma.SortOrder;
     nextReviewDate?: Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
     purpose?: Prisma.SortOrder;
     scope?: Prisma.SortOrder;
     responsibilities?: Prisma.SortOrder;
@@ -523,6 +557,7 @@ export type DocumentVersionMinOrderByAggregateInput = {
 };
 export type DocumentVersionSumOrderByAggregateInput = {
     revisionNumber?: Prisma.SortOrder;
+    reviewIntervalYears?: Prisma.SortOrder;
 };
 export type DocumentVersionScalarRelationFilter = {
     is?: Prisma.DocumentVersionWhereInput;
@@ -683,6 +718,20 @@ export type DocumentVersionUpdateOneWithoutFilesNestedInput = {
     connect?: Prisma.DocumentVersionWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutFilesInput, Prisma.DocumentVersionUpdateWithoutFilesInput>, Prisma.DocumentVersionUncheckedUpdateWithoutFilesInput>;
 };
+export type DocumentVersionCreateNestedOneWithoutQualityRecordsInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutQualityRecordsInput;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+};
+export type DocumentVersionUpdateOneWithoutQualityRecordsNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentVersionCreateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.DocumentVersionCreateOrConnectWithoutQualityRecordsInput;
+    upsert?: Prisma.DocumentVersionUpsertWithoutQualityRecordsInput;
+    disconnect?: Prisma.DocumentVersionWhereInput | boolean;
+    delete?: Prisma.DocumentVersionWhereInput | boolean;
+    connect?: Prisma.DocumentVersionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentVersionUpdateToOneWithWhereWithoutQualityRecordsInput, Prisma.DocumentVersionUpdateWithoutQualityRecordsInput>, Prisma.DocumentVersionUncheckedUpdateWithoutQualityRecordsInput>;
+};
 export type DocumentVersionCreateWithoutDocumentInput = {
     id?: string;
     versionLabel: string;
@@ -690,6 +739,7 @@ export type DocumentVersionCreateWithoutDocumentInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -706,6 +756,7 @@ export type DocumentVersionCreateWithoutDocumentInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutDocumentInput = {
     id?: string;
@@ -714,6 +765,7 @@ export type DocumentVersionUncheckedCreateWithoutDocumentInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -730,6 +782,7 @@ export type DocumentVersionUncheckedCreateWithoutDocumentInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutDocumentInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -763,6 +816,7 @@ export type DocumentVersionScalarWhereInput = {
     status?: Prisma.EnumDocumentVersionStatusFilter<"DocumentVersion"> | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
     nextReviewDate?: Prisma.DateTimeNullableFilter<"DocumentVersion"> | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFilter<"DocumentVersion"> | number;
     purpose?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     scope?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
     responsibilities?: Prisma.StringNullableFilter<"DocumentVersion"> | string | null;
@@ -779,6 +833,7 @@ export type DocumentVersionCreateWithoutAssignmentsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -795,6 +850,7 @@ export type DocumentVersionCreateWithoutAssignmentsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutAssignmentsInput = {
     id?: string;
@@ -804,6 +860,7 @@ export type DocumentVersionUncheckedCreateWithoutAssignmentsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -819,6 +876,7 @@ export type DocumentVersionUncheckedCreateWithoutAssignmentsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutAssignmentsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -840,6 +898,7 @@ export type DocumentVersionUpdateWithoutAssignmentsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -856,6 +915,7 @@ export type DocumentVersionUpdateWithoutAssignmentsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutAssignmentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -865,6 +925,7 @@ export type DocumentVersionUncheckedUpdateWithoutAssignmentsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -880,6 +941,7 @@ export type DocumentVersionUncheckedUpdateWithoutAssignmentsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutApprovalsInput = {
     id?: string;
@@ -888,6 +950,7 @@ export type DocumentVersionCreateWithoutApprovalsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -904,6 +967,7 @@ export type DocumentVersionCreateWithoutApprovalsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutApprovalsInput = {
     id?: string;
@@ -913,6 +977,7 @@ export type DocumentVersionUncheckedCreateWithoutApprovalsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -928,6 +993,7 @@ export type DocumentVersionUncheckedCreateWithoutApprovalsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutApprovalsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -949,6 +1015,7 @@ export type DocumentVersionUpdateWithoutApprovalsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -965,6 +1032,7 @@ export type DocumentVersionUpdateWithoutApprovalsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutApprovalsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -974,6 +1042,7 @@ export type DocumentVersionUncheckedUpdateWithoutApprovalsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -989,6 +1058,7 @@ export type DocumentVersionUncheckedUpdateWithoutApprovalsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutComplianceRefsInput = {
     id?: string;
@@ -997,6 +1067,7 @@ export type DocumentVersionCreateWithoutComplianceRefsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1013,6 +1084,7 @@ export type DocumentVersionCreateWithoutComplianceRefsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutComplianceRefsInput = {
     id?: string;
@@ -1022,6 +1094,7 @@ export type DocumentVersionUncheckedCreateWithoutComplianceRefsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1037,6 +1110,7 @@ export type DocumentVersionUncheckedCreateWithoutComplianceRefsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutComplianceRefsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1058,6 +1132,7 @@ export type DocumentVersionUpdateWithoutComplianceRefsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1074,6 +1149,7 @@ export type DocumentVersionUpdateWithoutComplianceRefsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutComplianceRefsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1083,6 +1159,7 @@ export type DocumentVersionUncheckedUpdateWithoutComplianceRefsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1098,6 +1175,7 @@ export type DocumentVersionUncheckedUpdateWithoutComplianceRefsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutRevisionHistoryInput = {
     id?: string;
@@ -1106,6 +1184,7 @@ export type DocumentVersionCreateWithoutRevisionHistoryInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1122,6 +1201,7 @@ export type DocumentVersionCreateWithoutRevisionHistoryInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutRevisionHistoryInput = {
     id?: string;
@@ -1131,6 +1211,7 @@ export type DocumentVersionUncheckedCreateWithoutRevisionHistoryInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1146,6 +1227,7 @@ export type DocumentVersionUncheckedCreateWithoutRevisionHistoryInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutRevisionHistoryInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1167,6 +1249,7 @@ export type DocumentVersionUpdateWithoutRevisionHistoryInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1183,6 +1266,7 @@ export type DocumentVersionUpdateWithoutRevisionHistoryInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1192,6 +1276,7 @@ export type DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1207,6 +1292,7 @@ export type DocumentVersionUncheckedUpdateWithoutRevisionHistoryInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutChangeRequestsInput = {
     id?: string;
@@ -1215,6 +1301,7 @@ export type DocumentVersionCreateWithoutChangeRequestsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1231,6 +1318,7 @@ export type DocumentVersionCreateWithoutChangeRequestsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutChangeRequestsInput = {
     id?: string;
@@ -1240,6 +1328,7 @@ export type DocumentVersionUncheckedCreateWithoutChangeRequestsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1255,6 +1344,7 @@ export type DocumentVersionUncheckedCreateWithoutChangeRequestsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutChangeRequestsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1267,6 +1357,7 @@ export type DocumentVersionCreateWithoutIncorporatedChangeRequestsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1283,6 +1374,7 @@ export type DocumentVersionCreateWithoutIncorporatedChangeRequestsInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput = {
     id?: string;
@@ -1292,6 +1384,7 @@ export type DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1307,6 +1400,7 @@ export type DocumentVersionUncheckedCreateWithoutIncorporatedChangeRequestsInput
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutIncorporatedChangeRequestsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1328,6 +1422,7 @@ export type DocumentVersionUpdateWithoutChangeRequestsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1344,6 +1439,7 @@ export type DocumentVersionUpdateWithoutChangeRequestsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutChangeRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1353,6 +1449,7 @@ export type DocumentVersionUncheckedUpdateWithoutChangeRequestsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1368,6 +1465,7 @@ export type DocumentVersionUncheckedUpdateWithoutChangeRequestsInput = {
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUpsertWithoutIncorporatedChangeRequestsInput = {
     update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput, Prisma.DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput>;
@@ -1385,6 +1483,7 @@ export type DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1401,6 +1500,7 @@ export type DocumentVersionUpdateWithoutIncorporatedChangeRequestsInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1410,6 +1510,7 @@ export type DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1425,6 +1526,7 @@ export type DocumentVersionUncheckedUpdateWithoutIncorporatedChangeRequestsInput
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutPeriodicReviewsInput = {
     id?: string;
@@ -1433,6 +1535,7 @@ export type DocumentVersionCreateWithoutPeriodicReviewsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1449,6 +1552,7 @@ export type DocumentVersionCreateWithoutPeriodicReviewsInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput = {
     id?: string;
@@ -1458,6 +1562,7 @@ export type DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1473,6 +1578,7 @@ export type DocumentVersionUncheckedCreateWithoutPeriodicReviewsInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutPeriodicReviewsInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1494,6 +1600,7 @@ export type DocumentVersionUpdateWithoutPeriodicReviewsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1510,6 +1617,7 @@ export type DocumentVersionUpdateWithoutPeriodicReviewsInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1519,6 +1627,7 @@ export type DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1534,6 +1643,7 @@ export type DocumentVersionUncheckedUpdateWithoutPeriodicReviewsInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionCreateWithoutFilesInput = {
     id?: string;
@@ -1542,6 +1652,7 @@ export type DocumentVersionCreateWithoutFilesInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1558,6 +1669,7 @@ export type DocumentVersionCreateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionUncheckedCreateWithoutFilesInput = {
     id?: string;
@@ -1567,6 +1679,7 @@ export type DocumentVersionUncheckedCreateWithoutFilesInput = {
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1582,6 +1695,7 @@ export type DocumentVersionUncheckedCreateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutVersionInput;
 };
 export type DocumentVersionCreateOrConnectWithoutFilesInput = {
     where: Prisma.DocumentVersionWhereUniqueInput;
@@ -1603,6 +1717,7 @@ export type DocumentVersionUpdateWithoutFilesInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1619,6 +1734,7 @@ export type DocumentVersionUpdateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
 };
 export type DocumentVersionUncheckedUpdateWithoutFilesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1628,6 +1744,7 @@ export type DocumentVersionUncheckedUpdateWithoutFilesInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1643,14 +1760,16 @@ export type DocumentVersionUncheckedUpdateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
     incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
 };
-export type DocumentVersionCreateManyDocumentInput = {
+export type DocumentVersionCreateWithoutQualityRecordsInput = {
     id?: string;
     versionLabel: string;
     revisionNumber: number;
     status?: $Enums.DocumentVersionStatus;
     effectiveDate?: Date | string | null;
     nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
     purpose?: string | null;
     scope?: string | null;
     responsibilities?: string | null;
@@ -1659,14 +1778,63 @@ export type DocumentVersionCreateManyDocumentInput = {
     relatedDocuments?: string | null;
     complianceNote?: string | null;
     createdAt?: Date | string;
+    document: Prisma.DocumentCreateNestedOneWithoutVersionsInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutVersionInput;
 };
-export type DocumentVersionUpdateWithoutDocumentInput = {
+export type DocumentVersionUncheckedCreateWithoutQualityRecordsInput = {
+    id?: string;
+    documentId: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutVersionInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutVersionInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedCreateNestedManyWithoutVersionInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedCreateNestedManyWithoutVersionInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutSourceVersionInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutIncorporatedVersionInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutVersionInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutVersionInput;
+};
+export type DocumentVersionCreateOrConnectWithoutQualityRecordsInput = {
+    where: Prisma.DocumentVersionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedCreateWithoutQualityRecordsInput>;
+};
+export type DocumentVersionUpsertWithoutQualityRecordsInput = {
+    update: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedUpdateWithoutQualityRecordsInput>;
+    create: Prisma.XOR<Prisma.DocumentVersionCreateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedCreateWithoutQualityRecordsInput>;
+    where?: Prisma.DocumentVersionWhereInput;
+};
+export type DocumentVersionUpdateToOneWithWhereWithoutQualityRecordsInput = {
+    where?: Prisma.DocumentVersionWhereInput;
+    data: Prisma.XOR<Prisma.DocumentVersionUpdateWithoutQualityRecordsInput, Prisma.DocumentVersionUncheckedUpdateWithoutQualityRecordsInput>;
+};
+export type DocumentVersionUpdateWithoutQualityRecordsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1675,6 +1843,7 @@ export type DocumentVersionUpdateWithoutDocumentInput = {
     relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    document?: Prisma.DocumentUpdateOneRequiredWithoutVersionsNestedInput;
     assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
     approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
     complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
@@ -1684,13 +1853,15 @@ export type DocumentVersionUpdateWithoutDocumentInput = {
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
 };
-export type DocumentVersionUncheckedUpdateWithoutDocumentInput = {
+export type DocumentVersionUncheckedUpdateWithoutQualityRecordsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
     revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1708,6 +1879,75 @@ export type DocumentVersionUncheckedUpdateWithoutDocumentInput = {
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
 };
+export type DocumentVersionCreateManyDocumentInput = {
+    id?: string;
+    versionLabel: string;
+    revisionNumber: number;
+    status?: $Enums.DocumentVersionStatus;
+    effectiveDate?: Date | string | null;
+    nextReviewDate?: Date | string | null;
+    reviewIntervalYears?: number;
+    purpose?: string | null;
+    scope?: string | null;
+    responsibilities?: string | null;
+    procedureContent?: string | null;
+    recordsDescription?: string | null;
+    relatedDocuments?: string | null;
+    complianceNote?: string | null;
+    createdAt?: Date | string;
+};
+export type DocumentVersionUpdateWithoutDocumentInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutVersionNestedInput;
+};
+export type DocumentVersionUncheckedUpdateWithoutDocumentInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
+    revisionNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+    status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
+    effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
+    purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    procedureContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recordsDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    relatedDocuments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    complianceNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutVersionNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutVersionNestedInput;
+    complianceRefs?: Prisma.ComplianceReferenceUncheckedUpdateManyWithoutVersionNestedInput;
+    revisionHistory?: Prisma.RevisionHistoryUncheckedUpdateManyWithoutVersionNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutSourceVersionNestedInput;
+    incorporatedChangeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutIncorporatedVersionNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutVersionNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutVersionNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutVersionNestedInput;
+};
 export type DocumentVersionUncheckedUpdateManyWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     versionLabel?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1715,6 +1955,7 @@ export type DocumentVersionUncheckedUpdateManyWithoutDocumentInput = {
     status?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus;
     effectiveDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     nextReviewDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    reviewIntervalYears?: Prisma.IntFieldUpdateOperationsInput | number;
     purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     responsibilities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1733,6 +1974,7 @@ export type DocumentVersionCountOutputType = {
     incorporatedChangeRequests: number;
     periodicReviews: number;
     files: number;
+    qualityRecords: number;
 };
 export type DocumentVersionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assignments?: boolean | DocumentVersionCountOutputTypeCountAssignmentsArgs;
@@ -1743,6 +1985,7 @@ export type DocumentVersionCountOutputTypeSelect<ExtArgs extends runtime.Types.E
     incorporatedChangeRequests?: boolean | DocumentVersionCountOutputTypeCountIncorporatedChangeRequestsArgs;
     periodicReviews?: boolean | DocumentVersionCountOutputTypeCountPeriodicReviewsArgs;
     files?: boolean | DocumentVersionCountOutputTypeCountFilesArgs;
+    qualityRecords?: boolean | DocumentVersionCountOutputTypeCountQualityRecordsArgs;
 };
 export type DocumentVersionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentVersionCountOutputTypeSelect<ExtArgs> | null;
@@ -1771,6 +2014,9 @@ export type DocumentVersionCountOutputTypeCountPeriodicReviewsArgs<ExtArgs exten
 export type DocumentVersionCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.FileAssetWhereInput;
 };
+export type DocumentVersionCountOutputTypeCountQualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.QualityRecordWhereInput;
+};
 export type DocumentVersionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     documentId?: boolean;
@@ -1779,6 +2025,7 @@ export type DocumentVersionSelect<ExtArgs extends runtime.Types.Extensions.Inter
     status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
+    reviewIntervalYears?: boolean;
     purpose?: boolean;
     scope?: boolean;
     responsibilities?: boolean;
@@ -1796,6 +2043,7 @@ export type DocumentVersionSelect<ExtArgs extends runtime.Types.Extensions.Inter
     incorporatedChangeRequests?: boolean | Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>;
     periodicReviews?: boolean | Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>;
     files?: boolean | Prisma.DocumentVersion$filesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.DocumentVersion$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentVersionCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["documentVersion"]>;
 export type DocumentVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1806,6 +2054,7 @@ export type DocumentVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
+    reviewIntervalYears?: boolean;
     purpose?: boolean;
     scope?: boolean;
     responsibilities?: boolean;
@@ -1824,6 +2073,7 @@ export type DocumentVersionSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
+    reviewIntervalYears?: boolean;
     purpose?: boolean;
     scope?: boolean;
     responsibilities?: boolean;
@@ -1842,6 +2092,7 @@ export type DocumentVersionSelectScalar = {
     status?: boolean;
     effectiveDate?: boolean;
     nextReviewDate?: boolean;
+    reviewIntervalYears?: boolean;
     purpose?: boolean;
     scope?: boolean;
     responsibilities?: boolean;
@@ -1851,7 +2102,7 @@ export type DocumentVersionSelectScalar = {
     complianceNote?: boolean;
     createdAt?: boolean;
 };
-export type DocumentVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "versionLabel" | "revisionNumber" | "status" | "effectiveDate" | "nextReviewDate" | "purpose" | "scope" | "responsibilities" | "procedureContent" | "recordsDescription" | "relatedDocuments" | "complianceNote" | "createdAt", ExtArgs["result"]["documentVersion"]>;
+export type DocumentVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "versionLabel" | "revisionNumber" | "status" | "effectiveDate" | "nextReviewDate" | "reviewIntervalYears" | "purpose" | "scope" | "responsibilities" | "procedureContent" | "recordsDescription" | "relatedDocuments" | "complianceNote" | "createdAt", ExtArgs["result"]["documentVersion"]>;
 export type DocumentVersionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>;
     assignments?: boolean | Prisma.DocumentVersion$assignmentsArgs<ExtArgs>;
@@ -1862,6 +2113,7 @@ export type DocumentVersionInclude<ExtArgs extends runtime.Types.Extensions.Inte
     incorporatedChangeRequests?: boolean | Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>;
     periodicReviews?: boolean | Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>;
     files?: boolean | Prisma.DocumentVersion$filesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.DocumentVersion$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentVersionCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type DocumentVersionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1882,6 +2134,7 @@ export type $DocumentVersionPayload<ExtArgs extends runtime.Types.Extensions.Int
         incorporatedChangeRequests: Prisma.$ChangeRequestPayload<ExtArgs>[];
         periodicReviews: Prisma.$PeriodicReviewPayload<ExtArgs>[];
         files: Prisma.$FileAssetPayload<ExtArgs>[];
+        qualityRecords: Prisma.$QualityRecordPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1891,6 +2144,7 @@ export type $DocumentVersionPayload<ExtArgs extends runtime.Types.Extensions.Int
         status: $Enums.DocumentVersionStatus;
         effectiveDate: Date | null;
         nextReviewDate: Date | null;
+        reviewIntervalYears: number;
         purpose: string | null;
         scope: string | null;
         responsibilities: string | null;
@@ -1960,6 +2214,7 @@ export interface Prisma__DocumentVersionClient<T, Null = never, ExtArgs extends 
     incorporatedChangeRequests<T extends Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$incorporatedChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     periodicReviews<T extends Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$periodicReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PeriodicReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     files<T extends Prisma.DocumentVersion$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FileAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    qualityRecords<T extends Prisma.DocumentVersion$qualityRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentVersion$qualityRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1972,6 +2227,7 @@ export interface DocumentVersionFieldRefs {
     readonly status: Prisma.FieldRef<"DocumentVersion", 'DocumentVersionStatus'>;
     readonly effectiveDate: Prisma.FieldRef<"DocumentVersion", 'DateTime'>;
     readonly nextReviewDate: Prisma.FieldRef<"DocumentVersion", 'DateTime'>;
+    readonly reviewIntervalYears: Prisma.FieldRef<"DocumentVersion", 'Int'>;
     readonly purpose: Prisma.FieldRef<"DocumentVersion", 'String'>;
     readonly scope: Prisma.FieldRef<"DocumentVersion", 'String'>;
     readonly responsibilities: Prisma.FieldRef<"DocumentVersion", 'String'>;
@@ -2168,6 +2424,17 @@ export type DocumentVersion$filesArgs<ExtArgs extends runtime.Types.Extensions.I
     take?: number;
     skip?: number;
     distinct?: Prisma.FileAssetScalarFieldEnum | Prisma.FileAssetScalarFieldEnum[];
+};
+export type DocumentVersion$qualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.QualityRecordSelect<ExtArgs> | null;
+    omit?: Prisma.QualityRecordOmit<ExtArgs> | null;
+    include?: Prisma.QualityRecordInclude<ExtArgs> | null;
+    where?: Prisma.QualityRecordWhereInput;
+    orderBy?: Prisma.QualityRecordOrderByWithRelationInput | Prisma.QualityRecordOrderByWithRelationInput[];
+    cursor?: Prisma.QualityRecordWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.QualityRecordScalarFieldEnum | Prisma.QualityRecordScalarFieldEnum[];
 };
 export type DocumentVersionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentVersionSelect<ExtArgs> | null;

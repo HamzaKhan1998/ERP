@@ -4,6 +4,8 @@ export class CreateProcedureDto {
     controlNumber;
     versionLabel;
     revisionNumber;
+    effectiveDate;
+    reviewIntervalYears;
     preparedByEmail;
     reviewedByEmail;
     approvedByEmail;
@@ -14,6 +16,11 @@ export class CreateProcedureDto {
     recordsDescription;
     relatedDocuments;
     complianceNote;
+    complianceStandard;
+    complianceEdition;
+    complianceClause;
+    revisionPageNumber;
+    revisionDescription;
 }
 export class DocumentDecisionDto {
     decision;

@@ -23,6 +23,9 @@ export declare const ModelName: {
     readonly ChangeRequest: "ChangeRequest";
     readonly PeriodicReview: "PeriodicReview";
     readonly FileAsset: "FileAsset";
+    readonly FormTemplate: "FormTemplate";
+    readonly FormField: "FormField";
+    readonly QualityRecord: "QualityRecord";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -76,6 +79,7 @@ export declare const DocumentVersionScalarFieldEnum: {
     readonly status: "status";
     readonly effectiveDate: "effectiveDate";
     readonly nextReviewDate: "nextReviewDate";
+    readonly reviewIntervalYears: "reviewIntervalYears";
     readonly purpose: "purpose";
     readonly scope: "scope";
     readonly responsibilities: "responsibilities";
@@ -163,6 +167,7 @@ export declare const FileAssetScalarFieldEnum: {
     readonly tenantId: "tenantId";
     readonly documentId: "documentId";
     readonly versionId: "versionId";
+    readonly qualityRecordId: "qualityRecordId";
     readonly uploadedById: "uploadedById";
     readonly originalName: "originalName";
     readonly storageKey: "storageKey";
@@ -172,11 +177,55 @@ export declare const FileAssetScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type FileAssetScalarFieldEnum = (typeof FileAssetScalarFieldEnum)[keyof typeof FileAssetScalarFieldEnum];
+export declare const FormTemplateScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly title: "title";
+    readonly controlNumber: "controlNumber";
+    readonly description: "description";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type FormTemplateScalarFieldEnum = (typeof FormTemplateScalarFieldEnum)[keyof typeof FormTemplateScalarFieldEnum];
+export declare const FormFieldScalarFieldEnum: {
+    readonly id: "id";
+    readonly templateId: "templateId";
+    readonly fieldKey: "fieldKey";
+    readonly label: "label";
+    readonly type: "type";
+    readonly required: "required";
+    readonly optionsJson: "optionsJson";
+    readonly sortOrder: "sortOrder";
+};
+export type FormFieldScalarFieldEnum = (typeof FormFieldScalarFieldEnum)[keyof typeof FormFieldScalarFieldEnum];
+export declare const QualityRecordScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly templateId: "templateId";
+    readonly documentId: "documentId";
+    readonly versionId: "versionId";
+    readonly completedById: "completedById";
+    readonly status: "status";
+    readonly values: "values";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type QualityRecordScalarFieldEnum = (typeof QualityRecordScalarFieldEnum)[keyof typeof QualityRecordScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
 };
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const NullableJsonNullValueInput: {
+    readonly DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+};
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
 export declare const QueryMode: {
     readonly default: "default";
     readonly insensitive: "insensitive";
@@ -187,3 +236,9 @@ export declare const NullsOrder: {
     readonly last: "last";
 };
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const JsonNullValueFilter: {
+    readonly DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+    readonly AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
+};
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];

@@ -66,5 +66,14 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get fileAsset(): Prisma.FileAssetDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get formTemplate(): Prisma.FormTemplateDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get formField(): Prisma.FormFieldDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get qualityRecord(): Prisma.QualityRecordDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

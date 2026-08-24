@@ -127,6 +127,8 @@ export type DocumentWhereInput = {
     relatedFrom?: Prisma.DocumentRelationListRelationFilter;
     relatedTo?: Prisma.DocumentRelationListRelationFilter;
     files?: Prisma.FileAssetListRelationFilter;
+    formTemplates?: Prisma.FormTemplateListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 };
 export type DocumentOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -143,6 +145,8 @@ export type DocumentOrderByWithRelationInput = {
     relatedFrom?: Prisma.DocumentRelationOrderByRelationAggregateInput;
     relatedTo?: Prisma.DocumentRelationOrderByRelationAggregateInput;
     files?: Prisma.FileAssetOrderByRelationAggregateInput;
+    formTemplates?: Prisma.FormTemplateOrderByRelationAggregateInput;
+    qualityRecords?: Prisma.QualityRecordOrderByRelationAggregateInput;
 };
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -163,6 +167,8 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
     relatedFrom?: Prisma.DocumentRelationListRelationFilter;
     relatedTo?: Prisma.DocumentRelationListRelationFilter;
     files?: Prisma.FileAssetListRelationFilter;
+    formTemplates?: Prisma.FormTemplateListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 }, "id" | "tenantId_controlNumber">;
 export type DocumentOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -204,6 +210,8 @@ export type DocumentCreateInput = {
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateInput = {
     id?: string;
@@ -219,6 +227,8 @@ export type DocumentUncheckedCreateInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -234,6 +244,8 @@ export type DocumentUpdateInput = {
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -249,6 +261,8 @@ export type DocumentUncheckedUpdateInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentCreateManyInput = {
     id?: string;
@@ -435,6 +449,34 @@ export type DocumentUpdateOneWithoutFilesNestedInput = {
     connect?: Prisma.DocumentWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutFilesInput, Prisma.DocumentUpdateWithoutFilesInput>, Prisma.DocumentUncheckedUpdateWithoutFilesInput>;
 };
+export type DocumentCreateNestedOneWithoutFormTemplatesInput = {
+    create?: Prisma.XOR<Prisma.DocumentCreateWithoutFormTemplatesInput, Prisma.DocumentUncheckedCreateWithoutFormTemplatesInput>;
+    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutFormTemplatesInput;
+    connect?: Prisma.DocumentWhereUniqueInput;
+};
+export type DocumentUpdateOneWithoutFormTemplatesNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentCreateWithoutFormTemplatesInput, Prisma.DocumentUncheckedCreateWithoutFormTemplatesInput>;
+    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutFormTemplatesInput;
+    upsert?: Prisma.DocumentUpsertWithoutFormTemplatesInput;
+    disconnect?: Prisma.DocumentWhereInput | boolean;
+    delete?: Prisma.DocumentWhereInput | boolean;
+    connect?: Prisma.DocumentWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutFormTemplatesInput, Prisma.DocumentUpdateWithoutFormTemplatesInput>, Prisma.DocumentUncheckedUpdateWithoutFormTemplatesInput>;
+};
+export type DocumentCreateNestedOneWithoutQualityRecordsInput = {
+    create?: Prisma.XOR<Prisma.DocumentCreateWithoutQualityRecordsInput, Prisma.DocumentUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutQualityRecordsInput;
+    connect?: Prisma.DocumentWhereUniqueInput;
+};
+export type DocumentUpdateOneWithoutQualityRecordsNestedInput = {
+    create?: Prisma.XOR<Prisma.DocumentCreateWithoutQualityRecordsInput, Prisma.DocumentUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutQualityRecordsInput;
+    upsert?: Prisma.DocumentUpsertWithoutQualityRecordsInput;
+    disconnect?: Prisma.DocumentWhereInput | boolean;
+    delete?: Prisma.DocumentWhereInput | boolean;
+    connect?: Prisma.DocumentWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutQualityRecordsInput, Prisma.DocumentUpdateWithoutQualityRecordsInput>, Prisma.DocumentUncheckedUpdateWithoutQualityRecordsInput>;
+};
 export type DocumentCreateWithoutTenantInput = {
     id?: string;
     title: string;
@@ -448,6 +490,8 @@ export type DocumentCreateWithoutTenantInput = {
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutTenantInput = {
     id?: string;
@@ -462,6 +506,8 @@ export type DocumentUncheckedCreateWithoutTenantInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutTenantInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -510,6 +556,8 @@ export type DocumentCreateWithoutVersionsInput = {
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutVersionsInput = {
     id?: string;
@@ -524,6 +572,8 @@ export type DocumentUncheckedCreateWithoutVersionsInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutVersionsInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -551,6 +601,8 @@ export type DocumentUpdateWithoutVersionsInput = {
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutVersionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -565,6 +617,8 @@ export type DocumentUncheckedUpdateWithoutVersionsInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentCreateWithoutRelatedFromInput = {
     id?: string;
@@ -579,6 +633,8 @@ export type DocumentCreateWithoutRelatedFromInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutRelatedFromInput = {
     id?: string;
@@ -593,6 +649,8 @@ export type DocumentUncheckedCreateWithoutRelatedFromInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutRelatedFromInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -611,6 +669,8 @@ export type DocumentCreateWithoutRelatedToInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDocumentInput;
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutRelatedToInput = {
     id?: string;
@@ -625,6 +685,8 @@ export type DocumentUncheckedCreateWithoutRelatedToInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDocumentInput;
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutRelatedToInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -652,6 +714,8 @@ export type DocumentUpdateWithoutRelatedFromInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutRelatedFromInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -666,6 +730,8 @@ export type DocumentUncheckedUpdateWithoutRelatedFromInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUpsertWithoutRelatedToInput = {
     update: Prisma.XOR<Prisma.DocumentUpdateWithoutRelatedToInput, Prisma.DocumentUncheckedUpdateWithoutRelatedToInput>;
@@ -689,6 +755,8 @@ export type DocumentUpdateWithoutRelatedToInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDocumentNestedInput;
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutRelatedToInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -703,6 +771,8 @@ export type DocumentUncheckedUpdateWithoutRelatedToInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDocumentNestedInput;
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentCreateWithoutChangeRequestsInput = {
     id?: string;
@@ -717,6 +787,8 @@ export type DocumentCreateWithoutChangeRequestsInput = {
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutChangeRequestsInput = {
     id?: string;
@@ -731,6 +803,8 @@ export type DocumentUncheckedCreateWithoutChangeRequestsInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
     files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutChangeRequestsInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -758,6 +832,8 @@ export type DocumentUpdateWithoutChangeRequestsInput = {
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutChangeRequestsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -772,6 +848,8 @@ export type DocumentUncheckedUpdateWithoutChangeRequestsInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentCreateWithoutFilesInput = {
     id?: string;
@@ -786,6 +864,8 @@ export type DocumentCreateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDocumentInput;
     relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentUncheckedCreateWithoutFilesInput = {
     id?: string;
@@ -800,6 +880,8 @@ export type DocumentUncheckedCreateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDocumentInput;
     relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
     relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
 };
 export type DocumentCreateOrConnectWithoutFilesInput = {
     where: Prisma.DocumentWhereUniqueInput;
@@ -827,6 +909,8 @@ export type DocumentUpdateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDocumentNestedInput;
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutFilesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -841,6 +925,162 @@ export type DocumentUncheckedUpdateWithoutFilesInput = {
     changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDocumentNestedInput;
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
+};
+export type DocumentCreateWithoutFormTemplatesInput = {
+    id?: string;
+    title: string;
+    controlNumber: string;
+    level: $Enums.DocumentLevel;
+    status?: $Enums.DocumentStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    tenant: Prisma.TenantCreateNestedOneWithoutDocumentsInput;
+    versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDocumentInput;
+    relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
+    relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutDocumentInput;
+};
+export type DocumentUncheckedCreateWithoutFormTemplatesInput = {
+    id?: string;
+    tenantId: string;
+    title: string;
+    controlNumber: string;
+    level: $Enums.DocumentLevel;
+    status?: $Enums.DocumentStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDocumentInput;
+    relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
+    relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutDocumentInput;
+};
+export type DocumentCreateOrConnectWithoutFormTemplatesInput = {
+    where: Prisma.DocumentWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentCreateWithoutFormTemplatesInput, Prisma.DocumentUncheckedCreateWithoutFormTemplatesInput>;
+};
+export type DocumentUpsertWithoutFormTemplatesInput = {
+    update: Prisma.XOR<Prisma.DocumentUpdateWithoutFormTemplatesInput, Prisma.DocumentUncheckedUpdateWithoutFormTemplatesInput>;
+    create: Prisma.XOR<Prisma.DocumentCreateWithoutFormTemplatesInput, Prisma.DocumentUncheckedCreateWithoutFormTemplatesInput>;
+    where?: Prisma.DocumentWhereInput;
+};
+export type DocumentUpdateToOneWithWhereWithoutFormTemplatesInput = {
+    where?: Prisma.DocumentWhereInput;
+    data: Prisma.XOR<Prisma.DocumentUpdateWithoutFormTemplatesInput, Prisma.DocumentUncheckedUpdateWithoutFormTemplatesInput>;
+};
+export type DocumentUpdateWithoutFormTemplatesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    controlNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+    level?: Prisma.EnumDocumentLevelFieldUpdateOperationsInput | $Enums.DocumentLevel;
+    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentsNestedInput;
+    versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDocumentNestedInput;
+    relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
+    relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
+};
+export type DocumentUncheckedUpdateWithoutFormTemplatesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    controlNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+    level?: Prisma.EnumDocumentLevelFieldUpdateOperationsInput | $Enums.DocumentLevel;
+    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDocumentNestedInput;
+    relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
+    relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
+};
+export type DocumentCreateWithoutQualityRecordsInput = {
+    id?: string;
+    title: string;
+    controlNumber: string;
+    level: $Enums.DocumentLevel;
+    status?: $Enums.DocumentStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    tenant: Prisma.TenantCreateNestedOneWithoutDocumentsInput;
+    versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput;
+    changeRequests?: Prisma.ChangeRequestCreateNestedManyWithoutDocumentInput;
+    relatedFrom?: Prisma.DocumentRelationCreateNestedManyWithoutFromDocumentInput;
+    relatedTo?: Prisma.DocumentRelationCreateNestedManyWithoutToDocumentInput;
+    files?: Prisma.FileAssetCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateCreateNestedManyWithoutDocumentInput;
+};
+export type DocumentUncheckedCreateWithoutQualityRecordsInput = {
+    id?: string;
+    tenantId: string;
+    title: string;
+    controlNumber: string;
+    level: $Enums.DocumentLevel;
+    status?: $Enums.DocumentStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutDocumentInput;
+    relatedFrom?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutFromDocumentInput;
+    relatedTo?: Prisma.DocumentRelationUncheckedCreateNestedManyWithoutToDocumentInput;
+    files?: Prisma.FileAssetUncheckedCreateNestedManyWithoutDocumentInput;
+    formTemplates?: Prisma.FormTemplateUncheckedCreateNestedManyWithoutDocumentInput;
+};
+export type DocumentCreateOrConnectWithoutQualityRecordsInput = {
+    where: Prisma.DocumentWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DocumentCreateWithoutQualityRecordsInput, Prisma.DocumentUncheckedCreateWithoutQualityRecordsInput>;
+};
+export type DocumentUpsertWithoutQualityRecordsInput = {
+    update: Prisma.XOR<Prisma.DocumentUpdateWithoutQualityRecordsInput, Prisma.DocumentUncheckedUpdateWithoutQualityRecordsInput>;
+    create: Prisma.XOR<Prisma.DocumentCreateWithoutQualityRecordsInput, Prisma.DocumentUncheckedCreateWithoutQualityRecordsInput>;
+    where?: Prisma.DocumentWhereInput;
+};
+export type DocumentUpdateToOneWithWhereWithoutQualityRecordsInput = {
+    where?: Prisma.DocumentWhereInput;
+    data: Prisma.XOR<Prisma.DocumentUpdateWithoutQualityRecordsInput, Prisma.DocumentUncheckedUpdateWithoutQualityRecordsInput>;
+};
+export type DocumentUpdateWithoutQualityRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    controlNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+    level?: Prisma.EnumDocumentLevelFieldUpdateOperationsInput | $Enums.DocumentLevel;
+    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentsNestedInput;
+    versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput;
+    changeRequests?: Prisma.ChangeRequestUpdateManyWithoutDocumentNestedInput;
+    relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
+    relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
+    files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+};
+export type DocumentUncheckedUpdateWithoutQualityRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    controlNumber?: Prisma.StringFieldUpdateOperationsInput | string;
+    level?: Prisma.EnumDocumentLevelFieldUpdateOperationsInput | $Enums.DocumentLevel;
+    status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput;
+    changeRequests?: Prisma.ChangeRequestUncheckedUpdateManyWithoutDocumentNestedInput;
+    relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
+    relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
+    files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentCreateManyTenantInput = {
     id?: string;
@@ -864,6 +1104,8 @@ export type DocumentUpdateWithoutTenantInput = {
     relatedFrom?: Prisma.DocumentRelationUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -878,6 +1120,8 @@ export type DocumentUncheckedUpdateWithoutTenantInput = {
     relatedFrom?: Prisma.DocumentRelationUncheckedUpdateManyWithoutFromDocumentNestedInput;
     relatedTo?: Prisma.DocumentRelationUncheckedUpdateManyWithoutToDocumentNestedInput;
     files?: Prisma.FileAssetUncheckedUpdateManyWithoutDocumentNestedInput;
+    formTemplates?: Prisma.FormTemplateUncheckedUpdateManyWithoutDocumentNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutDocumentNestedInput;
 };
 export type DocumentUncheckedUpdateManyWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -894,6 +1138,8 @@ export type DocumentCountOutputType = {
     relatedFrom: number;
     relatedTo: number;
     files: number;
+    formTemplates: number;
+    qualityRecords: number;
 };
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     versions?: boolean | DocumentCountOutputTypeCountVersionsArgs;
@@ -901,6 +1147,8 @@ export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
     relatedFrom?: boolean | DocumentCountOutputTypeCountRelatedFromArgs;
     relatedTo?: boolean | DocumentCountOutputTypeCountRelatedToArgs;
     files?: boolean | DocumentCountOutputTypeCountFilesArgs;
+    formTemplates?: boolean | DocumentCountOutputTypeCountFormTemplatesArgs;
+    qualityRecords?: boolean | DocumentCountOutputTypeCountQualityRecordsArgs;
 };
 export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentCountOutputTypeSelect<ExtArgs> | null;
@@ -920,6 +1168,12 @@ export type DocumentCountOutputTypeCountRelatedToArgs<ExtArgs extends runtime.Ty
 export type DocumentCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.FileAssetWhereInput;
 };
+export type DocumentCountOutputTypeCountFormTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FormTemplateWhereInput;
+};
+export type DocumentCountOutputTypeCountQualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.QualityRecordWhereInput;
+};
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     tenantId?: boolean;
@@ -935,6 +1189,8 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     relatedFrom?: boolean | Prisma.Document$relatedFromArgs<ExtArgs>;
     relatedTo?: boolean | Prisma.Document$relatedToArgs<ExtArgs>;
     files?: boolean | Prisma.Document$filesArgs<ExtArgs>;
+    formTemplates?: boolean | Prisma.Document$formTemplatesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.Document$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["document"]>;
 export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -977,6 +1233,8 @@ export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
     relatedFrom?: boolean | Prisma.Document$relatedFromArgs<ExtArgs>;
     relatedTo?: boolean | Prisma.Document$relatedToArgs<ExtArgs>;
     files?: boolean | Prisma.Document$filesArgs<ExtArgs>;
+    formTemplates?: boolean | Prisma.Document$formTemplatesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.Document$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -994,6 +1252,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
         relatedFrom: Prisma.$DocumentRelationPayload<ExtArgs>[];
         relatedTo: Prisma.$DocumentRelationPayload<ExtArgs>[];
         files: Prisma.$FileAssetPayload<ExtArgs>[];
+        formTemplates: Prisma.$FormTemplatePayload<ExtArgs>[];
+        qualityRecords: Prisma.$QualityRecordPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1062,6 +1322,8 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
     relatedFrom<T extends Prisma.Document$relatedFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$relatedFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     relatedTo<T extends Prisma.Document$relatedToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$relatedToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     files<T extends Prisma.Document$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FileAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    formTemplates<T extends Prisma.Document$formTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$formTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FormTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    qualityRecords<T extends Prisma.Document$qualityRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$qualityRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1230,6 +1492,28 @@ export type Document$filesArgs<ExtArgs extends runtime.Types.Extensions.Internal
     take?: number;
     skip?: number;
     distinct?: Prisma.FileAssetScalarFieldEnum | Prisma.FileAssetScalarFieldEnum[];
+};
+export type Document$formTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.FormTemplateSelect<ExtArgs> | null;
+    omit?: Prisma.FormTemplateOmit<ExtArgs> | null;
+    include?: Prisma.FormTemplateInclude<ExtArgs> | null;
+    where?: Prisma.FormTemplateWhereInput;
+    orderBy?: Prisma.FormTemplateOrderByWithRelationInput | Prisma.FormTemplateOrderByWithRelationInput[];
+    cursor?: Prisma.FormTemplateWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FormTemplateScalarFieldEnum | Prisma.FormTemplateScalarFieldEnum[];
+};
+export type Document$qualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.QualityRecordSelect<ExtArgs> | null;
+    omit?: Prisma.QualityRecordOmit<ExtArgs> | null;
+    include?: Prisma.QualityRecordInclude<ExtArgs> | null;
+    where?: Prisma.QualityRecordWhereInput;
+    orderBy?: Prisma.QualityRecordOrderByWithRelationInput | Prisma.QualityRecordOrderByWithRelationInput[];
+    cursor?: Prisma.QualityRecordWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.QualityRecordScalarFieldEnum | Prisma.QualityRecordScalarFieldEnum[];
 };
 export type DocumentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.DocumentSelect<ExtArgs> | null;

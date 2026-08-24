@@ -19,6 +19,9 @@ let PrismaService = class PrismaService extends PrismaClient {
     async onModuleInit() {
         await this.$connect();
     }
+    async onModuleDestroy() {
+        await this.$disconnect();
+    }
     async healthCheck() {
         try {
             const result = await this.$queryRaw `

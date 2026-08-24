@@ -70,6 +70,11 @@ The initial schema has been defined and validated in both the root `prisma/schem
 - `ComplianceReference`: standard, edition, clause, and requirement description
 - `RevisionHistory`: page, revision, and change description
 - `DocumentRelation`: links between procedures, work instructions, forms, and related documents
+- `ChangeRequest`: controlled request to amend an approved document
+- `PeriodicReview`: mandatory review evidence and next-review scheduling
+- `FormTemplate` and `FormField`: blank Level 4 templates and their dynamic fields
+- `QualityRecord`: completed data captured from a Level 4 template
+- `FileAsset`: tenant-scoped PDF/image metadata and storage reference
 
 The model keeps organizational designation separate from workflow assignment. A user may be a Departmental Head while being assigned as Prepared By for one document and Reviewed By for another.
 
@@ -93,10 +98,19 @@ frontend/src/app/
 ├── tenant-admin/                Tenant Admin members and assignments
 ├── admin/                       Compatibility redirect to /tenant-admin
 ├── documents/
-│   └── procedures/new/          Level 2 procedure form prototype
+│   ├── procedures/new/           Level 2 procedure form
+│   ├── approvals/                CEO/MD approval workspace
+│   ├── change-requests/          Document change workflow
+│   └── periodic-reviews/         Periodic review workflow
+├── forms/                        Level 4 templates and quality records
+├── login/                        Tenant and Platform Admin login
 └── page.tsx                     Main dashboard
 
 backend/src/
+├── auth/                         JWT login and authorization guards
+├── documents/                    Documents, approvals, changes, and reviews
+├── files/                        PDF/image upload and download
+├── forms/                        Level 4 templates and quality records
 ├── tenant-admin/                Tenant member management API
 ├── prisma/                      Prisma service and database access
 ├── app.controller.ts            Backend health endpoint
@@ -106,7 +120,7 @@ prisma/
 └── schema.prisma                Shared root Prisma schema
 ```
 
-The structure is organized around product domains. The CEO/MD approval experience should be added under `frontend/src/app/documents/approvals/`, because approval is a document workflow rather than a separate organizational administration area.
+The structure is organized around product domains. The CEO/MD approval experience is located under `frontend/src/app/documents/approvals/`, because approval is a document workflow rather than a separate organizational administration area.
 
 ---
 
@@ -524,7 +538,37 @@ Document Metadata
 
 The first implementation should support saving a draft, assigning the process owner, routing the procedure through Prepared By / Reviewed By / Approved By, recording revisions, and publishing an approved version. The Word template can remain an import/export reference while the structured form becomes the system's authoritative working record.
 
-### Procedure Form Prototype
+### Level 4 Forms and Quality Records Implementation
+
+The Level 4 form workspace is available at:
+
+```text
+/forms
+/forms/templates/new
+/forms/:id
+```
+
+The secured backend API supports:
+
+```text
+GET  /forms/templates
+GET  /forms/templates/:id
+POST /forms/templates
+GET  /forms/records
+POST /forms/records
+```
+
+`FormTemplate` and `FormField` represent the blank controlled form. `QualityRecord` represents data captured after a person performs the activity. Required fields are validated before a completed record is stored. The record is tenant-scoped and linked to the user who completed it.
+
+Level 4 templates can optionally link to a parent procedure or work instruction. `FILE` fields accept PDF, JPEG, and PNG uploads after a quality record is created:
+
+```text
+POST /files/records/:recordId
+```
+
+The file is stored separately from the completed record, with tenant ownership, checksum, MIME type, and uploader metadata preserved.
+
+### Procedure Form
 
 The first structured procedure form is available at:
 
@@ -532,7 +576,7 @@ The first structured procedure form is available at:
 http://localhost:3000/documents/procedures/new
 ```
 
-The prototype includes:
+The current UI includes:
 
 - document title, control number, issue/revision, review interval, department, and effective date
 - Prepared By, Reviewed By, and Approved By assignment cards
@@ -543,7 +587,7 @@ The prototype includes:
 - revision history row
 - Save Draft and Submit for Review actions
 
-The form now sends structured procedure data to NestJS using the authenticated JWT. Save Draft creates a persisted draft, while Submit for Review creates the document and moves it to `PENDING_APPROVAL`. Revision history, related Level 4 templates, compliance references, and approval decisions still need their full persisted UI workflows.
+The form now sends structured procedure data to NestJS using the authenticated JWT. Save Draft creates a persisted draft, while Submit for Review creates the document and moves it to `PENDING_APPROVAL`. Effective dates, review intervals, compliance references, and revision history are persisted; parent Level 4 template selection and richer revision-history editing remain UI enhancements.
 
 ### CEO/MD Approver Workspace
 
@@ -791,6 +835,26 @@ The database must contain the referenced tenant and users before a procedure can
 - Added PDF/image attachment picker to the Level 2 procedure form
 - Added file size, MIME type, checksum, document ownership, and tenant access checks
 - Verified unsupported DOCX upload is rejected with HTTP `400`
+- Added Level 4 `FormTemplate`, `FormField`, and `QualityRecord` models and migration `add_level4_forms_records`
+- Added tenant-scoped form-template and quality-record APIs
+- Added required-field validation for completed quality records
+- Added form library, template builder, and dynamic record-entry UI
+- Verified a blank template and separate `SUBMITTED` quality record are persisted end to end
+- Replaced the fixed Level 4 starter field set with a dynamic template builder
+- Added field type selection, required flags, dropdown options, field removal, and reordering
+- Added file attachment as a configurable Level 4 field type
+- Verified the dynamic template builder frontend build succeeds
+- Added optional parent document linkage for Level 4 templates
+- Added quality-record PDF/image attachments through `FileAsset`
+- Added secured record attachment upload endpoint
+- Verified backend and frontend builds after Level 4 attachment integration
+- Persisted procedure effective dates, review intervals, compliance references, and revision history
+- Added explicit `APPROVED` document-version state between approval and publication
+- Restricted approval decisions to versions whose parent document is `PENDING_APPROVAL`
+- Restricted publication to approved versions and kept older versions superseded
+- Enforced same-tenant validation for form parent documents and quality-record document/version links
+- Added PDF/JPEG/PNG file-signature validation in addition to MIME checks
+- Configured backend Jest tests for ESM and closed Prisma connections after tests
 ### Change Request Workflow
 
 ### Not Yet Completed
@@ -801,7 +865,7 @@ The database must contain the referenced tenant and users before a procedure can
 - Implement role-based access control (RBAC)
 - Implement audit management
 - Implement findings and CAPA management
-- Complete document/evidence management with records, retention, and cloud storage
+- Complete document/evidence management with record attachments, retention, and cloud storage
 - Implement application audit logs
 - Deploy to GCP
 - Migrate PostgreSQL from local development to Cloud SQL
@@ -1072,13 +1136,13 @@ The current product is a well-defined prototype foundation, not yet a production
 | Maturity area | Current position | Future requirement |
 |---|---|---|
 | Feature completeness | Early functional vertical slice for document control | Complete document, audit, CAPA, training, records, and notification modules |
-| Compliance maturity | Document hierarchy, approval, change, and version rules defined and partially persisted | Immutable audit evidence, retention, traceability, and audit-ready reporting |
-| Security | JWT authentication, protected routes, and tenant-scoped member/document access implemented | MFA, session controls, token revocation, secure files, and monitoring |
-| Document control | Persisted procedures, versions, approvals, Change Requests, supersession, publication, and periodic reviews | Full electronic signatures, notifications, archive enforcement, and records |
+| Compliance maturity | Document hierarchy, approval, change, version, periodic-review, and quality-record rules defined and partially persisted | Immutable audit evidence, retention, traceability, and audit-ready reporting |
+| Security | JWT authentication, protected routes, tenant-scoped access, and local file validation implemented | MFA, session controls, token revocation, cloud file controls, and monitoring |
+| Document control | Persisted procedures, versions, approvals, Change Requests, supersession, publication, periodic reviews, and Level 4 templates/records | Full electronic signatures, notifications, archive enforcement, retention, and richer record controls |
 | QMS specialization | Good ISO/API-oriented direction | Clause mapping, standard templates, and industry-specific workflows |
 | Multi-tenancy | Tenant context and scoped member/document queries implemented for the current modules | Complete database/file isolation and Platform Admin tenant APIs |
 | User management | JWT login, Tenant Admin persistence, designations, and workflow assignments implemented | Invitations, MFA, granular permissions, delegation, and access history |
-| Files and evidence | Local PDF/image upload, metadata, checksum, and tenant-authorized download implemented | Cloud object storage, records, retention, scanning, and production access controls |
+| Files and evidence | Local PDF/image upload, record attachments, metadata, checksum, and tenant-authorized download implemented | Cloud object storage, malware scanning, retention, previews, and production access controls |
 | Integrations | Not implemented | Email, cloud storage, identity, HR, ERP, and reporting integrations |
 | Production readiness | Local development only | Testing, deployment, backups, observability, recovery, and operational support |
 
@@ -1097,21 +1161,28 @@ The product should preserve these advantages as it grows:
 
 The product should compete on clarity, focused workflows, standards-aware implementation, and ease of adoption rather than on enterprise feature volume alone.
 
-### Recommended Build Sequence
+### Recommended Next Build Sequence
 
-1. Authentication, user identity, and tenant isolation
-2. Persisted Tenant Admin and Platform Admin operations
-3. Persisted structured procedures and document versions
-4. Approval assignments and electronic approval evidence
-5. Change requests and periodic review workflows
-6. PDF/image file storage and document attachments
+Completed foundation:
+
+1. Authentication, user identity, and current tenant isolation controls
+2. Persisted structured procedures and document versions
+3. Approval assignments and approval decisions
+4. Change Requests and revision incorporation
+5. Periodic Reviews
+6. Local PDF/image storage
 7. Level 4 forms and completed quality records
-8. Training and competence management
-9. Audit management and findings
-10. CAPA management
-11. Notifications and escalations
-12. Security hardening and audit logs
-13. Automated tests and production deployment
+
+Next priorities:
+
+1. Connect Platform Admin tenant actions to backend APIs and Prisma
+2. Add richer document and record attachment browsing
+3. Add email notifications and training task generation
+4. Add application-wide audit logs and read acknowledgements
+5. Add MFA, session management, token revocation, and granular permissions
+6. Add cloud object storage, malware scanning, retention, and backups
+7. Implement audit management, findings, and CAPA
+8. Add automated integration/security tests and production deployment
 
 This roadmap keeps the first release focused on the document-control foundation while leaving room to grow into a broader ERP and QMS platform.
 
@@ -1159,7 +1230,7 @@ The first prototype includes five client tenants:
 - Platform Admin: manages all tenants and platform-level operations
 - Tenant Admin: manages users, roles, and permissions inside one company only
 
-The current Platform Admin page uses in-memory prototype data. Tenant records, admin assignments, status changes, authentication, and platform audit logs will be connected to NestJS, Prisma, and PostgreSQL as the tenant data model is implemented.
+The current Platform Admin page uses in-memory prototype data. Tenant records, admin assignments, status changes, and platform audit logs still need NestJS, Prisma, and PostgreSQL APIs. Platform Admin authentication already has a separate JWT login endpoint.
 
 ### 1. Initialize the project directory
 

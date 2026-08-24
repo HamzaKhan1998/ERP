@@ -19,6 +19,7 @@ export type FileAssetMinAggregateOutputType = {
     tenantId: string | null;
     documentId: string | null;
     versionId: string | null;
+    qualityRecordId: string | null;
     uploadedById: string | null;
     originalName: string | null;
     storageKey: string | null;
@@ -32,6 +33,7 @@ export type FileAssetMaxAggregateOutputType = {
     tenantId: string | null;
     documentId: string | null;
     versionId: string | null;
+    qualityRecordId: string | null;
     uploadedById: string | null;
     originalName: string | null;
     storageKey: string | null;
@@ -45,6 +47,7 @@ export type FileAssetCountAggregateOutputType = {
     tenantId: number;
     documentId: number;
     versionId: number;
+    qualityRecordId: number;
     uploadedById: number;
     originalName: number;
     storageKey: number;
@@ -65,6 +68,7 @@ export type FileAssetMinAggregateInputType = {
     tenantId?: true;
     documentId?: true;
     versionId?: true;
+    qualityRecordId?: true;
     uploadedById?: true;
     originalName?: true;
     storageKey?: true;
@@ -78,6 +82,7 @@ export type FileAssetMaxAggregateInputType = {
     tenantId?: true;
     documentId?: true;
     versionId?: true;
+    qualityRecordId?: true;
     uploadedById?: true;
     originalName?: true;
     storageKey?: true;
@@ -91,6 +96,7 @@ export type FileAssetCountAggregateInputType = {
     tenantId?: true;
     documentId?: true;
     versionId?: true;
+    qualityRecordId?: true;
     uploadedById?: true;
     originalName?: true;
     storageKey?: true;
@@ -133,6 +139,7 @@ export type FileAssetGroupByOutputType = {
     tenantId: string;
     documentId: string | null;
     versionId: string | null;
+    qualityRecordId: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -157,6 +164,7 @@ export type FileAssetWhereInput = {
     tenantId?: Prisma.StringFilter<"FileAsset"> | string;
     documentId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     versionId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
+    qualityRecordId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     uploadedById?: Prisma.StringFilter<"FileAsset"> | string;
     originalName?: Prisma.StringFilter<"FileAsset"> | string;
     storageKey?: Prisma.StringFilter<"FileAsset"> | string;
@@ -168,12 +176,14 @@ export type FileAssetWhereInput = {
     document?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null;
     version?: Prisma.XOR<Prisma.DocumentVersionNullableScalarRelationFilter, Prisma.DocumentVersionWhereInput> | null;
     uploadedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    qualityRecord?: Prisma.XOR<Prisma.QualityRecordNullableScalarRelationFilter, Prisma.QualityRecordWhereInput> | null;
 };
 export type FileAssetOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     tenantId?: Prisma.SortOrder;
     documentId?: Prisma.SortOrderInput | Prisma.SortOrder;
     versionId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    qualityRecordId?: Prisma.SortOrderInput | Prisma.SortOrder;
     uploadedById?: Prisma.SortOrder;
     originalName?: Prisma.SortOrder;
     storageKey?: Prisma.SortOrder;
@@ -185,6 +195,7 @@ export type FileAssetOrderByWithRelationInput = {
     document?: Prisma.DocumentOrderByWithRelationInput;
     version?: Prisma.DocumentVersionOrderByWithRelationInput;
     uploadedBy?: Prisma.UserOrderByWithRelationInput;
+    qualityRecord?: Prisma.QualityRecordOrderByWithRelationInput;
 };
 export type FileAssetWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -195,6 +206,7 @@ export type FileAssetWhereUniqueInput = Prisma.AtLeast<{
     tenantId?: Prisma.StringFilter<"FileAsset"> | string;
     documentId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     versionId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
+    qualityRecordId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     uploadedById?: Prisma.StringFilter<"FileAsset"> | string;
     originalName?: Prisma.StringFilter<"FileAsset"> | string;
     mimeType?: Prisma.StringFilter<"FileAsset"> | string;
@@ -205,12 +217,14 @@ export type FileAssetWhereUniqueInput = Prisma.AtLeast<{
     document?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null;
     version?: Prisma.XOR<Prisma.DocumentVersionNullableScalarRelationFilter, Prisma.DocumentVersionWhereInput> | null;
     uploadedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
+    qualityRecord?: Prisma.XOR<Prisma.QualityRecordNullableScalarRelationFilter, Prisma.QualityRecordWhereInput> | null;
 }, "id" | "storageKey">;
 export type FileAssetOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     tenantId?: Prisma.SortOrder;
     documentId?: Prisma.SortOrderInput | Prisma.SortOrder;
     versionId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    qualityRecordId?: Prisma.SortOrderInput | Prisma.SortOrder;
     uploadedById?: Prisma.SortOrder;
     originalName?: Prisma.SortOrder;
     storageKey?: Prisma.SortOrder;
@@ -232,6 +246,7 @@ export type FileAssetScalarWhereWithAggregatesInput = {
     tenantId?: Prisma.StringWithAggregatesFilter<"FileAsset"> | string;
     documentId?: Prisma.StringNullableWithAggregatesFilter<"FileAsset"> | string | null;
     versionId?: Prisma.StringNullableWithAggregatesFilter<"FileAsset"> | string | null;
+    qualityRecordId?: Prisma.StringNullableWithAggregatesFilter<"FileAsset"> | string | null;
     uploadedById?: Prisma.StringWithAggregatesFilter<"FileAsset"> | string;
     originalName?: Prisma.StringWithAggregatesFilter<"FileAsset"> | string;
     storageKey?: Prisma.StringWithAggregatesFilter<"FileAsset"> | string;
@@ -252,12 +267,14 @@ export type FileAssetCreateInput = {
     document?: Prisma.DocumentCreateNestedOneWithoutFilesInput;
     version?: Prisma.DocumentVersionCreateNestedOneWithoutFilesInput;
     uploadedBy: Prisma.UserCreateNestedOneWithoutUploadedFilesInput;
+    qualityRecord?: Prisma.QualityRecordCreateNestedOneWithoutAttachmentsInput;
 };
 export type FileAssetUncheckedCreateInput = {
     id?: string;
     tenantId: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -278,12 +295,14 @@ export type FileAssetUpdateInput = {
     document?: Prisma.DocumentUpdateOneWithoutFilesNestedInput;
     version?: Prisma.DocumentVersionUpdateOneWithoutFilesNestedInput;
     uploadedBy?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+    qualityRecord?: Prisma.QualityRecordUpdateOneWithoutAttachmentsNestedInput;
 };
 export type FileAssetUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -297,6 +316,7 @@ export type FileAssetCreateManyInput = {
     tenantId: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -319,6 +339,7 @@ export type FileAssetUncheckedUpdateManyInput = {
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -340,6 +361,7 @@ export type FileAssetCountOrderByAggregateInput = {
     tenantId?: Prisma.SortOrder;
     documentId?: Prisma.SortOrder;
     versionId?: Prisma.SortOrder;
+    qualityRecordId?: Prisma.SortOrder;
     uploadedById?: Prisma.SortOrder;
     originalName?: Prisma.SortOrder;
     storageKey?: Prisma.SortOrder;
@@ -356,6 +378,7 @@ export type FileAssetMaxOrderByAggregateInput = {
     tenantId?: Prisma.SortOrder;
     documentId?: Prisma.SortOrder;
     versionId?: Prisma.SortOrder;
+    qualityRecordId?: Prisma.SortOrder;
     uploadedById?: Prisma.SortOrder;
     originalName?: Prisma.SortOrder;
     storageKey?: Prisma.SortOrder;
@@ -369,6 +392,7 @@ export type FileAssetMinOrderByAggregateInput = {
     tenantId?: Prisma.SortOrder;
     documentId?: Prisma.SortOrder;
     versionId?: Prisma.SortOrder;
+    qualityRecordId?: Prisma.SortOrder;
     uploadedById?: Prisma.SortOrder;
     originalName?: Prisma.SortOrder;
     storageKey?: Prisma.SortOrder;
@@ -532,6 +556,44 @@ export type FileAssetUncheckedUpdateManyWithoutVersionNestedInput = {
     updateMany?: Prisma.FileAssetUpdateManyWithWhereWithoutVersionInput | Prisma.FileAssetUpdateManyWithWhereWithoutVersionInput[];
     deleteMany?: Prisma.FileAssetScalarWhereInput | Prisma.FileAssetScalarWhereInput[];
 };
+export type FileAssetCreateNestedManyWithoutQualityRecordInput = {
+    create?: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput> | Prisma.FileAssetCreateWithoutQualityRecordInput[] | Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput[];
+    connectOrCreate?: Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput | Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput[];
+    createMany?: Prisma.FileAssetCreateManyQualityRecordInputEnvelope;
+    connect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+};
+export type FileAssetUncheckedCreateNestedManyWithoutQualityRecordInput = {
+    create?: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput> | Prisma.FileAssetCreateWithoutQualityRecordInput[] | Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput[];
+    connectOrCreate?: Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput | Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput[];
+    createMany?: Prisma.FileAssetCreateManyQualityRecordInputEnvelope;
+    connect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+};
+export type FileAssetUpdateManyWithoutQualityRecordNestedInput = {
+    create?: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput> | Prisma.FileAssetCreateWithoutQualityRecordInput[] | Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput[];
+    connectOrCreate?: Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput | Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput[];
+    upsert?: Prisma.FileAssetUpsertWithWhereUniqueWithoutQualityRecordInput | Prisma.FileAssetUpsertWithWhereUniqueWithoutQualityRecordInput[];
+    createMany?: Prisma.FileAssetCreateManyQualityRecordInputEnvelope;
+    set?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    disconnect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    delete?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    connect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    update?: Prisma.FileAssetUpdateWithWhereUniqueWithoutQualityRecordInput | Prisma.FileAssetUpdateWithWhereUniqueWithoutQualityRecordInput[];
+    updateMany?: Prisma.FileAssetUpdateManyWithWhereWithoutQualityRecordInput | Prisma.FileAssetUpdateManyWithWhereWithoutQualityRecordInput[];
+    deleteMany?: Prisma.FileAssetScalarWhereInput | Prisma.FileAssetScalarWhereInput[];
+};
+export type FileAssetUncheckedUpdateManyWithoutQualityRecordNestedInput = {
+    create?: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput> | Prisma.FileAssetCreateWithoutQualityRecordInput[] | Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput[];
+    connectOrCreate?: Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput | Prisma.FileAssetCreateOrConnectWithoutQualityRecordInput[];
+    upsert?: Prisma.FileAssetUpsertWithWhereUniqueWithoutQualityRecordInput | Prisma.FileAssetUpsertWithWhereUniqueWithoutQualityRecordInput[];
+    createMany?: Prisma.FileAssetCreateManyQualityRecordInputEnvelope;
+    set?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    disconnect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    delete?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    connect?: Prisma.FileAssetWhereUniqueInput | Prisma.FileAssetWhereUniqueInput[];
+    update?: Prisma.FileAssetUpdateWithWhereUniqueWithoutQualityRecordInput | Prisma.FileAssetUpdateWithWhereUniqueWithoutQualityRecordInput[];
+    updateMany?: Prisma.FileAssetUpdateManyWithWhereWithoutQualityRecordInput | Prisma.FileAssetUpdateManyWithWhereWithoutQualityRecordInput[];
+    deleteMany?: Prisma.FileAssetScalarWhereInput | Prisma.FileAssetScalarWhereInput[];
+};
 export type FileAssetCreateWithoutTenantInput = {
     id?: string;
     originalName: string;
@@ -543,11 +605,13 @@ export type FileAssetCreateWithoutTenantInput = {
     document?: Prisma.DocumentCreateNestedOneWithoutFilesInput;
     version?: Prisma.DocumentVersionCreateNestedOneWithoutFilesInput;
     uploadedBy: Prisma.UserCreateNestedOneWithoutUploadedFilesInput;
+    qualityRecord?: Prisma.QualityRecordCreateNestedOneWithoutAttachmentsInput;
 };
 export type FileAssetUncheckedCreateWithoutTenantInput = {
     id?: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -585,6 +649,7 @@ export type FileAssetScalarWhereInput = {
     tenantId?: Prisma.StringFilter<"FileAsset"> | string;
     documentId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     versionId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
+    qualityRecordId?: Prisma.StringNullableFilter<"FileAsset"> | string | null;
     uploadedById?: Prisma.StringFilter<"FileAsset"> | string;
     originalName?: Prisma.StringFilter<"FileAsset"> | string;
     storageKey?: Prisma.StringFilter<"FileAsset"> | string;
@@ -604,12 +669,14 @@ export type FileAssetCreateWithoutUploadedByInput = {
     tenant: Prisma.TenantCreateNestedOneWithoutFilesInput;
     document?: Prisma.DocumentCreateNestedOneWithoutFilesInput;
     version?: Prisma.DocumentVersionCreateNestedOneWithoutFilesInput;
+    qualityRecord?: Prisma.QualityRecordCreateNestedOneWithoutAttachmentsInput;
 };
 export type FileAssetUncheckedCreateWithoutUploadedByInput = {
     id?: string;
     tenantId: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     originalName: string;
     storageKey: string;
     mimeType: string;
@@ -649,11 +716,13 @@ export type FileAssetCreateWithoutDocumentInput = {
     tenant: Prisma.TenantCreateNestedOneWithoutFilesInput;
     version?: Prisma.DocumentVersionCreateNestedOneWithoutFilesInput;
     uploadedBy: Prisma.UserCreateNestedOneWithoutUploadedFilesInput;
+    qualityRecord?: Prisma.QualityRecordCreateNestedOneWithoutAttachmentsInput;
 };
 export type FileAssetUncheckedCreateWithoutDocumentInput = {
     id?: string;
     tenantId: string;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -694,11 +763,13 @@ export type FileAssetCreateWithoutVersionInput = {
     tenant: Prisma.TenantCreateNestedOneWithoutFilesInput;
     document?: Prisma.DocumentCreateNestedOneWithoutFilesInput;
     uploadedBy: Prisma.UserCreateNestedOneWithoutUploadedFilesInput;
+    qualityRecord?: Prisma.QualityRecordCreateNestedOneWithoutAttachmentsInput;
 };
 export type FileAssetUncheckedCreateWithoutVersionInput = {
     id?: string;
     tenantId: string;
     documentId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -728,10 +799,58 @@ export type FileAssetUpdateManyWithWhereWithoutVersionInput = {
     where: Prisma.FileAssetScalarWhereInput;
     data: Prisma.XOR<Prisma.FileAssetUpdateManyMutationInput, Prisma.FileAssetUncheckedUpdateManyWithoutVersionInput>;
 };
+export type FileAssetCreateWithoutQualityRecordInput = {
+    id?: string;
+    originalName: string;
+    storageKey: string;
+    mimeType: string;
+    sizeBytes: number;
+    checksum: string;
+    createdAt?: Date | string;
+    tenant: Prisma.TenantCreateNestedOneWithoutFilesInput;
+    document?: Prisma.DocumentCreateNestedOneWithoutFilesInput;
+    version?: Prisma.DocumentVersionCreateNestedOneWithoutFilesInput;
+    uploadedBy: Prisma.UserCreateNestedOneWithoutUploadedFilesInput;
+};
+export type FileAssetUncheckedCreateWithoutQualityRecordInput = {
+    id?: string;
+    tenantId: string;
+    documentId?: string | null;
+    versionId?: string | null;
+    uploadedById: string;
+    originalName: string;
+    storageKey: string;
+    mimeType: string;
+    sizeBytes: number;
+    checksum: string;
+    createdAt?: Date | string;
+};
+export type FileAssetCreateOrConnectWithoutQualityRecordInput = {
+    where: Prisma.FileAssetWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput>;
+};
+export type FileAssetCreateManyQualityRecordInputEnvelope = {
+    data: Prisma.FileAssetCreateManyQualityRecordInput | Prisma.FileAssetCreateManyQualityRecordInput[];
+    skipDuplicates?: boolean;
+};
+export type FileAssetUpsertWithWhereUniqueWithoutQualityRecordInput = {
+    where: Prisma.FileAssetWhereUniqueInput;
+    update: Prisma.XOR<Prisma.FileAssetUpdateWithoutQualityRecordInput, Prisma.FileAssetUncheckedUpdateWithoutQualityRecordInput>;
+    create: Prisma.XOR<Prisma.FileAssetCreateWithoutQualityRecordInput, Prisma.FileAssetUncheckedCreateWithoutQualityRecordInput>;
+};
+export type FileAssetUpdateWithWhereUniqueWithoutQualityRecordInput = {
+    where: Prisma.FileAssetWhereUniqueInput;
+    data: Prisma.XOR<Prisma.FileAssetUpdateWithoutQualityRecordInput, Prisma.FileAssetUncheckedUpdateWithoutQualityRecordInput>;
+};
+export type FileAssetUpdateManyWithWhereWithoutQualityRecordInput = {
+    where: Prisma.FileAssetScalarWhereInput;
+    data: Prisma.XOR<Prisma.FileAssetUpdateManyMutationInput, Prisma.FileAssetUncheckedUpdateManyWithoutQualityRecordInput>;
+};
 export type FileAssetCreateManyTenantInput = {
     id?: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -751,11 +870,13 @@ export type FileAssetUpdateWithoutTenantInput = {
     document?: Prisma.DocumentUpdateOneWithoutFilesNestedInput;
     version?: Prisma.DocumentVersionUpdateOneWithoutFilesNestedInput;
     uploadedBy?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+    qualityRecord?: Prisma.QualityRecordUpdateOneWithoutAttachmentsNestedInput;
 };
 export type FileAssetUncheckedUpdateWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -768,6 +889,7 @@ export type FileAssetUncheckedUpdateManyWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -781,6 +903,7 @@ export type FileAssetCreateManyUploadedByInput = {
     tenantId: string;
     documentId?: string | null;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     originalName: string;
     storageKey: string;
     mimeType: string;
@@ -799,12 +922,14 @@ export type FileAssetUpdateWithoutUploadedByInput = {
     tenant?: Prisma.TenantUpdateOneRequiredWithoutFilesNestedInput;
     document?: Prisma.DocumentUpdateOneWithoutFilesNestedInput;
     version?: Prisma.DocumentVersionUpdateOneWithoutFilesNestedInput;
+    qualityRecord?: Prisma.QualityRecordUpdateOneWithoutAttachmentsNestedInput;
 };
 export type FileAssetUncheckedUpdateWithoutUploadedByInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -817,6 +942,7 @@ export type FileAssetUncheckedUpdateManyWithoutUploadedByInput = {
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
     mimeType?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -828,6 +954,7 @@ export type FileAssetCreateManyDocumentInput = {
     id?: string;
     tenantId: string;
     versionId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -847,11 +974,13 @@ export type FileAssetUpdateWithoutDocumentInput = {
     tenant?: Prisma.TenantUpdateOneRequiredWithoutFilesNestedInput;
     version?: Prisma.DocumentVersionUpdateOneWithoutFilesNestedInput;
     uploadedBy?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+    qualityRecord?: Prisma.QualityRecordUpdateOneWithoutAttachmentsNestedInput;
 };
 export type FileAssetUncheckedUpdateWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -864,6 +993,7 @@ export type FileAssetUncheckedUpdateManyWithoutDocumentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -876,6 +1006,7 @@ export type FileAssetCreateManyVersionInput = {
     id?: string;
     tenantId: string;
     documentId?: string | null;
+    qualityRecordId?: string | null;
     uploadedById: string;
     originalName: string;
     storageKey: string;
@@ -895,11 +1026,13 @@ export type FileAssetUpdateWithoutVersionInput = {
     tenant?: Prisma.TenantUpdateOneRequiredWithoutFilesNestedInput;
     document?: Prisma.DocumentUpdateOneWithoutFilesNestedInput;
     uploadedBy?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+    qualityRecord?: Prisma.QualityRecordUpdateOneWithoutAttachmentsNestedInput;
 };
 export type FileAssetUncheckedUpdateWithoutVersionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -912,6 +1045,59 @@ export type FileAssetUncheckedUpdateManyWithoutVersionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
     documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    qualityRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
+    originalName?: Prisma.StringFieldUpdateOperationsInput | string;
+    storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    mimeType?: Prisma.StringFieldUpdateOperationsInput | string;
+    sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number;
+    checksum?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FileAssetCreateManyQualityRecordInput = {
+    id?: string;
+    tenantId: string;
+    documentId?: string | null;
+    versionId?: string | null;
+    uploadedById: string;
+    originalName: string;
+    storageKey: string;
+    mimeType: string;
+    sizeBytes: number;
+    checksum: string;
+    createdAt?: Date | string;
+};
+export type FileAssetUpdateWithoutQualityRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    originalName?: Prisma.StringFieldUpdateOperationsInput | string;
+    storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    mimeType?: Prisma.StringFieldUpdateOperationsInput | string;
+    sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number;
+    checksum?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    tenant?: Prisma.TenantUpdateOneRequiredWithoutFilesNestedInput;
+    document?: Prisma.DocumentUpdateOneWithoutFilesNestedInput;
+    version?: Prisma.DocumentVersionUpdateOneWithoutFilesNestedInput;
+    uploadedBy?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+};
+export type FileAssetUncheckedUpdateWithoutQualityRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
+    originalName?: Prisma.StringFieldUpdateOperationsInput | string;
+    storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    mimeType?: Prisma.StringFieldUpdateOperationsInput | string;
+    sizeBytes?: Prisma.IntFieldUpdateOperationsInput | number;
+    checksum?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type FileAssetUncheckedUpdateManyWithoutQualityRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+    documentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    versionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     uploadedById?: Prisma.StringFieldUpdateOperationsInput | string;
     originalName?: Prisma.StringFieldUpdateOperationsInput | string;
     storageKey?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -925,6 +1111,7 @@ export type FileAssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     tenantId?: boolean;
     documentId?: boolean;
     versionId?: boolean;
+    qualityRecordId?: boolean;
     uploadedById?: boolean;
     originalName?: boolean;
     storageKey?: boolean;
@@ -936,12 +1123,14 @@ export type FileAssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 }, ExtArgs["result"]["fileAsset"]>;
 export type FileAssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     tenantId?: boolean;
     documentId?: boolean;
     versionId?: boolean;
+    qualityRecordId?: boolean;
     uploadedById?: boolean;
     originalName?: boolean;
     storageKey?: boolean;
@@ -953,12 +1142,14 @@ export type FileAssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 }, ExtArgs["result"]["fileAsset"]>;
 export type FileAssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     tenantId?: boolean;
     documentId?: boolean;
     versionId?: boolean;
+    qualityRecordId?: boolean;
     uploadedById?: boolean;
     originalName?: boolean;
     storageKey?: boolean;
@@ -970,12 +1161,14 @@ export type FileAssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 }, ExtArgs["result"]["fileAsset"]>;
 export type FileAssetSelectScalar = {
     id?: boolean;
     tenantId?: boolean;
     documentId?: boolean;
     versionId?: boolean;
+    qualityRecordId?: boolean;
     uploadedById?: boolean;
     originalName?: boolean;
     storageKey?: boolean;
@@ -984,24 +1177,27 @@ export type FileAssetSelectScalar = {
     checksum?: boolean;
     createdAt?: boolean;
 };
-export type FileAssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentId" | "versionId" | "uploadedById" | "originalName" | "storageKey" | "mimeType" | "sizeBytes" | "checksum" | "createdAt", ExtArgs["result"]["fileAsset"]>;
+export type FileAssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentId" | "versionId" | "qualityRecordId" | "uploadedById" | "originalName" | "storageKey" | "mimeType" | "sizeBytes" | "checksum" | "createdAt", ExtArgs["result"]["fileAsset"]>;
 export type FileAssetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 };
 export type FileAssetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 };
 export type FileAssetIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     document?: boolean | Prisma.FileAsset$documentArgs<ExtArgs>;
     version?: boolean | Prisma.FileAsset$versionArgs<ExtArgs>;
     uploadedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
+    qualityRecord?: boolean | Prisma.FileAsset$qualityRecordArgs<ExtArgs>;
 };
 export type $FileAssetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "FileAsset";
@@ -1010,12 +1206,14 @@ export type $FileAssetPayload<ExtArgs extends runtime.Types.Extensions.InternalA
         document: Prisma.$DocumentPayload<ExtArgs> | null;
         version: Prisma.$DocumentVersionPayload<ExtArgs> | null;
         uploadedBy: Prisma.$UserPayload<ExtArgs>;
+        qualityRecord: Prisma.$QualityRecordPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         tenantId: string;
         documentId: string | null;
         versionId: string | null;
+        qualityRecordId: string | null;
         uploadedById: string;
         originalName: string;
         storageKey: string;
@@ -1079,6 +1277,7 @@ export interface Prisma__FileAssetClient<T, Null = never, ExtArgs extends runtim
     document<T extends Prisma.FileAsset$documentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FileAsset$documentArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     version<T extends Prisma.FileAsset$versionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FileAsset$versionArgs<ExtArgs>>): Prisma.Prisma__DocumentVersionClient<runtime.Types.Result.GetResult<Prisma.$DocumentVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     uploadedBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    qualityRecord<T extends Prisma.FileAsset$qualityRecordArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FileAsset$qualityRecordArgs<ExtArgs>>): Prisma.Prisma__QualityRecordClient<runtime.Types.Result.GetResult<Prisma.$QualityRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1088,6 +1287,7 @@ export interface FileAssetFieldRefs {
     readonly tenantId: Prisma.FieldRef<"FileAsset", 'String'>;
     readonly documentId: Prisma.FieldRef<"FileAsset", 'String'>;
     readonly versionId: Prisma.FieldRef<"FileAsset", 'String'>;
+    readonly qualityRecordId: Prisma.FieldRef<"FileAsset", 'String'>;
     readonly uploadedById: Prisma.FieldRef<"FileAsset", 'String'>;
     readonly originalName: Prisma.FieldRef<"FileAsset", 'String'>;
     readonly storageKey: Prisma.FieldRef<"FileAsset", 'String'>;
@@ -1207,6 +1407,12 @@ export type FileAsset$versionArgs<ExtArgs extends runtime.Types.Extensions.Inter
     omit?: Prisma.DocumentVersionOmit<ExtArgs> | null;
     include?: Prisma.DocumentVersionInclude<ExtArgs> | null;
     where?: Prisma.DocumentVersionWhereInput;
+};
+export type FileAsset$qualityRecordArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.QualityRecordSelect<ExtArgs> | null;
+    omit?: Prisma.QualityRecordOmit<ExtArgs> | null;
+    include?: Prisma.QualityRecordInclude<ExtArgs> | null;
+    where?: Prisma.QualityRecordWhereInput;
 };
 export type FileAssetDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.FileAssetSelect<ExtArgs> | null;

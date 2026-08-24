@@ -21,6 +21,11 @@ export class DocumentsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createProcedure(dto: CreateProcedureDto, actor: AuthenticatedUser) {
+    const effectiveDate = dto.effectiveDate ? new Date(dto.effectiveDate) : new Date();
+    const reviewIntervalYears = dto.reviewIntervalYears ?? 3;
+    if (Number.isNaN(effectiveDate.getTime()) || !Number.isInteger(reviewIntervalYears) || reviewIntervalYears < 1 || reviewIntervalYears > 10) {
+      throw new BadRequestException('Effective date or review interval is invalid');
+    }
     if (actor.scope === 'PLATFORM_ADMIN' && !dto.tenantSlug) {
       throw new BadRequestException('Tenant slug is required for Platform Admin document creation');
     }
@@ -57,6 +62,9 @@ export class DocumentsService {
             versionLabel: dto.versionLabel,
             revisionNumber: dto.revisionNumber,
             status: 'DRAFT',
+            effectiveDate,
+            reviewIntervalYears,
+            nextReviewDate: this.addYears(effectiveDate, reviewIntervalYears),
             purpose: dto.purpose,
             scope: dto.scope,
             responsibilities: dto.responsibilities,
@@ -64,6 +72,20 @@ export class DocumentsService {
             recordsDescription: dto.recordsDescription,
             relatedDocuments: dto.relatedDocuments,
             complianceNote: dto.complianceNote,
+            complianceRefs: dto.complianceStandard && dto.complianceClause ? {
+              create: {
+                standard: dto.complianceStandard,
+                edition: dto.complianceEdition,
+                clause: dto.complianceClause,
+              },
+            } : undefined,
+            revisionHistory: dto.revisionDescription ? {
+              create: {
+                pageNumber: dto.revisionPageNumber,
+                revisionNumber: dto.versionLabel,
+                changeDescription: dto.revisionDescription,
+              },
+            } : undefined,
             assignments: {
               create: [
                 { userId: preparedBy.id, type: WorkflowAssignmentType.PREPARED_BY },
@@ -174,13 +196,13 @@ export class DocumentsService {
         userId: user.id,
         type: WorkflowAssignmentType.APPROVED_BY,
       },
-      include: { version: true },
+      include: { version: { include: { document: true } } },
     });
 
     if (!assignment) {
       throw new BadRequestException('This user is not assigned as the approver for this version');
     }
-    if (assignment.version.status !== 'DRAFT') {
+    if (assignment.version.status !== 'DRAFT' || assignment.version.document.status !== DocumentStatus.PENDING_APPROVAL) {
       throw new BadRequestException('Only a draft version can receive an approval decision');
     }
     if (!user.tenantId) {
@@ -211,7 +233,7 @@ export class DocumentsService {
 
       await transaction.documentVersion.update({
         where: { id: versionId },
-        data: { status: dto.decision === 'APPROVED' ? 'DRAFT' : 'DRAFT' },
+        data: { status: dto.decision === 'APPROVED' ? 'APPROVED' : 'DRAFT' },
       });
 
       return decision;
@@ -232,7 +254,7 @@ export class DocumentsService {
     }
     this.assertTenantAccess(version.document.tenantId, actor);
 
-    if (version.document.status !== DocumentStatus.APPROVED || version.approvals.length === 0) {
+    if (version.status !== 'APPROVED' || version.document.status !== DocumentStatus.APPROVED || version.approvals.length === 0) {
       throw new BadRequestException('Only an approved version can be published');
     }
     if (!actor.isTenantAdmin && actor.scope !== 'PLATFORM_ADMIN') {

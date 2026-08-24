@@ -160,6 +160,7 @@ export type UserWhereInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestListRelationFilter;
     periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
     uploadedFiles?: Prisma.FileAssetListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -181,6 +182,7 @@ export type UserOrderByWithRelationInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestOrderByRelationAggregateInput;
     periodicReviews?: Prisma.PeriodicReviewOrderByRelationAggregateInput;
     uploadedFiles?: Prisma.FileAssetOrderByRelationAggregateInput;
+    qualityRecords?: Prisma.QualityRecordOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -205,6 +207,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     changeRequestsReviewed?: Prisma.ChangeRequestListRelationFilter;
     periodicReviews?: Prisma.PeriodicReviewListRelationFilter;
     uploadedFiles?: Prisma.FileAssetListRelationFilter;
+    qualityRecords?: Prisma.QualityRecordListRelationFilter;
 }, "id" | "email">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -259,6 +262,7 @@ export type UserCreateInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -279,6 +283,7 @@ export type UserUncheckedCreateInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -299,6 +304,7 @@ export type UserUpdateInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -319,6 +325,7 @@ export type UserUncheckedUpdateInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -540,6 +547,18 @@ export type UserUpdateOneRequiredWithoutUploadedFilesNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploadedFilesInput, Prisma.UserUpdateWithoutUploadedFilesInput>, Prisma.UserUncheckedUpdateWithoutUploadedFilesInput>;
 };
+export type UserCreateNestedOneWithoutQualityRecordsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutQualityRecordsInput, Prisma.UserUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutQualityRecordsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutQualityRecordsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutQualityRecordsInput, Prisma.UserUncheckedCreateWithoutQualityRecordsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutQualityRecordsInput;
+    upsert?: Prisma.UserUpsertWithoutQualityRecordsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutQualityRecordsInput, Prisma.UserUpdateWithoutQualityRecordsInput>, Prisma.UserUncheckedUpdateWithoutQualityRecordsInput>;
+};
 export type UserCreateWithoutTenantInput = {
     id?: string;
     email: string;
@@ -558,6 +577,7 @@ export type UserCreateWithoutTenantInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutTenantInput = {
     id?: string;
@@ -577,6 +597,7 @@ export type UserUncheckedCreateWithoutTenantInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutTenantInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -634,6 +655,7 @@ export type UserCreateWithoutAssignmentsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutAssignmentsInput = {
     id?: string;
@@ -653,6 +675,7 @@ export type UserUncheckedCreateWithoutAssignmentsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutAssignmentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -685,6 +708,7 @@ export type UserUpdateWithoutAssignmentsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutAssignmentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -704,6 +728,7 @@ export type UserUncheckedUpdateWithoutAssignmentsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserCreateWithoutApprovalsInput = {
     id?: string;
@@ -723,6 +748,7 @@ export type UserCreateWithoutApprovalsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutApprovalsInput = {
     id?: string;
@@ -742,6 +768,7 @@ export type UserUncheckedCreateWithoutApprovalsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutApprovalsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -774,6 +801,7 @@ export type UserUpdateWithoutApprovalsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutApprovalsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -793,6 +821,7 @@ export type UserUncheckedUpdateWithoutApprovalsInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserCreateWithoutChangeRequestsInitiatedInput = {
     id?: string;
@@ -812,6 +841,7 @@ export type UserCreateWithoutChangeRequestsInitiatedInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutChangeRequestsInitiatedInput = {
     id?: string;
@@ -831,6 +861,7 @@ export type UserUncheckedCreateWithoutChangeRequestsInitiatedInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutChangeRequestsInitiatedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -854,6 +885,7 @@ export type UserCreateWithoutChangeRequestsReviewedInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestCreateNestedManyWithoutRequestedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutChangeRequestsReviewedInput = {
     id?: string;
@@ -873,6 +905,7 @@ export type UserUncheckedCreateWithoutChangeRequestsReviewedInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequestedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutChangeRequestsReviewedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -905,6 +938,7 @@ export type UserUpdateWithoutChangeRequestsInitiatedInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutChangeRequestsInitiatedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -924,6 +958,7 @@ export type UserUncheckedUpdateWithoutChangeRequestsInitiatedInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUpsertWithoutChangeRequestsReviewedInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutChangeRequestsReviewedInput, Prisma.UserUncheckedUpdateWithoutChangeRequestsReviewedInput>;
@@ -952,6 +987,7 @@ export type UserUpdateWithoutChangeRequestsReviewedInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUpdateManyWithoutRequestedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutChangeRequestsReviewedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -971,6 +1007,7 @@ export type UserUncheckedUpdateWithoutChangeRequestsReviewedInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequestedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserCreateWithoutPeriodicReviewsInput = {
     id?: string;
@@ -990,6 +1027,7 @@ export type UserCreateWithoutPeriodicReviewsInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestCreateNestedManyWithoutRequestedByInput;
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutPeriodicReviewsInput = {
     id?: string;
@@ -1009,6 +1047,7 @@ export type UserUncheckedCreateWithoutPeriodicReviewsInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequestedByInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutPeriodicReviewsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1041,6 +1080,7 @@ export type UserUpdateWithoutPeriodicReviewsInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUpdateManyWithoutRequestedByNestedInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutPeriodicReviewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1060,6 +1100,7 @@ export type UserUncheckedUpdateWithoutPeriodicReviewsInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequestedByNestedInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserCreateWithoutUploadedFilesInput = {
     id?: string;
@@ -1079,6 +1120,7 @@ export type UserCreateWithoutUploadedFilesInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestCreateNestedManyWithoutRequestedByInput;
     changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
+    qualityRecords?: Prisma.QualityRecordCreateNestedManyWithoutCompletedByInput;
 };
 export type UserUncheckedCreateWithoutUploadedFilesInput = {
     id?: string;
@@ -1098,6 +1140,7 @@ export type UserUncheckedCreateWithoutUploadedFilesInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequestedByInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedCreateNestedManyWithoutCompletedByInput;
 };
 export type UserCreateOrConnectWithoutUploadedFilesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1130,6 +1173,7 @@ export type UserUpdateWithoutUploadedFilesInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUpdateManyWithoutRequestedByNestedInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutUploadedFilesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1149,6 +1193,100 @@ export type UserUncheckedUpdateWithoutUploadedFilesInput = {
     changeRequestsInitiated?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequestedByNestedInput;
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
+};
+export type UserCreateWithoutQualityRecordsInput = {
+    id?: string;
+    email: string;
+    name: string;
+    passwordHash?: string | null;
+    designation?: string | null;
+    systemRole?: string;
+    isPlatformAdmin?: boolean;
+    isTenantAdmin?: boolean;
+    status?: $Enums.UserStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput;
+    assignments?: Prisma.WorkflowAssignmentCreateNestedManyWithoutUserInput;
+    approvals?: Prisma.ApprovalDecisionCreateNestedManyWithoutUserInput;
+    changeRequestsInitiated?: Prisma.ChangeRequestCreateNestedManyWithoutRequestedByInput;
+    changeRequestsReviewed?: Prisma.ChangeRequestCreateNestedManyWithoutReviewedByInput;
+    periodicReviews?: Prisma.PeriodicReviewCreateNestedManyWithoutReviewedByInput;
+    uploadedFiles?: Prisma.FileAssetCreateNestedManyWithoutUploadedByInput;
+};
+export type UserUncheckedCreateWithoutQualityRecordsInput = {
+    id?: string;
+    tenantId?: string | null;
+    email: string;
+    name: string;
+    passwordHash?: string | null;
+    designation?: string | null;
+    systemRole?: string;
+    isPlatformAdmin?: boolean;
+    isTenantAdmin?: boolean;
+    status?: $Enums.UserStatus;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedCreateNestedManyWithoutUserInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutUserInput;
+    changeRequestsInitiated?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutRequestedByInput;
+    changeRequestsReviewed?: Prisma.ChangeRequestUncheckedCreateNestedManyWithoutReviewedByInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedCreateNestedManyWithoutReviewedByInput;
+    uploadedFiles?: Prisma.FileAssetUncheckedCreateNestedManyWithoutUploadedByInput;
+};
+export type UserCreateOrConnectWithoutQualityRecordsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutQualityRecordsInput, Prisma.UserUncheckedCreateWithoutQualityRecordsInput>;
+};
+export type UserUpsertWithoutQualityRecordsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutQualityRecordsInput, Prisma.UserUncheckedUpdateWithoutQualityRecordsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutQualityRecordsInput, Prisma.UserUncheckedCreateWithoutQualityRecordsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutQualityRecordsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutQualityRecordsInput, Prisma.UserUncheckedUpdateWithoutQualityRecordsInput>;
+};
+export type UserUpdateWithoutQualityRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    designation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    systemRole?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPlatformAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isTenantAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput;
+    assignments?: Prisma.WorkflowAssignmentUpdateManyWithoutUserNestedInput;
+    approvals?: Prisma.ApprovalDecisionUpdateManyWithoutUserNestedInput;
+    changeRequestsInitiated?: Prisma.ChangeRequestUpdateManyWithoutRequestedByNestedInput;
+    changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
+    uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+};
+export type UserUncheckedUpdateWithoutQualityRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    designation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    systemRole?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPlatformAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isTenantAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    assignments?: Prisma.WorkflowAssignmentUncheckedUpdateManyWithoutUserNestedInput;
+    approvals?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutUserNestedInput;
+    changeRequestsInitiated?: Prisma.ChangeRequestUncheckedUpdateManyWithoutRequestedByNestedInput;
+    changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
+    periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
+    uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
 };
 export type UserCreateManyTenantInput = {
     id?: string;
@@ -1181,6 +1319,7 @@ export type UserUpdateWithoutTenantInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1200,6 +1339,7 @@ export type UserUncheckedUpdateWithoutTenantInput = {
     changeRequestsReviewed?: Prisma.ChangeRequestUncheckedUpdateManyWithoutReviewedByNestedInput;
     periodicReviews?: Prisma.PeriodicReviewUncheckedUpdateManyWithoutReviewedByNestedInput;
     uploadedFiles?: Prisma.FileAssetUncheckedUpdateManyWithoutUploadedByNestedInput;
+    qualityRecords?: Prisma.QualityRecordUncheckedUpdateManyWithoutCompletedByNestedInput;
 };
 export type UserUncheckedUpdateManyWithoutTenantInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1221,6 +1361,7 @@ export type UserCountOutputType = {
     changeRequestsReviewed: number;
     periodicReviews: number;
     uploadedFiles: number;
+    qualityRecords: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assignments?: boolean | UserCountOutputTypeCountAssignmentsArgs;
@@ -1229,6 +1370,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
     changeRequestsReviewed?: boolean | UserCountOutputTypeCountChangeRequestsReviewedArgs;
     periodicReviews?: boolean | UserCountOutputTypeCountPeriodicReviewsArgs;
     uploadedFiles?: boolean | UserCountOutputTypeCountUploadedFilesArgs;
+    qualityRecords?: boolean | UserCountOutputTypeCountQualityRecordsArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -1251,6 +1393,9 @@ export type UserCountOutputTypeCountPeriodicReviewsArgs<ExtArgs extends runtime.
 export type UserCountOutputTypeCountUploadedFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.FileAssetWhereInput;
 };
+export type UserCountOutputTypeCountQualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.QualityRecordWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     tenantId?: boolean;
@@ -1271,6 +1416,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     changeRequestsReviewed?: boolean | Prisma.User$changeRequestsReviewedArgs<ExtArgs>;
     periodicReviews?: boolean | Prisma.User$periodicReviewsArgs<ExtArgs>;
     uploadedFiles?: boolean | Prisma.User$uploadedFilesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.User$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1326,6 +1472,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     changeRequestsReviewed?: boolean | Prisma.User$changeRequestsReviewedArgs<ExtArgs>;
     periodicReviews?: boolean | Prisma.User$periodicReviewsArgs<ExtArgs>;
     uploadedFiles?: boolean | Prisma.User$uploadedFilesArgs<ExtArgs>;
+    qualityRecords?: boolean | Prisma.User$qualityRecordsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1344,6 +1491,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         changeRequestsReviewed: Prisma.$ChangeRequestPayload<ExtArgs>[];
         periodicReviews: Prisma.$PeriodicReviewPayload<ExtArgs>[];
         uploadedFiles: Prisma.$FileAssetPayload<ExtArgs>[];
+        qualityRecords: Prisma.$QualityRecordPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1417,6 +1565,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     changeRequestsReviewed<T extends Prisma.User$changeRequestsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$changeRequestsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     periodicReviews<T extends Prisma.User$periodicReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$periodicReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PeriodicReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     uploadedFiles<T extends Prisma.User$uploadedFilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedFilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FileAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    qualityRecords<T extends Prisma.User$qualityRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$qualityRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1606,6 +1755,17 @@ export type User$uploadedFilesArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.FileAssetScalarFieldEnum | Prisma.FileAssetScalarFieldEnum[];
+};
+export type User$qualityRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.QualityRecordSelect<ExtArgs> | null;
+    omit?: Prisma.QualityRecordOmit<ExtArgs> | null;
+    include?: Prisma.QualityRecordInclude<ExtArgs> | null;
+    where?: Prisma.QualityRecordWhereInput;
+    orderBy?: Prisma.QualityRecordOrderByWithRelationInput | Prisma.QualityRecordOrderByWithRelationInput[];
+    cursor?: Prisma.QualityRecordWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.QualityRecordScalarFieldEnum | Prisma.QualityRecordScalarFieldEnum[];
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

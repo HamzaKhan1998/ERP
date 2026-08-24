@@ -38,6 +38,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -76,6 +77,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -148,6 +150,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -220,6 +223,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -333,6 +337,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -350,6 +355,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -444,6 +450,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -501,6 +508,7 @@ export declare class DocumentsController {
         revisionNumber: number;
         effectiveDate: Date | null;
         nextReviewDate: Date | null;
+        reviewIntervalYears: number;
         purpose: string | null;
         scope: string | null;
         responsibilities: string | null;
@@ -630,6 +638,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
@@ -676,6 +685,7 @@ export declare class DocumentsController {
             revisionNumber: number;
             effectiveDate: Date | null;
             nextReviewDate: Date | null;
+            reviewIntervalYears: number;
             purpose: string | null;
             scope: string | null;
             responsibilities: string | null;
