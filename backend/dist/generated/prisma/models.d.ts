@@ -10,4 +10,7 @@ export type * from './models/DocumentRelation.js';
 export type * from './models/ChangeRequest.js';
 export type * from './models/PeriodicReview.js';
 export type * from './models/FileAsset.js';
+export type * from './models/FormTemplate.js';
+export type * from './models/FormField.js';
+export type * from './models/QualityRecord.js';
 export type * from './commonInputTypes.js';

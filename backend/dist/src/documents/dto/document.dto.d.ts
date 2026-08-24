@@ -5,6 +5,8 @@ export declare class CreateProcedureDto {
     controlNumber: string;
     versionLabel: string;
     revisionNumber: number;
+    effectiveDate?: string;
+    reviewIntervalYears?: number;
     preparedByEmail: string;
     reviewedByEmail: string;
     approvedByEmail: string;
@@ -15,6 +17,11 @@ export declare class CreateProcedureDto {
     recordsDescription?: string;
     relatedDocuments?: string;
     complianceNote?: string;
+    complianceStandard?: string;
+    complianceEdition?: string;
+    complianceClause?: string;
+    revisionPageNumber?: string;
+    revisionDescription?: string;
 }
 export declare class DocumentDecisionDto {
     decision: 'APPROVED' | 'RETURNED_FOR_CORRECTION';

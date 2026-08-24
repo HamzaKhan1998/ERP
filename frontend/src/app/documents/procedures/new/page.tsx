@@ -39,6 +39,8 @@ export default function NewProcedurePage() {
         controlNumber: String(form.get('controlNumber')),
         versionLabel: String(form.get('revision')),
         revisionNumber: 1,
+        effectiveDate: String(form.get('effectiveDate') || ''),
+        reviewIntervalYears: Number(String(form.get('reviewInterval') || '3').split(' ')[0]) || 3,
         preparedByEmail: String(form.get('preparedBy')),
         reviewedByEmail: String(form.get('reviewedBy')),
         approvedByEmail: String(form.get('approvedBy')),
@@ -49,6 +51,10 @@ export default function NewProcedurePage() {
         recordsDescription: String(form.get('records') || ''),
         relatedDocuments: String(form.get('relatedDocuments') || ''),
         complianceNote: String(form.get('complianceNote') || ''),
+        complianceStandard: String(form.get('standard') || ''),
+        complianceClause: String(form.get('clause') || ''),
+        revisionPageNumber: String(form.get('historyPage') || ''),
+        revisionDescription: String(form.get('historyDescription') || ''),
       });
 
       const files = form.getAll('attachments').filter((value): value is File => value instanceof File && value.size > 0);

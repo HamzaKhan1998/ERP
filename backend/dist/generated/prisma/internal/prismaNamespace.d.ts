@@ -172,6 +172,9 @@ export declare const ModelName: {
     readonly ChangeRequest: "ChangeRequest";
     readonly PeriodicReview: "PeriodicReview";
     readonly FileAsset: "FileAsset";
+    readonly FormTemplate: "FormTemplate";
+    readonly FormField: "FormField";
+    readonly QualityRecord: "QualityRecord";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -184,7 +187,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "tenant" | "user" | "document" | "documentVersion" | "workflowAssignment" | "approvalDecision" | "complianceReference" | "revisionHistory" | "documentRelation" | "changeRequest" | "periodicReview" | "fileAsset";
+        modelProps: "tenant" | "user" | "document" | "documentVersion" | "workflowAssignment" | "approvalDecision" | "complianceReference" | "revisionHistory" | "documentRelation" | "changeRequest" | "periodicReview" | "fileAsset" | "formTemplate" | "formField" | "qualityRecord";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1076,6 +1079,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        FormTemplate: {
+            payload: Prisma.$FormTemplatePayload<ExtArgs>;
+            fields: Prisma.FormTemplateFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.FormTemplateFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.FormTemplateFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                findFirst: {
+                    args: Prisma.FormTemplateFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.FormTemplateFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                findMany: {
+                    args: Prisma.FormTemplateFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>[];
+                };
+                create: {
+                    args: Prisma.FormTemplateCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                createMany: {
+                    args: Prisma.FormTemplateCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.FormTemplateCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>[];
+                };
+                delete: {
+                    args: Prisma.FormTemplateDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                update: {
+                    args: Prisma.FormTemplateUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.FormTemplateDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.FormTemplateUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.FormTemplateUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>[];
+                };
+                upsert: {
+                    args: Prisma.FormTemplateUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormTemplatePayload>;
+                };
+                aggregate: {
+                    args: Prisma.FormTemplateAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateFormTemplate>;
+                };
+                groupBy: {
+                    args: Prisma.FormTemplateGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FormTemplateGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.FormTemplateCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FormTemplateCountAggregateOutputType> | number;
+                };
+            };
+        };
+        FormField: {
+            payload: Prisma.$FormFieldPayload<ExtArgs>;
+            fields: Prisma.FormFieldFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.FormFieldFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.FormFieldFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                findFirst: {
+                    args: Prisma.FormFieldFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.FormFieldFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                findMany: {
+                    args: Prisma.FormFieldFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>[];
+                };
+                create: {
+                    args: Prisma.FormFieldCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                createMany: {
+                    args: Prisma.FormFieldCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.FormFieldCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>[];
+                };
+                delete: {
+                    args: Prisma.FormFieldDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                update: {
+                    args: Prisma.FormFieldUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.FormFieldDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.FormFieldUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.FormFieldUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>[];
+                };
+                upsert: {
+                    args: Prisma.FormFieldUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$FormFieldPayload>;
+                };
+                aggregate: {
+                    args: Prisma.FormFieldAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateFormField>;
+                };
+                groupBy: {
+                    args: Prisma.FormFieldGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FormFieldGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.FormFieldCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.FormFieldCountAggregateOutputType> | number;
+                };
+            };
+        };
+        QualityRecord: {
+            payload: Prisma.$QualityRecordPayload<ExtArgs>;
+            fields: Prisma.QualityRecordFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.QualityRecordFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.QualityRecordFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                findFirst: {
+                    args: Prisma.QualityRecordFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.QualityRecordFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                findMany: {
+                    args: Prisma.QualityRecordFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>[];
+                };
+                create: {
+                    args: Prisma.QualityRecordCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                createMany: {
+                    args: Prisma.QualityRecordCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.QualityRecordCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>[];
+                };
+                delete: {
+                    args: Prisma.QualityRecordDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                update: {
+                    args: Prisma.QualityRecordUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.QualityRecordDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.QualityRecordUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.QualityRecordUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>[];
+                };
+                upsert: {
+                    args: Prisma.QualityRecordUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$QualityRecordPayload>;
+                };
+                aggregate: {
+                    args: Prisma.QualityRecordAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateQualityRecord>;
+                };
+                groupBy: {
+                    args: Prisma.QualityRecordGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.QualityRecordGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.QualityRecordCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.QualityRecordCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -1151,6 +1376,7 @@ export declare const DocumentVersionScalarFieldEnum: {
     readonly status: "status";
     readonly effectiveDate: "effectiveDate";
     readonly nextReviewDate: "nextReviewDate";
+    readonly reviewIntervalYears: "reviewIntervalYears";
     readonly purpose: "purpose";
     readonly scope: "scope";
     readonly responsibilities: "responsibilities";
@@ -1238,6 +1464,7 @@ export declare const FileAssetScalarFieldEnum: {
     readonly tenantId: "tenantId";
     readonly documentId: "documentId";
     readonly versionId: "versionId";
+    readonly qualityRecordId: "qualityRecordId";
     readonly uploadedById: "uploadedById";
     readonly originalName: "originalName";
     readonly storageKey: "storageKey";
@@ -1247,11 +1474,55 @@ export declare const FileAssetScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type FileAssetScalarFieldEnum = (typeof FileAssetScalarFieldEnum)[keyof typeof FileAssetScalarFieldEnum];
+export declare const FormTemplateScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly documentId: "documentId";
+    readonly title: "title";
+    readonly controlNumber: "controlNumber";
+    readonly description: "description";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type FormTemplateScalarFieldEnum = (typeof FormTemplateScalarFieldEnum)[keyof typeof FormTemplateScalarFieldEnum];
+export declare const FormFieldScalarFieldEnum: {
+    readonly id: "id";
+    readonly templateId: "templateId";
+    readonly fieldKey: "fieldKey";
+    readonly label: "label";
+    readonly type: "type";
+    readonly required: "required";
+    readonly optionsJson: "optionsJson";
+    readonly sortOrder: "sortOrder";
+};
+export type FormFieldScalarFieldEnum = (typeof FormFieldScalarFieldEnum)[keyof typeof FormFieldScalarFieldEnum];
+export declare const QualityRecordScalarFieldEnum: {
+    readonly id: "id";
+    readonly tenantId: "tenantId";
+    readonly templateId: "templateId";
+    readonly documentId: "documentId";
+    readonly versionId: "versionId";
+    readonly completedById: "completedById";
+    readonly status: "status";
+    readonly values: "values";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type QualityRecordScalarFieldEnum = (typeof QualityRecordScalarFieldEnum)[keyof typeof QualityRecordScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
 };
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const NullableJsonNullValueInput: {
+    readonly DbNull: runtime.DbNullClass;
+    readonly JsonNull: runtime.JsonNullClass;
+};
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: runtime.JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
 export declare const QueryMode: {
     readonly default: "default";
     readonly insensitive: "insensitive";
@@ -1262,6 +1533,12 @@ export declare const NullsOrder: {
     readonly last: "last";
 };
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const JsonNullValueFilter: {
+    readonly DbNull: runtime.DbNullClass;
+    readonly JsonNull: runtime.JsonNullClass;
+    readonly AnyNull: runtime.AnyNullClass;
+};
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 export type EnumTenantStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantStatus'>;
@@ -1287,6 +1564,10 @@ export type EnumChangeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 export type ListEnumChangeRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChangeRequestStatus[]'>;
 export type EnumPeriodicReviewOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodicReviewOutcome'>;
 export type ListEnumPeriodicReviewOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodicReviewOutcome[]'>;
+export type EnumFormFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FormFieldType'>;
+export type ListEnumFormFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FormFieldType[]'>;
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -1329,6 +1610,9 @@ export type GlobalOmitConfig = {
     changeRequest?: Prisma.ChangeRequestOmit;
     periodicReview?: Prisma.PeriodicReviewOmit;
     fileAsset?: Prisma.FileAssetOmit;
+    formTemplate?: Prisma.FormTemplateOmit;
+    formField?: Prisma.FormFieldOmit;
+    qualityRecord?: Prisma.QualityRecordOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

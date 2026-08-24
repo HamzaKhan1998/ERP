@@ -23,6 +23,9 @@ let FilesController = class FilesController {
     upload(request, documentId, file, versionId) {
         return this.filesService.upload(documentId, file, request.user, versionId);
     }
+    uploadForRecord(request, recordId, file) {
+        return this.filesService.uploadForRecord(recordId, file, request.user);
+    }
     async download(request, fileId, response) {
         const { file, path } = await this.filesService.getForDownload(fileId, request.user);
         response.setHeader('Content-Type', file.mimeType);
@@ -41,6 +44,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, Object, String]),
     __metadata("design:returntype", void 0)
 ], FilesController.prototype, "upload", null);
+__decorate([
+    Post('records/:recordId'),
+    UseInterceptors(FileInterceptor('file')),
+    __param(0, Req()),
+    __param(1, Param('recordId')),
+    __param(2, UploadedFile()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", void 0)
+], FilesController.prototype, "uploadForRecord", null);
 __decorate([
     Get(':fileId/download'),
     __param(0, Req()),

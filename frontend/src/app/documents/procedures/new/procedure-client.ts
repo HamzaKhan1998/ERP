@@ -5,6 +5,8 @@ export interface CreateProcedureRequest {
   controlNumber: string;
   versionLabel: string;
   revisionNumber: number;
+  effectiveDate?: string;
+  reviewIntervalYears?: number;
   preparedByEmail: string;
   reviewedByEmail: string;
   approvedByEmail: string;
@@ -15,6 +17,11 @@ export interface CreateProcedureRequest {
   recordsDescription?: string;
   relatedDocuments?: string;
   complianceNote?: string;
+  complianceStandard?: string;
+  complianceEdition?: string;
+  complianceClause?: string;
+  revisionPageNumber?: string;
+  revisionDescription?: string;
 }
 
 interface CreatedProcedure {

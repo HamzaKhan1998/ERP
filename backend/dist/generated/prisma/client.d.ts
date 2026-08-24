@@ -18,3 +18,6 @@ export type DocumentRelation = Prisma.DocumentRelationModel;
 export type ChangeRequest = Prisma.ChangeRequestModel;
 export type PeriodicReview = Prisma.PeriodicReviewModel;
 export type FileAsset = Prisma.FileAssetModel;
+export type FormTemplate = Prisma.FormTemplateModel;
+export type FormField = Prisma.FormFieldModel;
+export type QualityRecord = Prisma.QualityRecordModel;

@@ -10,6 +10,21 @@ export declare class FilesController {
         tenantId: string;
         documentId: string | null;
         versionId: string | null;
+        qualityRecordId: string | null;
+        uploadedById: string;
+        originalName: string;
+        storageKey: string;
+        mimeType: string;
+        sizeBytes: number;
+        checksum: string;
+    }>;
+    uploadForRecord(request: AuthenticatedRequest, recordId: string, file: Express.Multer.File): Promise<{
+        id: string;
+        createdAt: Date;
+        tenantId: string;
+        documentId: string | null;
+        versionId: string | null;
+        qualityRecordId: string | null;
         uploadedById: string;
         originalName: string;
         storageKey: string;

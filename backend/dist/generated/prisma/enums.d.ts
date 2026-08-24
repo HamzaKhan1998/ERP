@@ -31,6 +31,7 @@ export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus
 export declare const DocumentVersionStatus: {
     readonly CURRENT: "CURRENT";
     readonly DRAFT: "DRAFT";
+    readonly APPROVED: "APPROVED";
     readonly SUPERSEDED: "SUPERSEDED";
 };
 export type DocumentVersionStatus = (typeof DocumentVersionStatus)[keyof typeof DocumentVersionStatus];
@@ -59,3 +60,13 @@ export declare const PeriodicReviewOutcome: {
     readonly RETURNED_FOR_CLARIFICATION: "RETURNED_FOR_CLARIFICATION";
 };
 export type PeriodicReviewOutcome = (typeof PeriodicReviewOutcome)[keyof typeof PeriodicReviewOutcome];
+export declare const FormFieldType: {
+    readonly TEXT: "TEXT";
+    readonly TEXTAREA: "TEXTAREA";
+    readonly NUMBER: "NUMBER";
+    readonly DATE: "DATE";
+    readonly SELECT: "SELECT";
+    readonly CHECKBOX: "CHECKBOX";
+    readonly FILE: "FILE";
+};
+export type FormFieldType = (typeof FormFieldType)[keyof typeof FormFieldType];

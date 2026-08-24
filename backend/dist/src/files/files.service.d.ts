@@ -6,6 +6,7 @@ export declare class FilesService {
     private readonly storageRoot;
     constructor(prisma: PrismaService);
     upload(documentId: string, file: Express.Multer.File, actor: AuthenticatedUser, versionId?: string): Promise<FileAssetModel>;
+    uploadForRecord(qualityRecordId: string, file: Express.Multer.File, actor: AuthenticatedUser): Promise<FileAssetModel>;
     getForDownload(fileId: string, actor: AuthenticatedUser): Promise<{
         file: {
             id: string;
@@ -13,6 +14,7 @@ export declare class FilesService {
             tenantId: string;
             documentId: string | null;
             versionId: string | null;
+            qualityRecordId: string | null;
             uploadedById: string;
             originalName: string;
             storageKey: string;

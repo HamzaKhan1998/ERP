@@ -20,7 +20,10 @@ export const ModelName = {
     DocumentRelation: 'DocumentRelation',
     ChangeRequest: 'ChangeRequest',
     PeriodicReview: 'PeriodicReview',
-    FileAsset: 'FileAsset'
+    FileAsset: 'FileAsset',
+    FormTemplate: 'FormTemplate',
+    FormField: 'FormField',
+    QualityRecord: 'QualityRecord'
 };
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -69,6 +72,7 @@ export const DocumentVersionScalarFieldEnum = {
     status: 'status',
     effectiveDate: 'effectiveDate',
     nextReviewDate: 'nextReviewDate',
+    reviewIntervalYears: 'reviewIntervalYears',
     purpose: 'purpose',
     scope: 'scope',
     responsibilities: 'responsibilities',
@@ -148,6 +152,7 @@ export const FileAssetScalarFieldEnum = {
     tenantId: 'tenantId',
     documentId: 'documentId',
     versionId: 'versionId',
+    qualityRecordId: 'qualityRecordId',
     uploadedById: 'uploadedById',
     originalName: 'originalName',
     storageKey: 'storageKey',
@@ -156,9 +161,48 @@ export const FileAssetScalarFieldEnum = {
     checksum: 'checksum',
     createdAt: 'createdAt'
 };
+export const FormTemplateScalarFieldEnum = {
+    id: 'id',
+    tenantId: 'tenantId',
+    documentId: 'documentId',
+    title: 'title',
+    controlNumber: 'controlNumber',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const FormFieldScalarFieldEnum = {
+    id: 'id',
+    templateId: 'templateId',
+    fieldKey: 'fieldKey',
+    label: 'label',
+    type: 'type',
+    required: 'required',
+    optionsJson: 'optionsJson',
+    sortOrder: 'sortOrder'
+};
+export const QualityRecordScalarFieldEnum = {
+    id: 'id',
+    tenantId: 'tenantId',
+    templateId: 'templateId',
+    documentId: 'documentId',
+    versionId: 'versionId',
+    completedById: 'completedById',
+    status: 'status',
+    values: 'values',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 export const SortOrder = {
     asc: 'asc',
     desc: 'desc'
+};
+export const NullableJsonNullValueInput = {
+    DbNull: DbNull,
+    JsonNull: JsonNull
+};
+export const JsonNullValueInput = {
+    JsonNull: JsonNull
 };
 export const QueryMode = {
     default: 'default',
@@ -167,5 +211,10 @@ export const QueryMode = {
 export const NullsOrder = {
     first: 'first',
     last: 'last'
+};
+export const JsonNullValueFilter = {
+    DbNull: DbNull,
+    JsonNull: JsonNull,
+    AnyNull: AnyNull
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

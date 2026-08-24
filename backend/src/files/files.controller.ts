@@ -22,6 +22,16 @@ export class FilesController {
     return this.filesService.upload(documentId, file, request.user, versionId);
   }
 
+  @Post('records/:recordId')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadForRecord(
+    @Req() request: AuthenticatedRequest,
+    @Param('recordId') recordId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.filesService.uploadForRecord(recordId, file, request.user);
+  }
+
   @Get(':fileId/download')
   async download(
     @Req() request: AuthenticatedRequest,
