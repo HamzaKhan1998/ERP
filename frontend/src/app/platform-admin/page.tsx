@@ -1,334 +1,77 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './platform-admin.module.css';
+import { assignTenantAdmin, createTenant, listTenants, PlatformTenant, updateTenantStatus } from './platform-admin-client';
 
-type TenantStatus = 'Active' | 'Onboarding' | 'Suspended';
+type Filter = 'All' | PlatformTenant['status'];
 
-interface Tenant {
-  id: string;
-  company: string;
-  code: string;
-  subdomain: string;
-  adminName: string;
-  adminEmail: string;
-  status: TenantStatus;
-  users: number;
-  lastActivity: string;
-  created: string;
-}
-
-const initialTenants: Tenant[] = [
-  {
-    id: 'acme',
-    company: 'Acme Manufacturing',
-    code: 'ACM',
-    subdomain: 'acme',
-    adminName: 'Sarah Khan',
-    adminEmail: 'sarah.khan@acme.com',
-    status: 'Active',
-    users: 24,
-    lastActivity: '12 minutes ago',
-    created: 'Jan 15, 2026',
-  },
-  {
-    id: 'northstar',
-    company: 'Northstar Healthcare',
-    code: 'NHC',
-    subdomain: 'northstar',
-    adminName: 'David Wilson',
-    adminEmail: 'david.wilson@northstar.com',
-    status: 'Active',
-    users: 18,
-    lastActivity: '1 hour ago',
-    created: 'Feb 02, 2026',
-  },
-  {
-    id: 'meridian',
-    company: 'Meridian Logistics',
-    code: 'MRL',
-    subdomain: 'meridian',
-    adminName: 'Priya Nair',
-    adminEmail: 'priya.nair@meridian.com',
-    status: 'Onboarding',
-    users: 6,
-    lastActivity: 'Yesterday',
-    created: 'Mar 10, 2026',
-  },
-  {
-    id: 'vertex',
-    company: 'Vertex Technologies',
-    code: 'VTX',
-    subdomain: 'vertex',
-    adminName: 'Michael Chen',
-    adminEmail: 'michael.chen@vertex.com',
-    status: 'Active',
-    users: 31,
-    lastActivity: '3 hours ago',
-    created: 'Apr 18, 2026',
-  },
-  {
-    id: 'bluepeak',
-    company: 'BluePeak Consulting',
-    code: 'BPC',
-    subdomain: 'bluepeak',
-    adminName: 'Unassigned',
-    adminEmail: 'No tenant admin assigned',
-    status: 'Onboarding',
-    users: 0,
-    lastActivity: 'Not yet active',
-    created: 'Aug 20, 2026',
-  },
-];
-
-const statusOptions: Array<'All' | TenantStatus> = [
-  'All',
-  'Active',
-  'Onboarding',
-  'Suspended',
-];
+function formatStatus(status: PlatformTenant['status']) { return status.charAt(0) + status.slice(1).toLowerCase(); }
+function initials(name: string) { return name.split(/\s+/).map((part) => part[0]).join('').slice(0, 3).toUpperCase(); }
 
 export default function PlatformAdminPage() {
-  const [tenants, setTenants] = useState(initialTenants);
+  const [tenants, setTenants] = useState<PlatformTenant[]>([]);
   const [query, setQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<(typeof statusOptions)[number]>('All');
-  const [selectedTenantId, setSelectedTenantId] = useState<string | null>(null);
-  const [adminEmail, setAdminEmail] = useState('');
+  const [filter, setFilter] = useState<Filter>('All');
   const [notice, setNotice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState<'tenant' | 'admin' | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [tenantForm, setTenantForm] = useState({ name: '', slug: '', subdomain: '' });
+  const [adminForm, setAdminForm] = useState({ email: '', name: '' });
+  const [saving, setSaving] = useState(false);
 
-  const filteredTenants = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    return tenants.filter((tenant) => {
-      const matchesStatus = statusFilter === 'All' || tenant.status === statusFilter;
-      const matchesQuery =
-        !normalizedQuery ||
-        [tenant.company, tenant.subdomain, tenant.adminName, tenant.adminEmail]
-          .join(' ')
-          .toLowerCase()
-          .includes(normalizedQuery);
-
-      return matchesStatus && matchesQuery;
-    });
-  }, [query, statusFilter, tenants]);
-
-  const activeCount = tenants.filter((tenant) => tenant.status === 'Active').length;
-  const onboardingCount = tenants.filter((tenant) => tenant.status === 'Onboarding').length;
-  const totalUsers = tenants.reduce((total, tenant) => total + tenant.users, 0);
-
-  function openAssignment(tenant: Tenant) {
-    setSelectedTenantId(tenant.id);
-    setAdminEmail(tenant.adminEmail.includes('@') ? tenant.adminEmail : '');
-    setNotice(null);
+  async function loadTenants() {
+    try { setLoading(true); setTenants(await listTenants()); }
+    catch (error) { setNotice(error instanceof Error ? error.message : 'Tenants could not be loaded'); }
+    finally { setLoading(false); }
   }
 
-  function saveAssignment(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  useEffect(() => { loadTenants(); }, []);
 
-    if (!selectedTenantId || !adminEmail.trim()) {
-      return;
-    }
+  const filteredTenants = useMemo(() => tenants.filter((tenant) => {
+    const text = `${tenant.name} ${tenant.subdomain} ${tenant.users[0]?.email || ''}`.toLowerCase();
+    return (filter === 'All' || tenant.status === filter) && text.includes(query.trim().toLowerCase());
+  }), [filter, query, tenants]);
+  const activeCount = tenants.filter((tenant) => tenant.status === 'ACTIVE').length;
+  const onboardingCount = tenants.filter((tenant) => tenant.status === 'ONBOARDING').length;
+  const totalUsers = tenants.reduce((sum, tenant) => sum + (tenant._count?.users ?? tenant.users.length), 0);
 
-    setTenants((currentTenants) =>
-      currentTenants.map((tenant) =>
-        tenant.id === selectedTenantId
-          ? {
-              ...tenant,
-              adminName: 'Pending invitation',
-              adminEmail: adminEmail.trim(),
-            }
-          : tenant,
-      ),
-    );
-    setSelectedTenantId(null);
-    setNotice('Tenant Admin invitation queued for delivery.');
+  function openAdmin(tenant: PlatformTenant) {
+    setSelectedId(tenant.id);
+    setAdminForm({ email: tenant.users[0]?.email || '', name: tenant.users[0]?.name || '' });
+    setModal('admin');
   }
 
-  function toggleTenantStatus(tenantId: string) {
-    setTenants((currentTenants) =>
-      currentTenants.map((tenant) =>
-        tenant.id === tenantId
-          ? { ...tenant, status: tenant.status === 'Suspended' ? 'Active' : 'Suspended' }
-          : tenant,
-      ),
-    );
-    setNotice('Tenant status updated.');
+  async function saveAdmin(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if (!selectedId) return; setSaving(true);
+    try { await assignTenantAdmin(selectedId, adminForm); setModal(null); setNotice('Tenant Admin invitation queued.'); await loadTenants(); }
+    catch (error) { setNotice(error instanceof Error ? error.message : 'Tenant Admin could not be assigned'); }
+    finally { setSaving(false); }
   }
 
-  return (
-    <main className={styles.page}>
-      <header className={styles.topbar}>
-        <div>
-          <p className={styles.kicker}>Platform control room</p>
-          <h1>Platform Administration</h1>
-          <p className={styles.intro}>
-            Manage client tenants, onboarding, and Tenant Admin access from one place.
-          </p>
-        </div>
-        <div className={styles.identity}>
-          <span className={styles.identityLabel}>Signed in as Platform Admin</span>
-          <strong>{'hamzakhannaghar1998@gmail.com'}</strong>
-        </div>
-      </header>
+  async function saveTenant(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setSaving(true);
+    try { await createTenant(tenantForm); setModal(null); setTenantForm({ name: '', slug: '', subdomain: '' }); setNotice('Client tenant created.'); await loadTenants(); }
+    catch (error) { setNotice(error instanceof Error ? error.message : 'Tenant could not be created'); }
+    finally { setSaving(false); }
+  }
 
-      <section className={styles.metrics} aria-label="Platform summary">
-        <article className={styles.metric}>
-          <span>Total client tenants</span>
-          <strong>{tenants.length}</strong>
-          <small>Across the platform</small>
-        </article>
-        <article className={styles.metric}>
-          <span>Active tenants</span>
-          <strong>{activeCount}</strong>
-          <small>Currently operational</small>
-        </article>
-        <article className={styles.metric}>
-          <span>Onboarding</span>
-          <strong>{onboardingCount}</strong>
-          <small>Need follow-up</small>
-        </article>
-        <article className={styles.metric}>
-          <span>Total tenant users</span>
-          <strong>{totalUsers}</strong>
-          <small>Across all companies</small>
-        </article>
-      </section>
+  async function toggleStatus(tenant: PlatformTenant) {
+    try { await updateTenantStatus(tenant.id, tenant.status === 'SUSPENDED' ? 'ACTIVE' : 'SUSPENDED'); setNotice('Tenant status updated.'); await loadTenants(); }
+    catch (error) { setNotice(error instanceof Error ? error.message : 'Tenant status could not be updated'); }
+  }
 
-      <section className={styles.workspace}>
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.kicker}>Tenant directory</p>
-            <h2>Client companies</h2>
-          </div>
-          <button className={styles.primaryButton} type="button" onClick={() => setNotice('Tenant creation workflow will be connected next.') }>
-            Add client tenant
-          </button>
-        </div>
-
-        <div className={styles.toolbar}>
-          <label className={styles.searchField}>
-            <span>Search tenants</span>
-            <input
-              type="search"
-              placeholder="Company, subdomain, or admin email"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-          <label className={styles.filterField}>
-            <span>Show</span>
-            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as (typeof statusOptions)[number])}>
-              {statusOptions.map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        {notice && <p className={styles.notice} role="status">{notice}</p>}
-
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Client company</th>
-                <th>Tenant Admin</th>
-                <th>Status</th>
-                <th>Users</th>
-                <th>Last activity</th>
-                <th><span className={styles.visuallyHidden}>Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTenants.map((tenant) => (
-                <tr key={tenant.id}>
-                  <td>
-                    <div className={styles.companyCell}>
-                      <span className={styles.companyMark}>{tenant.code}</span>
-                      <div>
-                        <strong>{tenant.company}</strong>
-                        <span>{tenant.subdomain}.erp.local</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className={styles.adminCell}>
-                      <strong>{tenant.adminName}</strong>
-                      <span>{tenant.adminEmail}</span>
-                    </div>
-                  </td>
-                  <td><span className={`${styles.status} ${styles[tenant.status.toLowerCase()]}`}>{tenant.status}</span></td>
-                  <td><strong>{tenant.users}</strong></td>
-                  <td>{tenant.lastActivity}</td>
-                  <td>
-                    <div className={styles.rowActions}>
-                      <button type="button" className={styles.textButton} onClick={() => openAssignment(tenant)}>
-                        {tenant.adminName === 'Unassigned' ? 'Assign admin' : 'Manage admin'}
-                      </button>
-                      <button type="button" className={styles.iconButton} title={`Toggle ${tenant.company} status`} onClick={() => toggleTenantStatus(tenant.id)}>
-                        {tenant.status === 'Suspended' ? 'Activate' : 'Suspend'}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {filteredTenants.length === 0 && <p className={styles.emptyState}>No tenants match the current search.</p>}
-      </section>
-
-      <section className={styles.lowerGrid}>
-        <article className={styles.activityPanel}>
-          <div className={styles.sectionHeading}>
-            <div>
-              <p className={styles.kicker}>Platform oversight</p>
-              <h2>Recent activity</h2>
-            </div>
-            <button className={styles.textButton} type="button" onClick={() => setNotice('The full platform audit log will be connected next.')}>View audit log</button>
-          </div>
-          <ul className={styles.activityList}>
-            <li><span className={styles.activityDot} /><div><strong>Vertex Technologies</strong><span>Document Owner role assigned by Tenant Admin</span></div><time>3 hours ago</time></li>
-            <li><span className={styles.activityDot} /><div><strong>Meridian Logistics</strong><span>Tenant onboarding checklist updated</span></div><time>Yesterday</time></li>
-            <li><span className={styles.activityDot} /><div><strong>Northstar Healthcare</strong><span>New quality manual revision published</span></div><time>Yesterday</time></li>
-          </ul>
-        </article>
-
-        <aside className={styles.accessPanel}>
-          <p className={styles.kicker}>Access boundary</p>
-          <h2>Platform Admin scope</h2>
-          <p>You can manage all client tenants. Tenant Admins remain limited to their own company and its internal users.</p>
-          <div className={styles.scopeList}>
-            <span><b>5</b> client tenants</span>
-            <span><b>{totalUsers}</b> tenant users</span>
-            <span><b>1</b> platform identity</span>
-          </div>
-        </aside>
-      </section>
-
-      {selectedTenantId && (
-        <div className={styles.modalBackdrop} role="presentation" onMouseDown={() => setSelectedTenantId(null)}>
-          <section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="assign-admin-title" onMouseDown={(event) => event.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <div>
-                <p className={styles.kicker}>Tenant access</p>
-                <h2 id="assign-admin-title">Assign Tenant Admin</h2>
-              </div>
-              <button className={styles.closeButton} type="button" aria-label="Close dialog" onClick={() => setSelectedTenantId(null)}>×</button>
-            </div>
-            <p>Send an invitation to the technical point of contact who will manage this company&apos;s internal users and roles.</p>
-            <form onSubmit={saveAssignment} className={styles.modalForm}>
-              <label className={styles.formLabel} htmlFor="tenant-admin-email">Tenant Admin email</label>
-              <input id="tenant-admin-email" type="email" value={adminEmail} onChange={(event) => setAdminEmail(event.target.value)} placeholder="admin@clientcompany.com" required />
-              <div className={styles.modalActions}>
-                <button className={styles.secondaryButton} type="button" onClick={() => setSelectedTenantId(null)}>Cancel</button>
-                <button className={styles.primaryButton} type="submit">Send invitation</button>
-              </div>
-            </form>
-          </section>
-        </div>
-      )}
-    </main>
-  );
+  return <main className={styles.page}>
+    <header className={styles.topbar}><div><p className={styles.kicker}>Platform control room</p><h1>Platform Administration</h1><p className={styles.intro}>Manage client tenants, onboarding, and Tenant Admin access from one place.</p></div><div className={styles.identity}><span className={styles.identityLabel}>Signed in as Platform Admin</span><strong>hamzakhannaghar1998@gmail.com</strong></div></header>
+    <section className={styles.metrics} aria-label="Platform summary"><article className={styles.metric}><span>Total client tenants</span><strong>{tenants.length}</strong><small>Across the platform</small></article><article className={styles.metric}><span>Active tenants</span><strong>{activeCount}</strong><small>Currently operational</small></article><article className={styles.metric}><span>Onboarding</span><strong>{onboardingCount}</strong><small>Need follow-up</small></article><article className={styles.metric}><span>Total tenant users</span><strong>{totalUsers}</strong><small>Across all companies</small></article></section>
+    <section className={styles.workspace}><div className={styles.sectionHeading}><div><p className={styles.kicker}>Tenant directory</p><h2>Client companies</h2></div><button className={styles.primaryButton} type="button" onClick={() => setModal('tenant')}>Add client tenant</button></div>
+      <div className={styles.toolbar}><label className={styles.searchField}><span>Search tenants</span><input type="search" placeholder="Company, subdomain, or admin email" value={query} onChange={(event) => setQuery(event.target.value)} /></label><label className={styles.filterField}><span>Show</span><select value={filter} onChange={(event) => setFilter(event.target.value as Filter)}><option>All</option><option value="ACTIVE">Active</option><option value="ONBOARDING">Onboarding</option><option value="SUSPENDED">Suspended</option></select></label></div>
+      {notice && <p className={styles.notice} role="status">{notice}</p>}
+      {loading ? <p className={styles.emptyState}>Loading client tenants...</p> : <div className={styles.tableWrap}><table className={styles.table}><thead><tr><th>Client company</th><th>Tenant Admin</th><th>Status</th><th>Users</th><th>Created</th><th><span className={styles.visuallyHidden}>Actions</span></th></tr></thead><tbody>{filteredTenants.map((tenant) => { const admin = tenant.users[0]; return <tr key={tenant.id}><td><div className={styles.companyCell}><span className={styles.companyMark}>{initials(tenant.name)}</span><div><strong>{tenant.name}</strong><span>{tenant.subdomain}.erp.local</span></div></div></td><td><div className={styles.adminCell}><strong>{admin?.name || 'Unassigned'}</strong><span>{admin?.email || 'No Tenant Admin assigned'}</span></div></td><td><span className={`${styles.status} ${styles[tenant.status.toLowerCase()]}`}>{formatStatus(tenant.status)}</span></td><td><strong>{tenant._count?.users ?? tenant.users.length}</strong></td><td>{new Date(tenant.createdAt).toLocaleDateString()}</td><td><div className={styles.rowActions}><button type="button" className={styles.textButton} onClick={() => openAdmin(tenant)}>{admin ? 'Manage admin' : 'Assign admin'}</button><button type="button" className={styles.iconButton} onClick={() => toggleStatus(tenant)}>{tenant.status === 'SUSPENDED' ? 'Activate' : 'Suspend'}</button></div></td></tr>; })}</tbody></table></div>}
+      {!loading && filteredTenants.length === 0 && <p className={styles.emptyState}>No tenants match the current search.</p>}
+    </section>
+    {modal === 'tenant' && <div className={styles.modalBackdrop} onMouseDown={() => setModal(null)}><section className={styles.modal} role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><div className={styles.modalHeader}><div><p className={styles.kicker}>New client</p><h2>Add client tenant</h2></div><button className={styles.closeButton} type="button" onClick={() => setModal(null)} aria-label="Close">×</button></div><form className={styles.modalForm} onSubmit={saveTenant}><label className={styles.formLabel}>Company name<input value={tenantForm.name} onChange={(event) => setTenantForm({ ...tenantForm, name: event.target.value })} required /></label><label className={styles.formLabel}>Tenant slug<input value={tenantForm.slug} onChange={(event) => setTenantForm({ ...tenantForm, slug: event.target.value })} placeholder="acme-manufacturing" required /></label><label className={styles.formLabel}>Subdomain<input value={tenantForm.subdomain} onChange={(event) => setTenantForm({ ...tenantForm, subdomain: event.target.value })} placeholder="acme" required /></label><div className={styles.modalActions}><button className={styles.secondaryButton} type="button" onClick={() => setModal(null)}>Cancel</button><button className={styles.primaryButton} type="submit" disabled={saving}>{saving ? 'Creating...' : 'Create tenant'}</button></div></form></section></div>}
+    {modal === 'admin' && <div className={styles.modalBackdrop} onMouseDown={() => setModal(null)}><section className={styles.modal} role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><div className={styles.modalHeader}><div><p className={styles.kicker}>Tenant access</p><h2>Assign Tenant Admin</h2></div><button className={styles.closeButton} type="button" onClick={() => setModal(null)} aria-label="Close">×</button></div><form className={styles.modalForm} onSubmit={saveAdmin}><label className={styles.formLabel}>Tenant Admin email<input type="email" value={adminForm.email} onChange={(event) => setAdminForm({ ...adminForm, email: event.target.value })} required /></label><label className={styles.formLabel}>Name (optional)<input value={adminForm.name} onChange={(event) => setAdminForm({ ...adminForm, name: event.target.value })} /></label><div className={styles.modalActions}><button className={styles.secondaryButton} type="button" onClick={() => setModal(null)}>Cancel</button><button className={styles.primaryButton} type="submit" disabled={saving}>{saving ? 'Saving...' : 'Send invitation'}</button></div></form></section></div>}
+  </main>;
 }

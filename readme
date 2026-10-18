@@ -4,6 +4,40 @@
 
 This project is an ERP platform intended for ISO/API-style audit and compliance management. The initial development environment is being built locally on Windows, with the eventual production environment planned on Google Cloud Platform (GCP).
 
+## Current Implementation Status
+
+### Completed in this cycle
+
+- Added authenticated file downloads to the Document Master List detail view.
+- Added version-level file metadata to the backend document detail payload for frontend download actions.
+- Applied the form schema refactor for richer versioning in the database with:
+  - `FormVersionStatus` enum
+  - `FormVersion` model (revision, status, review planning)
+  - `FormVersionApproval` model (review decision tracking)
+  - `FormField` linked to `FormVersion` instead of `FormTemplate`
+  - `QualityRecord.formVersionId` relation for traceability to the exact form revision used
+- Migrated existing form template/field data into initial revision records.
+- Applied evidence-governance MVP controls for file assets:
+  - `FileAssetUploadStatus` lifecycle (`PENDING_SCAN`, `ACTIVE`, `QUARANTINED`, `REJECTED`)
+  - immutable SHA-256 storage (`sha256`) alongside existing checksum
+  - retention metadata (`retentionClass`, `retentionUntil`, `legalHold`)
+  - upload validation hardening (MIME, signature, blocked extensions, normalized filenames)
+  - `ACTIVE` status enforcement before download
+  - audit events for evidence upload, validation pass, and download
+
+### Backend Form Behavior Aligned to Versioned Schema
+
+- Updated form template queries to resolve versioned fields via the current/latest version while preserving response compatibility for existing frontend pages.
+- Updated template creation to create an initial revision (`revisionNumber = 1`, `status = DRAFT`) and nest field definitions under that revision.
+- Updated quality-record creation to persist both `templateId` and `formVersionId` for audit lineage.
+
+### Applied migration
+
+- `backend/prisma/migrations/20260825120000_add_form_versioning_recover/migration.sql`
+- `backend/prisma/migrations/20260825134500_add_file_evidence_governance_mvp/migration.sql`
+
+This migration is intentionally idempotent to safely recover from partial prior migration attempts.
+
 ## Development Stack
 
 - Frontend: Next.js
@@ -97,6 +131,7 @@ frontend/src/app/
 ├── platform-admin/              Platform Admin tenant console
 ├── tenant-admin/                Tenant Admin members and assignments
 ├── admin/                       Compatibility redirect to /tenant-admin
+├── audit-logs/                  Tenant and platform audit history
 ├── documents/
 │   ├── procedures/new/           Level 2 procedure form
 │   ├── approvals/                CEO/MD approval workspace
@@ -104,16 +139,21 @@ frontend/src/app/
 │   └── periodic-reviews/         Periodic review workflow
 ├── forms/                        Level 4 templates and quality records
 ├── login/                        Tenant and Platform Admin login
+├── workspace/                    Notifications and training tasks
 └── page.tsx                     Main dashboard
 
 backend/src/
+├── audit-log/                    Audit history API
 ├── auth/                         JWT login and authorization guards
 ├── documents/                    Documents, approvals, changes, and reviews
 ├── files/                        PDF/image upload and download
 ├── forms/                        Level 4 templates and quality records
-├── tenant-admin/                Tenant member management API
-├── prisma/                      Prisma service and database access
-├── app.controller.ts            Backend health endpoint
+├── notifications/                In-app release notifications API
+├── training/                     Training tasks API
+├── platform-admin/               Platform tenant-management API
+├── tenant-admin/                 Tenant member management API
+├── prisma/                       Prisma service and database access
+├── app.controller.ts             Backend health endpoint
 └── app.module.ts                Root NestJS module
 
 prisma/
@@ -558,7 +598,9 @@ GET  /forms/records
 POST /forms/records
 ```
 
-`FormTemplate` and `FormField` represent the blank controlled form. `QualityRecord` represents data captured after a person performs the activity. Required fields are validated before a completed record is stored. The record is tenant-scoped and linked to the user who completed it.
+`FormTemplate` is the controlled Level 4 form identity. Each template now contains versioned revisions through `FormVersion`, and each revision contains its own `FormField` set. `QualityRecord` represents captured activity data and stores both `templateId` and `formVersionId` for revision-level traceability. Required fields are validated before a completed record is stored.
+
+The current service behavior returns top-level `fields` from the current or latest template version to keep existing frontend pages compatible while preserving the full version list for richer workflows.
 
 Level 4 templates can optionally link to a parent procedure or work instruction. `FILE` fields accept PDF, JPEG, and PNG uploads after a quality record is created:
 
@@ -644,6 +686,41 @@ POST /documents/versions/:versionId/publish
 
 Only an approved version can be published. Publishing marks the selected version `CURRENT`, marks older versions `SUPERSEDED`, and changes the parent document to `PUBLISHED`.
 
+### Notifications and Training Workspace
+
+The tenant workspace is available at:
+
+```text
+/workspace
+```
+
+When a document is published, the backend creates queued in-app release notifications and training tasks for active users in the tenant. The current local implementation supports:
+
+```text
+GET   /notifications
+PATCH /notifications/:id/read
+GET   /training/tasks
+PATCH /training/tasks/:id/complete
+```
+
+The current records are persisted in PostgreSQL. Email delivery, department-specific training ownership, HR escalation, attendance, and competence evidence remain future workflow extensions.
+
+### Application Audit History
+
+The secured audit-history page is available at:
+
+```text
+/audit-logs
+```
+
+The API is:
+
+```text
+GET /audit-logs
+```
+
+The audit log records actions such as document creation, approval, publication, Change Request decisions, periodic reviews, notification acknowledgements, and training completion. Records are tenant-scoped for tenant users, while Platform Admin can inspect platform-wide entries. External email delivery remains intentionally deferred until an email service account or provider is configured.
+
 ### Separate Login Experiences
 
 The application has separate entry points for tenant users and the Platform Admin:
@@ -710,26 +787,30 @@ The remaining security work is to extend Platform Admin authorization to platfor
 
 ### Document and Approval API
 
-The first Prisma-backed document endpoints are available through the NestJS backend:
+The Prisma-backed document endpoints are available through the NestJS backend:
 
 ```text
+GET  /documents
 POST /documents/procedures
 GET  /documents/:id
 POST /documents/:id/submit
-GET  /documents/approvals?approverEmail=user@example.com
+GET  /documents/approvals
 POST /documents/versions/:versionId/decision
 ```
 
 The API currently supports:
 
+- loading the authenticated tenant's Document Master List
+- loading a document detail view with versions, assignments, compliance references, revision history, files, and approval history
 - creating a Level 2 procedure with a first version
 - assigning Prepared By, Reviewed By, and Approved By users by email
-- loading a document with versions, assignments, compliance references, and revision history
 - submitting draft or returned documents for approval
-- loading the approval queue for an assigned approver
+- loading the approval queue for the authenticated approver
 - recording an approval or return-for-correction decision
 
-The database must contain the referenced tenant and users before a procedure can be created. Authentication, authorization, tenant-context extraction, email invitations, and production request validation are still required before these endpoints are exposed to real users.
+The Document Master List is available at `http://localhost:3000/documents`. It provides search and filters for title, control number, document level, tenant, and lifecycle status, plus version, workflow ownership, review due date, file count, and quality-record count. Selecting a row opens `http://localhost:3000/documents/:id`, where the complete controlled-document context is shown. Document-version attachments are downloadable from the detail view through the authenticated file-download endpoint.
+
+The database must contain the referenced tenant and users before a procedure can be created. Authentication, authorization, and tenant context are enforced for these protected endpoints.
 
 ---
 
@@ -855,18 +936,34 @@ The database must contain the referenced tenant and users before a procedure can
 - Enforced same-tenant validation for form parent documents and quality-record document/version links
 - Added PDF/JPEG/PNG file-signature validation in addition to MIME checks
 - Configured backend Jest tests for ESM and closed Prisma connections after tests
-### Change Request Workflow
+- Added persisted Notification and TrainingTask models and migration `add_notifications_training`
+- Added automatic release notifications and training tasks when a document is published
+- Added tenant-scoped notification inbox and training-task APIs
+- Added tenant workspace UI for reading notifications and completing training tasks
+- Verified fresh publication creates one notification and one training task
+- Added secured Platform Admin tenant-management APIs
+- Connected Platform Admin tenant console to persisted tenant data
+- Added tenant creation, details, Tenant Admin assignment, and status-management actions
+- Verified Platform Admin tenant listing succeeds and tenant users receive `403`
+- Added internal `AuditLog` model and migration `add_audit_logs`
+- Added audit logging for document creation, approval, publication, Change Requests, periodic reviews, notification acknowledgements, and training completion
+- Added secured audit history API and `/audit-logs` page
+- Added tenant-scoped Document Master List API at `GET /documents`
+- Added searchable and filterable Document Master List UI at `/documents`
+- Added document detail UI at `/documents/:id` with version, workflow, compliance, revision, file, and approval context
+- Verified the authenticated tenant document list returns persisted tenant-owned documents
+- Deferred external email delivery until a service account or provider is configured
 
 ### Not Yet Completed
 
-- Connect Platform Admin tenant actions to backend APIs and Prisma
+- Add real email delivery for queued notifications
+- Add department/HR training ownership and training evidence records
 - Add role-specific document permissions beyond approval assignment checks
 - Implement MFA, session management, and token revocation
 - Implement role-based access control (RBAC)
 - Implement audit management
 - Implement findings and CAPA management
 - Complete document/evidence management with record attachments, retention, and cloud storage
-- Implement application audit logs
 - Deploy to GCP
 - Migrate PostgreSQL from local development to Cloud SQL
 
@@ -1070,7 +1167,7 @@ Security maturity is currently behind established QMS platforms and must become 
 - protection against unauthorized document downloads
 - backup and recovery procedures
 
-The current API uses email query parameters and prototype data in some areas. This is acceptable for early development only and must be replaced with authenticated identity and server-derived tenant context before production use.
+Protected document, approval, periodic review, form, member, and file routes now derive user identity and tenant context from authenticated JWTs. Procedure creation still accepts Prepared By / Reviewed By / Approved By emails as explicit assignment targets in request payloads, but acting-user authorization and tenant scoping are server-enforced from JWT claims. Remaining hardening work includes deeper role-specific authorization, MFA/session controls, and production-grade secret and session management.
 
 ### File and Evidence Storage
 
@@ -1140,8 +1237,8 @@ The current product is a well-defined prototype foundation, not yet a production
 | Security | JWT authentication, protected routes, tenant-scoped access, and local file validation implemented | MFA, session controls, token revocation, cloud file controls, and monitoring |
 | Document control | Persisted procedures, versions, approvals, Change Requests, supersession, publication, periodic reviews, and Level 4 templates/records | Full electronic signatures, notifications, archive enforcement, retention, and richer record controls |
 | QMS specialization | Good ISO/API-oriented direction | Clause mapping, standard templates, and industry-specific workflows |
-| Multi-tenancy | Tenant context and scoped member/document queries implemented for the current modules | Complete database/file isolation and Platform Admin tenant APIs |
-| User management | JWT login, Tenant Admin persistence, designations, and workflow assignments implemented | Invitations, MFA, granular permissions, delegation, and access history |
+| Multi-tenancy | Tenant context, scoped member/document queries, and secured Platform Admin tenant APIs implemented | Complete database/file isolation and broader tenant administration policies |
+| User management | JWT login, Tenant Admin persistence, designations, workflow assignments, and Platform Admin tenant assignment implemented | Real invitations, MFA, granular permissions, delegation, and access history |
 | Files and evidence | Local PDF/image upload, record attachments, metadata, checksum, and tenant-authorized download implemented | Cloud object storage, malware scanning, retention, previews, and production access controls |
 | Integrations | Not implemented | Email, cloud storage, identity, HR, ERP, and reporting integrations |
 | Production readiness | Local development only | Testing, deployment, backups, observability, recovery, and operational support |
@@ -1230,7 +1327,18 @@ The first prototype includes five client tenants:
 - Platform Admin: manages all tenants and platform-level operations
 - Tenant Admin: manages users, roles, and permissions inside one company only
 
-The current Platform Admin page uses in-memory prototype data. Tenant records, admin assignments, status changes, and platform audit logs still need NestJS, Prisma, and PostgreSQL APIs. Platform Admin authentication already has a separate JWT login endpoint.
+The Platform Admin page now loads persisted tenant data and sends tenant-management actions through secured NestJS APIs. Platform Admin authentication uses a separate JWT login endpoint. Platform activity history and audit logs remain future work.
+
+Platform Admin API routes:
+
+```text
+GET   /platform-admin/tenants
+GET   /platform-admin/tenants/:id
+POST  /platform-admin/tenants
+PATCH /platform-admin/tenants/:id
+POST  /platform-admin/tenants/:id/admin
+PATCH /platform-admin/tenants/:id/status
+```
 
 ### 1. Initialize the project directory
 

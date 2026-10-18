@@ -79,6 +79,42 @@ enum FormFieldType {
   FILE
 }
 
+enum FormVersionStatus {
+  DRAFT
+  APPROVED
+  CURRENT
+  SUPERSEDED
+  RETIRED
+}
+
+enum NotificationType {
+  DOCUMENT_RELEASE
+  TRAINING_ASSIGNED
+  CHANGE_REQUEST
+  PERIODIC_REVIEW
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+  READ
+}
+
+enum TrainingTaskStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  OVERDUE
+}
+
+enum FileAssetUploadStatus {
+  PENDING_SCAN
+  ACTIVE
+  QUARANTINED
+  REJECTED
+}
+
 model Tenant {
   id          String       @id @default(uuid())
   name        String
@@ -94,6 +130,9 @@ model Tenant {
   files          FileAsset[]
   formTemplates  FormTemplate[]
   qualityRecords QualityRecord[]
+  notifications Notification[]
+  trainingTasks TrainingTask[]
+  auditLogs     AuditLog[]
 }
 
 model User {
@@ -117,6 +156,10 @@ model User {
   periodicReviews      PeriodicReview[]
   uploadedFiles        FileAsset[]
   qualityRecords       QualityRecord[]
+  notifications        Notification[]
+  assignedTrainingTasks TrainingTask[]
+  formVersionApprovals FormVersionApproval[] @relation("FormVersionApproval")
+  auditLogs             AuditLog[]
 }
 
 model Document {
@@ -136,6 +179,8 @@ model Document {
   files              FileAsset[]
   formTemplates      FormTemplate[]
   qualityRecords     QualityRecord[]
+  notifications      Notification[]
+  trainingTasks      TrainingTask[]
 
   @@unique([tenantId, controlNumber])
   @@index([tenantId, status])
@@ -169,6 +214,8 @@ model DocumentVersion {
   periodicReviews      PeriodicReview[]
   files               FileAsset[]
   qualityRecords      QualityRecord[]
+  notifications       Notification[]
+  trainingTasks       TrainingTask[]
 
   @@unique([documentId, revisionNumber])
   @@index([documentId, effectiveDate])
@@ -295,6 +342,11 @@ model FileAsset {
   mimeType     String
   sizeBytes    Int
   checksum     String
+  sha256       String
+  uploadStatus FileAssetUploadStatus @default(PENDING_SCAN)
+  retentionClass String         @default("DEFAULT")
+  retentionUntil DateTime?
+  legalHold    Boolean          @default(false)
   createdAt    DateTime         @default(now())
   tenant       Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   document     Document?        @relation(fields: [documentId], references: [id], onDelete: Cascade)
@@ -303,6 +355,8 @@ model FileAsset {
   qualityRecord QualityRecord?  @relation(fields: [qualityRecordId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, createdAt])
+  @@index([tenantId, uploadStatus, createdAt])
+  @@index([retentionUntil])
   @@index([documentId])
   @@index([versionId])
   @@index([qualityRecordId])
@@ -319,46 +373,140 @@ model FormTemplate {
   updatedAt      DateTime        @updatedAt
   tenant         Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   document       Document?       @relation(fields: [documentId], references: [id], onDelete: SetNull)
-  fields         FormField[]
+  versions       FormVersion[]
   qualityRecords QualityRecord[]
 
   @@unique([tenantId, controlNumber])
   @@index([tenantId, createdAt])
 }
 
+model FormVersion {
+  id                  String              @id @default(uuid())
+  templateId          String
+  revisionNumber      Int
+  status              FormVersionStatus   @default(DRAFT)
+  effectiveDate       DateTime?
+  nextReviewDate      DateTime?
+  reviewIntervalYears Int                 @default(3)
+  createdAt           DateTime            @default(now())
+  template            FormTemplate        @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  fields              FormField[]
+  approvals           FormVersionApproval[]
+  qualityRecords      QualityRecord[]
+
+  @@unique([templateId, revisionNumber])
+  @@index([templateId, status])
+}
+
 model FormField {
   id          String        @id @default(uuid())
-  templateId  String
+  versionId   String
   fieldKey    String
   label       String
   type        FormFieldType
   required    Boolean       @default(false)
   optionsJson Json?
   sortOrder   Int           @default(0)
-  template    FormTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  version     FormVersion   @relation(fields: [versionId], references: [id], onDelete: Cascade)
 
-  @@unique([templateId, fieldKey])
-  @@index([templateId, sortOrder])
+  @@unique([versionId, fieldKey])
+  @@index([versionId, sortOrder])
+}
+
+model FormVersionApproval {
+  id         String        @id @default(uuid())
+  versionId  String
+  reviewedById String?
+  decision   String?
+  comment    String?
+  decidedAt  DateTime?
+  version    FormVersion   @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  reviewedBy User?         @relation("FormVersionApproval", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@unique([versionId])
+  @@index([reviewedById])
 }
 
 model QualityRecord {
-  id            String       @id @default(uuid())
-  tenantId      String
-  templateId    String
-  documentId    String?
-  versionId     String?
-  completedById String
-  status        String       @default("SUBMITTED")
-  values        Json
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  tenant        Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  template      FormTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict)
-  document      Document?    @relation(fields: [documentId], references: [id], onDelete: SetNull)
-  version       DocumentVersion? @relation(fields: [versionId], references: [id], onDelete: SetNull)
-  completedBy   User         @relation(fields: [completedById], references: [id], onDelete: Restrict)
-  attachments   FileAsset[]
+  id             String       @id @default(uuid())
+  tenantId       String
+  templateId     String
+  formVersionId  String?
+  documentId     String?
+  versionId      String?
+  completedById  String
+  status         String       @default("SUBMITTED")
+  values         Json
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  template       FormTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  formVersion    FormVersion? @relation(fields: [formVersionId], references: [id], onDelete: SetNull)
+  document       Document?    @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  version        DocumentVersion? @relation(fields: [versionId], references: [id], onDelete: SetNull)
+  completedBy    User         @relation(fields: [completedById], references: [id], onDelete: Restrict)
+  attachments    FileAsset[]
 
   @@index([tenantId, createdAt])
   @@index([templateId, createdAt])
+  @@index([formVersionId, createdAt])
+}
+
+model Notification {
+  id          String             @id @default(uuid())
+  tenantId    String
+  userId      String
+  documentId  String?
+  versionId   String?
+  type        NotificationType
+  status      NotificationStatus @default(QUEUED)
+  subject     String
+  message     String
+  queuedAt    DateTime           @default(now())
+  sentAt      DateTime?
+  readAt      DateTime?
+  tenant      Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document    Document?          @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  version     DocumentVersion?   @relation(fields: [versionId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, userId, status])
+  @@index([documentId, queuedAt])
+}
+
+model TrainingTask {
+  id             String             @id @default(uuid())
+  tenantId       String
+  documentId     String
+  versionId      String
+  assignedToId   String
+  title          String
+  dueDate        DateTime?
+  status         TrainingTaskStatus @default(ASSIGNED)
+  completedAt    DateTime?
+  tenant         Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  document       Document           @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  version        DocumentVersion    @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  assignedTo     User               @relation(fields: [assignedToId], references: [id], onDelete: Cascade)
+
+  @@unique([versionId, assignedToId])
+  @@index([tenantId, assignedToId, status])
+  @@index([documentId, versionId])
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  tenantId    String?
+  actorId     String?
+  action      String
+  entityType  String
+  entityId    String?
+  details     Json?
+  createdAt   DateTime  @default(now())
+  tenant      Tenant?   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  actor       User?     @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@index([actorId, createdAt])
+  @@index([entityType, entityId])
 }

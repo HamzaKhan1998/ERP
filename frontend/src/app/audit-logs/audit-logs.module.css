@@ -1,0 +1,18 @@
+.page { min-height: 100vh; padding: 48px 24px 72px; background: #eef3f4; color: #15252b; }
+.header, .panel { width: min(1120px, 100%); margin-inline: auto; }
+.header { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 30px; }
+.eyebrow { margin: 0 0 9px; color: #17716b; font-size: .72rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.header h1 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.6rem, 5vw, 4.7rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+.header p { max-width: 650px; color: #607177; line-height: 1.6; }
+.count { color: #17716b; font-family: Georgia, serif; font-size: 1.8rem; }
+.panel { border: 1px solid #d3dfdf; background: #fafdfe; padding: 26px; }
+.tableWrap { overflow: auto; }
+.table { width: 100%; min-width: 720px; border-collapse: collapse; text-align: left; }
+.table th { padding: 13px 10px; color: #718186; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+.table td { padding: 16px 10px; border-top: 1px solid #dbe5e5; color: #52646a; font-size: .82rem; vertical-align: top; }
+.table td strong, .table td small { display: block; }
+.table td strong { color: #15252b; text-transform: capitalize; }
+.table td small { margin-top: 5px; color: #819096; font-size: .72rem; }
+.notice { width: min(1120px, 100%); margin: 0 auto 16px; padding: 12px 14px; border-left: 3px solid #17716b; background: #dfeeea; color: #155a55; }
+.empty { padding: 30px; color: #718186; font-size: .85rem; text-align: center; }
+@media (max-width: 700px) { .page { padding: 30px 16px 52px; } .header { align-items: start; flex-direction: column; } .panel { padding: 18px; } }
