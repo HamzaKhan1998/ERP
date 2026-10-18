@@ -2,6 +2,15 @@
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
+// attaches the stored session token so tenant-admin routes pass JwtAuthGuard
+function authHeaders(): HeadersInit {
+  const token = window.localStorage.getItem('erp_access_token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export interface Member {
   id: string;
   email: string;
@@ -32,9 +41,7 @@ export interface UpdateMemberRequest {
 export async function fetchMembers(): Promise<Member[]> {
   const response = await fetch(`${API_BASE_URL}/tenant-admin/members`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: authHeaders(),
   });
 
   if (!response.ok) {
@@ -50,9 +57,7 @@ export async function fetchMembers(): Promise<Member[]> {
 export async function fetchMember(id: string): Promise<Member> {
   const response = await fetch(`${API_BASE_URL}/tenant-admin/members/${id}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: authHeaders(),
   });
 
   if (!response.ok) {
@@ -68,9 +73,7 @@ export async function fetchMember(id: string): Promise<Member> {
 export async function createMember(data: CreateMemberRequest): Promise<Member> {
   const response = await fetch(`${API_BASE_URL}/tenant-admin/members`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: authHeaders(),
     body: JSON.stringify(data),
   });
 
@@ -91,9 +94,7 @@ export async function updateMember(
 ): Promise<Member> {
   const response = await fetch(`${API_BASE_URL}/tenant-admin/members/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: authHeaders(),
     body: JSON.stringify(data),
   });
 
@@ -110,9 +111,7 @@ export async function updateMember(
 export async function deleteMember(id: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/tenant-admin/members/${id}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: authHeaders(),
   });
 
   if (!response.ok) {

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client.js';
-import { FormFieldType } from '../../generated/prisma/enums.js';
+import { FormFieldType, FormVersionStatus } from '../../generated/prisma/enums.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateFormTemplateDto, CreateQualityRecordDto } from './dto/forms.dto.js';
 import type { AuthenticatedUser } from '../auth/guards/jwt-auth.guard.js';
@@ -9,21 +9,87 @@ import type { AuthenticatedUser } from '../auth/guards/jwt-auth.guard.js';
 export class FormsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private pickActiveVersion(template: {
+    versions: Array<{
+      id: string;
+      revisionNumber: number;
+      status: FormVersionStatus;
+      fields: Array<{
+        id: string;
+        fieldKey: string;
+        label: string;
+        type: FormFieldType;
+        required: boolean;
+        optionsJson: Prisma.JsonValue;
+        sortOrder: number;
+      }>;
+    }>;
+  }) {
+    return template.versions.find((version) => version.status === FormVersionStatus.CURRENT)
+      ?? template.versions[0]
+      ?? null;
+  }
+
+  private mapTemplateForClient<T extends {
+    versions: Array<{
+      id: string;
+      revisionNumber: number;
+      status: FormVersionStatus;
+      fields: Array<{
+        id: string;
+        fieldKey: string;
+        label: string;
+        type: FormFieldType;
+        required: boolean;
+        optionsJson: Prisma.JsonValue;
+        sortOrder: number;
+      }>;
+    }>;
+  }>(template: T) {
+    const activeVersion = this.pickActiveVersion(template);
+    return {
+      ...template,
+      currentVersion: activeVersion,
+      currentVersionId: activeVersion?.id ?? null,
+      fields: activeVersion?.fields ?? [],
+    };
+  }
+
   async listTemplates(actor: AuthenticatedUser) {
-    return this.prisma.formTemplate.findMany({
+    const templates = await this.prisma.formTemplate.findMany({
       where: { tenantId: actor.tenantId ?? '' },
-      include: { fields: { orderBy: { sortOrder: 'asc' } }, document: true },
+      include: {
+        document: true,
+        versions: {
+          orderBy: { revisionNumber: 'desc' },
+          include: {
+            fields: { orderBy: { sortOrder: 'asc' } },
+            approvals: true,
+          },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
+
+    return templates.map((template) => this.mapTemplateForClient(template));
   }
 
   async getTemplate(templateId: string, actor: AuthenticatedUser) {
     const template = await this.prisma.formTemplate.findFirst({
       where: { id: templateId, tenantId: actor.tenantId ?? '' },
-      include: { fields: { orderBy: { sortOrder: 'asc' } }, document: true },
+      include: {
+        document: true,
+        versions: {
+          orderBy: { revisionNumber: 'desc' },
+          include: {
+            fields: { orderBy: { sortOrder: 'asc' } },
+            approvals: true,
+          },
+        },
+      },
     });
     if (!template) throw new NotFoundException('Form template not found');
-    return template;
+    return this.mapTemplateForClient(template);
   }
 
   async createTemplate(dto: CreateFormTemplateDto, actor: AuthenticatedUser) {
@@ -36,31 +102,51 @@ export class FormsService {
       if (!document) throw new NotFoundException('Parent document not found in this tenant');
     }
 
-    return this.prisma.formTemplate.create({
+    const created = await this.prisma.formTemplate.create({
       data: {
         tenantId: actor.tenantId,
         title: dto.title,
         controlNumber: dto.controlNumber,
         description: dto.description,
         documentId: dto.documentId,
-        fields: {
-          create: dto.fields.map((field, index) => ({
-            fieldKey: field.fieldKey,
-            label: field.label,
-            type: FormFieldType[field.type],
-            required: field.required ?? false,
-            optionsJson: field.options ?? undefined,
-            sortOrder: index,
-          })),
+        versions: {
+          create: {
+            revisionNumber: 1,
+            status: FormVersionStatus.DRAFT,
+            fields: {
+              create: dto.fields.map((field, index) => ({
+                fieldKey: field.fieldKey,
+                label: field.label,
+                type: FormFieldType[field.type],
+                required: field.required ?? false,
+                optionsJson: field.options ?? undefined,
+                sortOrder: index,
+              })),
+            },
+          },
         },
       },
-      include: { fields: { orderBy: { sortOrder: 'asc' } } },
+      include: {
+        document: true,
+        versions: {
+          orderBy: { revisionNumber: 'desc' },
+          include: {
+            fields: { orderBy: { sortOrder: 'asc' } },
+            approvals: true,
+          },
+        },
+      },
     });
+
+    return this.mapTemplateForClient(created);
   }
 
   async createRecord(dto: CreateQualityRecordDto, actor: AuthenticatedUser) {
     if (!actor.tenantId) throw new BadRequestException('A tenant user is required');
     const template = await this.getTemplate(dto.templateId, actor);
+    if (!template.currentVersionId) {
+      throw new BadRequestException('No form version is available for this template');
+    }
     if (dto.documentId) {
       const document = await this.prisma.document.findFirst({ where: { id: dto.documentId, tenantId: actor.tenantId } });
       if (!document) throw new NotFoundException('Record document not found in this tenant');
@@ -76,19 +162,20 @@ export class FormsService {
       data: {
         tenantId: actor.tenantId,
         templateId: template.id,
+        formVersionId: template.currentVersionId,
         documentId: dto.documentId,
         versionId: dto.versionId,
         completedById: actor.sub,
         values: dto.values as Prisma.InputJsonObject,
       },
-      include: { template: true, completedBy: true },
+      include: { template: true, formVersion: true, completedBy: true },
     });
   }
 
   async listRecords(actor: AuthenticatedUser) {
     return this.prisma.qualityRecord.findMany({
       where: { tenantId: actor.tenantId ?? '' },
-      include: { template: true, completedBy: true, document: true },
+      include: { template: true, formVersion: true, completedBy: true, document: true },
       orderBy: { createdAt: 'desc' },
     });
   }

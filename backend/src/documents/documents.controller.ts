@@ -29,6 +29,11 @@ export class DocumentsController {
     return this.documentsService.createProcedure(dto, request.user);
   }
 
+  @Get()
+  listDocuments(@Req() request: AuthenticatedRequest) {
+    return this.documentsService.listDocuments(request.user);
+  }
+
   @Post('change-requests')
   createChangeRequest(@Req() request: AuthenticatedRequest, @Body() dto: CreateChangeRequestDto) {
     return this.documentsService.createChangeRequest(dto, request.user);

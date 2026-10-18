@@ -15,10 +15,14 @@ import {
   ReviewChangeRequestDto,
 } from './dto/document.dto.js';
 import type { AuthenticatedUser } from '../auth/guards/jwt-auth.guard.js';
+import { AuditLogService } from '../audit-log/audit-log.service.js';
 
 @Injectable()
 export class DocumentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly auditLog: AuditLogService,
+  ) {}
 
   async createProcedure(dto: CreateProcedureDto, actor: AuthenticatedUser) {
     const effectiveDate = dto.effectiveDate ? new Date(dto.effectiveDate) : new Date();
@@ -50,7 +54,7 @@ export class DocumentsService {
       this.findUser(dto.approvedByEmail, tenant.id),
     ]);
 
-    return this.prisma.document.create({
+    const document = await this.prisma.document.create({
       data: {
         tenantId: tenant.id,
         title: dto.title,
@@ -100,6 +104,28 @@ export class DocumentsService {
         versions: { include: { assignments: { include: { user: true } } } },
       },
     });
+    await this.auditLog.record({ actor, action: 'DOCUMENT_CREATED', entityType: 'Document', entityId: document.id, details: { controlNumber: dto.controlNumber, level: 'LEVEL_2' } });
+    return document;
+  }
+
+  async listDocuments(actor: AuthenticatedUser) {
+    return this.prisma.document.findMany({
+      where: actor.scope === 'PLATFORM_ADMIN' ? {} : { tenantId: actor.tenantId ?? '' },
+      include: {
+        tenant: true,
+        versions: {
+          orderBy: { revisionNumber: 'desc' },
+          take: 1,
+          include: {
+            assignments: { include: { user: true } },
+            complianceRefs: true,
+            files: true,
+          },
+        },
+        _count: { select: { versions: true, files: true, changeRequests: true, qualityRecords: true } },
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
   }
 
   async getDocument(documentId: string, actor: AuthenticatedUser) {
@@ -114,6 +140,7 @@ export class DocumentsService {
             approvals: { include: { user: true }, orderBy: { decidedAt: 'desc' } },
             complianceRefs: true,
             revisionHistory: true,
+            files: true,
           },
         },
       },
@@ -236,6 +263,7 @@ export class DocumentsService {
         data: { status: dto.decision === 'APPROVED' ? 'APPROVED' : 'DRAFT' },
       });
 
+      await this.auditLog.record({ actor, action: `DOCUMENT_${dto.decision}`, entityType: 'DocumentVersion', entityId: versionId, details: { comment: dto.comment } });
       return decision;
     });
   }
@@ -270,11 +298,44 @@ export class DocumentsService {
         where: { id: versionId },
         data: { status: 'CURRENT' },
       });
-      return transaction.document.update({
+      const published = await transaction.document.update({
         where: { id: version.documentId },
         data: { status: DocumentStatus.PUBLISHED },
         include: { versions: { orderBy: { revisionNumber: 'desc' } } },
       });
+
+      const tenantUsers = await transaction.user.findMany({
+        where: { tenantId: version.document.tenantId, status: 'ACTIVE' },
+        select: { id: true },
+      });
+      if (tenantUsers.length) {
+        const message = `${version.document.title} (${version.versionLabel}) is now the current approved document. Please review it and complete the assigned training.`;
+        await transaction.notification.createMany({
+          data: tenantUsers.map((user) => ({
+            tenantId: version.document.tenantId,
+            userId: user.id,
+            documentId: version.documentId,
+            versionId,
+            type: 'DOCUMENT_RELEASE' as const,
+            subject: `Document released: ${version.document.controlNumber}`,
+            message,
+          })),
+        });
+        await transaction.trainingTask.createMany({
+          data: tenantUsers.map((user) => ({
+            tenantId: version.document.tenantId,
+            documentId: version.documentId,
+            versionId,
+            assignedToId: user.id,
+            title: `Review and understand ${version.document.controlNumber}`,
+            dueDate: this.addDays(new Date(), 30),
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      await this.auditLog.record({ actor, action: 'DOCUMENT_PUBLISHED', entityType: 'DocumentVersion', entityId: versionId, details: { documentId: version.documentId } });
+      return published;
     });
   }
 
@@ -296,7 +357,7 @@ export class DocumentsService {
       throw new BadRequestException('Only an approved document can receive a change request');
     }
 
-    return this.prisma.changeRequest.create({
+    const changeRequest = await this.prisma.changeRequest.create({
       data: {
         tenantId: document.tenantId,
         documentId: document.id,
@@ -308,6 +369,8 @@ export class DocumentsService {
       },
       include: { document: true, sourceVersion: true, requestedBy: true },
     });
+    await this.auditLog.record({ actor, action: 'CHANGE_REQUEST_CREATED', entityType: 'ChangeRequest', entityId: changeRequest.id, details: { documentId: document.id } });
+    return changeRequest;
   }
 
   async listChangeRequests(actor: AuthenticatedUser) {
@@ -352,7 +415,7 @@ export class DocumentsService {
       throw new BadRequestException('This change request has already been reviewed');
     }
 
-    return this.prisma.changeRequest.update({
+    const reviewed = await this.prisma.changeRequest.update({
       where: { id: changeRequestId },
       data: {
         status: dto.decision,
@@ -362,6 +425,8 @@ export class DocumentsService {
       },
       include: { document: true, requestedBy: true, reviewedBy: true },
     });
+    await this.auditLog.record({ actor, action: `CHANGE_REQUEST_${dto.decision}`, entityType: 'ChangeRequest', entityId: changeRequestId, details: { comment: dto.comment } });
+    return reviewed;
   }
 
   async incorporateChangeRequest(
@@ -450,7 +515,7 @@ export class DocumentsService {
         data: { status: DocumentStatus.DRAFT },
       });
 
-      return transaction.changeRequest.update({
+      const incorporated = await transaction.changeRequest.update({
         where: { id: changeRequestId },
         data: {
           status: 'INCORPORATED',
@@ -458,6 +523,8 @@ export class DocumentsService {
         },
         include: { document: true, sourceVersion: true, incorporatedVersion: true },
       });
+      await this.auditLog.record({ actor, action: 'CHANGE_REQUEST_INCORPORATED', entityType: 'ChangeRequest', entityId: changeRequestId, details: { versionId: nextVersion.id } });
+      return incorporated;
     });
   }
 
@@ -543,6 +610,7 @@ export class DocumentsService {
       } else {
         await transaction.documentVersion.update({ where: { id: version.id }, data: { nextReviewDate } });
       }
+      await this.auditLog.record({ actor, action: `PERIODIC_REVIEW_${dto.outcome}`, entityType: 'DocumentVersion', entityId: version.id, details: { reviewId: review.id } });
       return review;
     });
   }
@@ -550,6 +618,12 @@ export class DocumentsService {
   private addYears(date: Date, years: number) {
     const next = new Date(date);
     next.setFullYear(next.getFullYear() + years);
+    return next;
+  }
+
+  private addDays(date: Date, days: number) {
+    const next = new Date(date);
+    next.setDate(next.getDate() + days);
     return next;
   }
 
